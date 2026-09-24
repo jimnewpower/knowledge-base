@@ -4,7 +4,7 @@
 
 A modular monolith deploys together while keeping **business responsibilities and dependency boundaries explicit**. A package tree helps only when code, data access, and tests respect it.
 
-Related: [object-oriented design](ood.md), [design patterns](design-patterns.md), [distributed systems](distributed-systems.md), [testing](testing.md).
+Related: [object-oriented design](ood.md), [design patterns](design-patterns.md), [architecture styles](architecture-styles.md), [domain-driven design](domain-driven-design.md), [distributed systems](distributed-systems.md), [testing](testing.md).
 
 ## Choose the boundary
 

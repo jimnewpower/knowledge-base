@@ -4,6 +4,8 @@
 
 UML is a **shared drawing vocabulary**, not a required ceremony. Draw the view that answers a question. Delete the diagram when the code is clearer.
 
+Related: [C4 architecture diagrams](c4-diagrams.md), [Structurizr DSL](structurizr-dsl.md), [architecture documentation](architecture-documentation.md).
+
 ## Which diagram
 
 | Question | Diagram |
@@ -11,11 +13,12 @@ UML is a **shared drawing vocabulary**, not a required ceremony. Draw the view t
 | What types exist and how they relate | Class |
 | What happens in this use case over time | Sequence |
 | What states are legal | State machine |
-| What the running pieces are | Component / container (or C4) |
+| What the logical software parts are | UML component or C4 container/component |
+| Where software instances run | Deployment |
 | What a user can do | Use case (sparingly) |
 | How data flows through activities | Activity |
 
-If the question is “how do we deploy?” a container diagram or Compose file beats a use-case stick figure.
+If the question is “where does this run?” use a deployment diagram and the actual deployment configuration. A C4 container view describes applications and stores; it does not establish infrastructure topology.
 
 ## Class diagrams
 
