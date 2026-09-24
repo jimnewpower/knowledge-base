@@ -21,6 +21,13 @@ When editing a sheet, compile applicable Java fragments in a small harness, pars
 | [Clean code and SOLID](clean-code-and-solid.md) | Readability and design principles |
 | [Object-oriented design](ood.md) | Objects, responsibilities, composition |
 | [UML](uml.md) | Diagrams that earn their keep |
+| [C4 architecture diagrams](c4-diagrams.md) | Context, container, component, dynamic, and deployment views |
+| [Structurizr DSL](structurizr-dsl.md) | Model architecture as code, validate workspaces, and export views |
+| [Software architecture styles](architecture-styles.md) | Compare layers, modules, services, events, workers, and plugins |
+| [Domain-driven design](domain-driven-design.md) | Bounded contexts, context maps, aggregates, and domain language |
+| [Architecture decision records](architecture-decisions.md) | Capture constraints, alternatives, consequences, and revisit triggers |
+| [Quality attributes and architecture review](quality-attributes.md) | Measurable scenarios, tradeoffs, and architecture fitness checks |
+| [Architecture documentation with arc42](architecture-documentation.md) | Organize architecture views, decisions, risks, and authoritative sources |
 | [Docker and containers](docker.md) | Images, containers, Compose |
 | [Data structures](data-structures.md) | When to use which structure |
 | [Algorithms](algorithms.md) | Complexity and core algorithms |

@@ -219,6 +219,13 @@ Indexed in [cheatsheets/README.md](cheatsheets/README.md).
 | Clean code and SOLID | [cheatsheets/clean-code-and-solid.md](cheatsheets/clean-code-and-solid.md) |
 | Object-oriented design | [cheatsheets/ood.md](cheatsheets/ood.md) |
 | UML | [cheatsheets/uml.md](cheatsheets/uml.md) |
+| C4 architecture diagrams | [cheatsheets/c4-diagrams.md](cheatsheets/c4-diagrams.md) |
+| Structurizr DSL | [cheatsheets/structurizr-dsl.md](cheatsheets/structurizr-dsl.md) |
+| Software architecture styles | [cheatsheets/architecture-styles.md](cheatsheets/architecture-styles.md) |
+| Domain-driven design | [cheatsheets/domain-driven-design.md](cheatsheets/domain-driven-design.md) |
+| Architecture decision records | [cheatsheets/architecture-decisions.md](cheatsheets/architecture-decisions.md) |
+| Quality attributes and architecture review | [cheatsheets/quality-attributes.md](cheatsheets/quality-attributes.md) |
+| Architecture documentation with arc42 | [cheatsheets/architecture-documentation.md](cheatsheets/architecture-documentation.md) |
 | Docker and containers | [cheatsheets/docker.md](cheatsheets/docker.md) |
 | Data structures | [cheatsheets/data-structures.md](cheatsheets/data-structures.md) |
 | Algorithms | [cheatsheets/algorithms.md](cheatsheets/algorithms.md) |
