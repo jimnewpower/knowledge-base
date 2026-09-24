@@ -4,7 +4,7 @@
 
 REST here means **HTTP APIs organized around resources**, not “JSON over POST.” Roy Fielding’s constraints matter where they reduce coupling: uniform interface, stateless requests, cacheability, explicit representations.
 
-Companion notes: [authentication.md](authentication.md), [authorization.md](authorization.md).
+Companion notes: [authentication.md](authentication.md), [authorization.md](authorization.md), [API Gateway](api-gateway.md).
 
 ## Resource design
 

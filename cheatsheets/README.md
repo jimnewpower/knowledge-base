@@ -44,5 +44,10 @@ When editing a sheet, compile applicable Java fragments in a small harness, pars
 | [JVM performance and GC](jvm-performance.md) | Heap, allocation, pauses |
 | [Linux diagnostics](linux-diagnostics.md) | Process, disk, network, signals |
 | [Messaging and events](messaging-and-events.md) | Brokers, outbox, consumers |
+| [Enterprise Integration Patterns](enterprise-integration-patterns.md) | Integration styles, channels, endpoints, pattern selection |
+| [Integration routing and coordination](integration-routing-and-coordination.md) | Routers, splitters, aggregators, workflow coordination |
+| [Integration transformation](integration-transformation.md) | Translators, enrichment, canonical models, Claim Check |
+| [Enterprise Service Bus](enterprise-service-bus.md) | Shared integration runtimes, legacy mediation, modernization |
+| [API Gateway](api-gateway.md) | API routing, access policies, aggregation, BFFs |
 
 Containers and Docker are one sheet. Authentication and authorization are separate on purpose.

@@ -4,7 +4,7 @@
 
 Named patterns are **vocabulary for recurring structure**. Use them when the name shortens a design talk. Do not sprinkle Factory into every class.
 
-Related: [ood.md](ood.md), [clean-code-and-solid.md](clean-code-and-solid.md), [uml.md](uml.md).
+Related: [ood.md](ood.md), [clean-code-and-solid.md](clean-code-and-solid.md), [uml.md](uml.md), [Enterprise Integration Patterns](enterprise-integration-patterns.md).
 
 ## How to read a pattern
 

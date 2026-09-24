@@ -4,7 +4,7 @@
 
 Messaging moves **facts that already happened** (events) or **work to be done** (commands) between processes through a broker or bus. It is not an in-process Observer.
 
-Related: [distributed-systems.md](distributed-systems.md), [resilience.md](resilience.md), [transactions-and-isolation.md](transactions-and-isolation.md), [design-patterns.md](design-patterns.md).
+Related: [distributed-systems.md](distributed-systems.md), [resilience.md](resilience.md), [transactions-and-isolation.md](transactions-and-isolation.md), [design-patterns.md](design-patterns.md), [Enterprise Integration Patterns](enterprise-integration-patterns.md).
 
 ## Event vs command vs document
 

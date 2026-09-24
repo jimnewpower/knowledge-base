@@ -242,6 +242,11 @@ Indexed in [cheatsheets/README.md](cheatsheets/README.md).
 | JVM performance and GC | [cheatsheets/jvm-performance.md](cheatsheets/jvm-performance.md) |
 | Linux diagnostics | [cheatsheets/linux-diagnostics.md](cheatsheets/linux-diagnostics.md) |
 | Messaging and events | [cheatsheets/messaging-and-events.md](cheatsheets/messaging-and-events.md) |
+| Enterprise Integration Patterns | [cheatsheets/enterprise-integration-patterns.md](cheatsheets/enterprise-integration-patterns.md) |
+| Integration routing and coordination | [cheatsheets/integration-routing-and-coordination.md](cheatsheets/integration-routing-and-coordination.md) |
+| Integration transformation | [cheatsheets/integration-transformation.md](cheatsheets/integration-transformation.md) |
+| Enterprise Service Bus | [cheatsheets/enterprise-service-bus.md](cheatsheets/enterprise-service-bus.md) |
+| API Gateway | [cheatsheets/api-gateway.md](cheatsheets/api-gateway.md) |
 
 ---
 
