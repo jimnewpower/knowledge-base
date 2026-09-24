@@ -4,7 +4,7 @@
 
 Spring Boot is the default way this collection’s Java services are wired: auto-configuration, an embedded server, and a component scan over your code.
 
-Related: [java.md](java.md), [maven.md](maven.md), [rest-apis.md](rest-apis.md), [testing.md](testing.md).
+Related: [java.md](java.md), [maven.md](maven.md), [rest-apis.md](rest-apis.md), [testing.md](testing.md), [JPA and Hibernate](jpa-and-hibernate.md), [Java/Jakarta modernization](java-jakarta-modernization.md).
 
 ## What Boot actually is
 

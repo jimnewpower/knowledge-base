@@ -4,7 +4,7 @@
 
 OpenAPI describes **HTTP APIs**. JSON Schema describes **JSON document shapes**. OpenAPI 3.0 uses a restricted, modified Schema Object; OpenAPI 3.1 aligns with JSON Schema 2020-12. Pin the specification and validator versions.
 
-Related: [rest-apis.md](rest-apis.md), [testing.md](testing.md).
+Related: [rest-apis.md](rest-apis.md), [testing.md](testing.md), [Jackson and JSON](jackson-json.md).
 
 ## Why they are architecture
 

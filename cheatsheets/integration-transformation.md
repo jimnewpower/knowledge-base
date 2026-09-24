@@ -4,7 +4,7 @@
 
 Transformation reconciles **meaning as well as representation**. Renaming a field does not resolve different units, identity systems, lifecycle states, or definitions of missing data.
 
-Related: [EIP overview](enterprise-integration-patterns.md), [routing and coordination](integration-routing-and-coordination.md), [OpenAPI and JSON Schema](openapi-and-json-schema.md), [application security](application-security.md).
+Related: [EIP overview](enterprise-integration-patterns.md), [routing and coordination](integration-routing-and-coordination.md), [OpenAPI and JSON Schema](openapi-and-json-schema.md), [application security](application-security.md), [batch imports](batch-processing.md), [geospatial correctness](geospatial-correctness.md).
 
 ## Choose a transformation
 
