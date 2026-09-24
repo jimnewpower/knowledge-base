@@ -20,6 +20,13 @@ export function defaultExpanded(tree: TreeNode[], selected: string | null): Set<
   return next;
 }
 
+/** Sheets directly under cheatsheets/ offer the enhanced view; the folder's README is an index. */
+export function isCheatSheet(relPath: string | null): boolean {
+  if (!relPath) return false;
+  const parts = relPath.split("/");
+  return parts.length === 2 && parts[0] === "cheatsheets" && parts[1].toLowerCase() !== "readme.md";
+}
+
 export function fileUrl(relPath: string): string {
   return `/files/${relPath.split("/").map((part) => encodeURIComponent(part)).join("/")}`;
 }

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ancestors, parseHref, resolveKbPath } from "./paths";
+import { ancestors, isCheatSheet, parseHref, resolveKbPath } from "./paths";
 
 describe("resolveKbPath", () => {
   it("resolves links relative to the open note", () => {
@@ -39,5 +39,15 @@ describe("ancestors", () => {
       "domains",
       "domains/digital-engineering",
     ]);
+  });
+});
+
+describe("isCheatSheet", () => {
+  it("offers views for sheets but not for the cheat-sheet index or other notes", () => {
+    expect(isCheatSheet("cheatsheets/git.md")).toBe(true);
+    expect(isCheatSheet("cheatsheets/README.md")).toBe(false);
+    expect(isCheatSheet("README.md")).toBe(false);
+    expect(isCheatSheet("architecture/cheatsheets/git.md")).toBe(false);
+    expect(isCheatSheet(null)).toBe(false);
   });
 });

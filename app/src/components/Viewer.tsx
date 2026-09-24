@@ -1,11 +1,13 @@
 import { Component, useEffect, useLayoutEffect, useRef, useState } from "react";
-import type { ReactNode } from "react";
+import type { ComponentProps, KeyboardEvent, ReactNode } from "react";
 import Markdown from "react-markdown";
+import type { ExtraProps } from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import remarkGfm from "remark-gfm";
-import { fileUrl, parseHref } from "../lib/paths";
+import { rehypeEnhance } from "../lib/enhance";
+import { fileUrl, isCheatSheet, parseHref } from "../lib/paths";
 import { rehypeHeadingIds, rehypeQueryMarks } from "../lib/rehype";
-import type { OutlineItem } from "../types";
+import type { OutlineItem, View } from "../types";
 import Outline from "./Outline";
 
 type Props = {
@@ -13,6 +15,8 @@ type Props = {
   query: string;
   hash: string;
   revision: number;
+  view: View;
+  onView: (view: View) => void;
   onNavigate: (path: string, hashId?: string) => void;
 };
 
@@ -27,7 +31,7 @@ function sameOutline(a: OutlineItem[], b: OutlineItem[]): boolean {
   );
 }
 
-export default function Viewer({ path, query, hash, revision, onNavigate }: Props) {
+export default function Viewer({ path, query, hash, revision, view, onView, onNavigate }: Props) {
   const scrollerRef = useRef<HTMLElement>(null);
   const bodyRef = useRef<HTMLDivElement>(null);
   const scrollKey = useRef("");
@@ -44,6 +48,8 @@ export default function Viewer({ path, query, hash, revision, onNavigate }: Prop
   const md = doc && doc.path === path ? doc.text : null;
   const error = failure && failure.path === path ? failure.message : null;
   const pageOutline = md ? outline : [];
+  const hasViews = isCheatSheet(path);
+  const enhanced = hasViews && view === "enhanced";
 
   useEffect(() => {
     return () => window.clearTimeout(copiedTimer.current);
@@ -167,16 +173,28 @@ export default function Viewer({ path, query, hash, revision, onNavigate }: Prop
             </div>
           )}
         </div>
+        {hasViews && <ViewTabs view={view} onView={onView} />}
         {!path && <p className="status">Choose a note from the library, or search and open a result.</p>}
         {path && error && <p className="status error">{error}</p>}
         {path && !error && md == null && <p className="status">Loading…</p>}
         {path && md != null && (
-          <div className="prose" ref={bodyRef}>
-            <NoteBoundary resetKey={`${path}|${query}|${md.length}`}>
+          <div
+            className={enhanced ? "prose enhanced" : "prose"}
+            ref={bodyRef}
+            id={hasViews ? "note-body" : undefined}
+            role={hasViews ? "tabpanel" : undefined}
+          >
+            <NoteBoundary resetKey={`${path}|${query}|${md.length}|${enhanced}`}>
             <Markdown
               remarkPlugins={[remarkGfm]}
-              rehypePlugins={[rehypeHeadingIds, [rehypeHighlight, { ignoreMissing: true }], rehypeQueryMarks(query)]}
+              rehypePlugins={[
+                rehypeHeadingIds,
+                ...(enhanced ? [rehypeEnhance] : []),
+                [rehypeHighlight, { ignoreMissing: true }],
+                rehypeQueryMarks(query),
+              ]}
               components={{
+                ...(enhanced && { pre: EnhancedPre }),
                 a({ href, children }) {
                   return (
                     <NoteLink href={href} from={path} onNavigate={onNavigate}>
@@ -215,6 +233,85 @@ export default function Viewer({ path, query, hash, revision, onNavigate }: Prop
         )}
       </article>
       <Outline items={pageOutline} activeId={activeId} onSelect={(id) => path && onNavigate(path, id)} />
+    </div>
+  );
+}
+
+const VIEWS: { id: View; label: string }[] = [
+  { id: "original", label: "Original" },
+  { id: "enhanced", label: "Enhanced" },
+];
+
+function ViewTabs({ view, onView }: { view: View; onView: (view: View) => void }) {
+  const tabs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  function onKeyDown(event: KeyboardEvent<HTMLDivElement>) {
+    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+    event.preventDefault();
+    const index = VIEWS.findIndex((item) => item.id === view);
+    const next = (index + (event.key === "ArrowRight" ? 1 : VIEWS.length - 1)) % VIEWS.length;
+    onView(VIEWS[next].id);
+    tabs.current[next]?.focus();
+  }
+
+  return (
+    <div className="view-tabs" role="tablist" aria-label="Cheat sheet view" onKeyDown={onKeyDown}>
+      {VIEWS.map((item, index) => (
+        <button
+          key={item.id}
+          ref={(el) => {
+            tabs.current[index] = el;
+          }}
+          type="button"
+          role="tab"
+          aria-selected={item.id === view}
+          aria-controls="note-body"
+          tabIndex={item.id === view ? 0 : -1}
+          onClick={() => onView(item.id)}
+        >
+          {item.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function EnhancedPre({ node, children }: ComponentProps<"pre"> & ExtraProps) {
+  const code = node?.children.find((child) => child.type === "element" && child.tagName === "code");
+  const className = code?.type === "element" ? code.properties.className : undefined;
+  const lang = Array.isArray(className)
+    ? className.map(String).find((name) => name.startsWith("language-"))?.slice("language-".length)
+    : undefined;
+  return <CodeBlock lang={lang && lang !== "text" ? lang : undefined}>{children}</CodeBlock>;
+}
+
+function CodeBlock({ lang, children }: { lang?: string; children?: ReactNode }) {
+  const preRef = useRef<HTMLPreElement>(null);
+  const timer = useRef(0);
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => () => window.clearTimeout(timer.current), []);
+
+  async function copy() {
+    try {
+      await navigator.clipboard.writeText(preRef.current?.textContent ?? "");
+      setCopied(true);
+      window.clearTimeout(timer.current);
+      timer.current = window.setTimeout(() => setCopied(false), 1200);
+    } catch {
+      setCopied(false);
+    }
+  }
+
+  return (
+    <div className="code-block">
+      <div className="code-head">
+        <span>{lang}</span>
+        <button type="button" onClick={() => void copy()}>
+          {copied ? "Copied" : "Copy"}
+        </button>
+      </div>
+      <pre ref={preRef}>{children}</pre>
     </div>
   );
 }
