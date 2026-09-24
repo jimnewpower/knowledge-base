@@ -2,8 +2,9 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { KeyboardEvent } from "react";
 import Sidebar from "./components/Sidebar";
 import Viewer from "./components/Viewer";
-import { ancestors, defaultExpanded } from "./lib/paths";
+import { ancestors, defaultExpanded, isCheatSheet } from "./lib/paths";
 import { runSearch } from "./lib/search";
+import type { View } from "./types";
 import { useCorpus } from "./useCorpus";
 
 function readUrl() {
@@ -15,7 +16,8 @@ function readUrl() {
   } catch {
     hash = rawHash;
   }
-  return { q: params.get("q") ?? "", doc: params.get("doc"), hash };
+  const view: View = params.get("view") === "enhanced" ? "enhanced" : "original";
+  return { q: params.get("q") ?? "", doc: params.get("doc"), hash, view };
 }
 
 export default function App() {
@@ -25,6 +27,7 @@ export default function App() {
   const [query, setQuery] = useState(initial.current.q);
   const [selected, setSelected] = useState<string | null>(initial.current.doc);
   const [hash, setHash] = useState(initial.current.hash);
+  const [view, setView] = useState<View>(initial.current.view);
   const [browseLocked, setBrowseLocked] = useState(false);
   const [userExpanded, setUserExpanded] = useState<Set<string> | null>(null);
   const [activeHit, setActiveHit] = useState(0);
@@ -51,11 +54,12 @@ export default function App() {
     const params = new URLSearchParams();
     if (query.trim()) params.set("q", query.trim());
     if (selected) params.set("doc", selected);
+    if (view === "enhanced" && isCheatSheet(selected)) params.set("view", view);
     const qs = params.toString();
     const next = `${window.location.pathname}${qs ? `?${qs}` : ""}${hash ? `#${hash}` : ""}`;
     const current = `${window.location.pathname}${window.location.search}${window.location.hash}`;
     if (current !== next) history.replaceState(null, "", next);
-  }, [query, selected, hash]);
+  }, [query, selected, hash, view]);
 
   useEffect(() => {
     setActiveHit(0);
@@ -171,6 +175,8 @@ export default function App() {
         query={query}
         hash={hash}
         revision={revision}
+        view={view}
+        onView={setView}
         onNavigate={openPath}
       />
     </div>

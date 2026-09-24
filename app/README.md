@@ -29,4 +29,6 @@ Every `.md` file outside `app/`, `node_modules/`, `dist/`, and `coverage/`. Hidd
 
 ## In the page
 
+Cheat sheets have Original and Enhanced tabs. Enhanced renders the same file with the baseline line as labels, simple `→` flows as steps, yes/no/possible table cells as chips, and a copy button on code blocks; `view=enhanced` in the address bar keeps that choice. Irregular flows stay as plain text.
+
 Relative links to other `.md` files open in the reader. Other web links open in a new tab. Source opens the raw file. Headings in the right-hand list jump within the note.

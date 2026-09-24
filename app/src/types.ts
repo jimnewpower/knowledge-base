@@ -25,3 +25,5 @@ export type OutlineItem = {
   text: string;
   id: string;
 };
+
+export type View = "original" | "enhanced";
