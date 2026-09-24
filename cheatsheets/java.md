@@ -1,6 +1,8 @@
 # Java cheat sheet
 
-Primary language of this knowledge base’s product context: enterprise services, desktops, and scientific/geospatial tools. Target a current LTS (17 or 21 in most shops; 25 is the newest LTS line as of 2025–2026 — pin what the platform actually runs).
+> Baseline: Java 21 language/API examples; JDK 25 lifecycle notes where stated. Imports and surrounding methods are omitted. Reviewed: 2026-09-24.
+
+Primary language of this knowledge base’s product context: enterprise services, desktops, and scientific/geospatial tools. Pin the deployed JDK. Examples use Java 21 syntax; Java 17 requires alternatives to record patterns and virtual threads.
 
 ## Types and declarations
 
@@ -24,11 +26,10 @@ record Rect(double w, double h) implements Shape {}
 ## Equality and hashing
 
 ```java
-@Override public boolean equals(Object o) { /* same type + same identifying fields */ }
-@Override public int hashCode() { return Objects.hash(id); }
+record OrderId(String value) {}
 ```
 
-If you override one, override the other. For value objects, prefer `record`. Entities usually equal by identity (`id`), not by every field.
+If you override `equals`, provide a consistent `hashCode`. Records generate both from their components. Entities usually equal by stable identity, not every field; generated database IDs and ORM proxies need a deliberate equality policy. Do not let an ID assignment change a key's hash while it is in a map or set.
 
 ## Collections (java.util)
 
@@ -44,14 +45,16 @@ If you override one, override the other. For value objects, prefer `record`. Ent
 
 ```java
 List.copyOf(items);            // unmodifiable snapshot
-Map.of("a", 1, "b", 2);        // tiny immutable maps
+Map.of("a", 1, "b", 2);        // unmodifiable map; contents may still be mutable
 items.stream()
      .filter(s -> !s.isBlank())
-     .map(String::toLowerCase)
+     .map(s -> s.toLowerCase(Locale.ROOT))
      .toList();
 ```
 
 See [data-structures.md](data-structures.md).
+
+Collection copies and records are shallow: mutable elements still need an ownership policy. `BigDecimal.equals` includes scale; decide whether `1.0` and `1.00` are the same domain value.
 
 ## Exceptions
 
@@ -67,21 +70,22 @@ try (var in = Files.newInputStream(path)) {
 
 ## Concurrency
 
-```java
-var exec = Executors.newVirtualThreadPerTaskExecutor(); // Java 21+
-try (exec) {
-    exec.submit(() -> handler.handle(req));
-}
+Method fragment; callers handle or propagate interruption and task failure:
 
-ReentrantLock lock = new ReentrantLock();
-lock.lock();
-try { /* critical */ }
-finally { lock.unlock(); }
+```java
+static <T> T runTask(Callable<T> task)
+        throws InterruptedException, ExecutionException {
+    try (var exec = Executors.newVirtualThreadPerTaskExecutor()) {
+        var result = exec.submit(task);
+        return result.get();
+    }
+}
 ```
 
+- `submit` stores failures in its `Future`. Closing the executor waits for tasks but does not report those failures. Observe the result; see [java-concurrency.md](java-concurrency.md) for cancellation and shared executors.
 - Virtual threads: good for blocking I/O-bound concurrency. Still protect shared mutable state.
 - Do not synchronize on `this` of a public type if you can use a private lock object.
-- `CompletableFuture` composes async work; name the executor or you inherit the common pool.
+- `CompletableFuture` async methods normally use the common pool without an explicit executor. Non-async stages may run on the thread completing the preceding stage.
 
 ## Object model (short)
 
@@ -131,10 +135,10 @@ if (shape instanceof Circle(var r)) {
     return Math.PI * r * r;
 }
 
-switch (status) {
+var label = switch (status) {
     case OPEN -> "open";
     case CLOSED -> "closed";
-}
+};
 ```
 
 ## Gotchas
@@ -142,5 +146,10 @@ switch (status) {
 - `==` on boxed integers is not value equality outside the cached range.
 - `Date` and `Calendar` are obsolete. Use `java.time` (`Instant`, `ZonedDateTime`, `Duration`).
 - `String` is immutable; concatenating in a loop needs `StringBuilder` (or just a stream collect).
-- `finalize` is gone. Use try-with-resources.
+- `finalize` remains in JDK 25, deprecated for removal. Use try-with-resources for deterministic resource cleanup.
 - Serializing domain objects with Java serialization is a trap. Prefer JSON/Avro/protobuf at boundaries.
+
+## References
+
+- [Java 21 — language changes and syntax](https://docs.oracle.com/en/java/javase/21/language/java-language-changes.html)
+- [Java 25 — Object equality and deprecated finalization](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html)

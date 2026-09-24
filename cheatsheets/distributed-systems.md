@@ -1,5 +1,7 @@
 # Distributed systems cheat sheet
 
+> Baseline: Failure and consistency models for services, databases, and brokers; product guarantees require configuration. Reviewed: 2026-09-24.
+
 A system is distributed once **more than one process can fail or pause independently** and still has to look coherent to a client. The network is not a method call.
 
 Related: [rest-apis.md](rest-apis.md), [devops.md](devops.md).
@@ -31,17 +33,17 @@ PACELC: even without a partition you still trade latency vs consistency.
 
 | Pattern | Use |
 |---------|-----|
-| Timeout + bounded retry | Every remote call |
+| Timeout + bounded retry | Bound every remote call; retry only transient failures of safe operations |
 | Exponential backoff + jitter | Avoid synchronized retry storms |
 | Idempotency key | POST that must not double-apply |
 | Dedup store | At-least-once consumers |
 | Outbox | Write the DB row and the “event to send” in one transaction |
-| Inbox | Receiver records event id before applying |
+| Inbox | Commit a unique consumer/event ID with database effects in one transaction, then acknowledge |
 | Circuit breaker | Stop calling a sick dependency; fail fast |
 | Bulkhead | Isolate thread/connection pools per dependency |
 | Hedged request | Duplicate a slow call; cancel the loser — watch load |
 
-At-least-once delivery is the default in real queues. Design handlers to be safe if the message arrives twice.
+Delivery guarantees depend on broker and client configuration. For at-least-once delivery, make handlers safe for duplicates. An inbox does not make external HTTP effects atomic; use downstream idempotency or an outbox.
 
 ## Coordination
 
@@ -89,3 +91,8 @@ Shard key is an architecture decision. Changing it is a migration project.
 - `try { call(); } catch { retry(); }` without a cap or idempotency.
 - Assuming `read after write` on a replica is current.
 - Two generals: you cannot have guaranteed exactly-once *and* guaranteed progress on an unreliable network. You pick a compromise and record it.
+
+## References
+
+- [RabbitMQ — reliability and acknowledgments](https://www.rabbitmq.com/docs/reliability)
+- [Raft authors — consensus paper](https://raft.github.io/raft.pdf)

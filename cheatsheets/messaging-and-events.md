@@ -1,5 +1,7 @@
 # Messaging and events cheat sheet
 
+> Baseline: AMQP-style queues and Kafka-style logs; delivery and ordering depend on producer/consumer settings. Reviewed: 2026-09-24.
+
 Messaging moves **facts that already happened** (events) or **work to be done** (commands) between processes through a broker or bus. It is not an in-process Observer.
 
 Related: [distributed-systems.md](distributed-systems.md), [resilience.md](resilience.md), [transactions-and-isolation.md](transactions-and-isolation.md), [design-patterns.md](design-patterns.md).
@@ -18,11 +20,11 @@ Prefer events for integration when consumers should decide their own reaction. P
 
 | Guarantee | Meaning |
 |-----------|---------|
-| At most once | May lose; never double-apply |
+| At most once | May lose; the delivery mechanism does not redeliver |
 | At least once | May duplicate; will retry |
 | Effectively exactly once | At-least-once + idempotent handler (and sometimes broker transactions) |
 
-Real brokers are at-least-once unless you opt into something narrower. Write handlers that survive a duplicate.
+Delivery guarantees depend on publisher confirms, persistence, acknowledgment/offset settings, and failures. Design for duplicates when using at-least-once delivery; a broker guarantee alone does not cover database or HTTP effects.
 
 ## Topology
 
@@ -57,15 +59,16 @@ Kafka-style logs keep history; queues consume and drop. Do not treat them as int
 
 ## Consumer rules
 
-1. Inbox table: insert `eventId` uniquely, then apply side effects, then commit.
-2. Or make the side effect idempotent (`UPDATE … WHERE version =`).
-3. Bound retries; poison messages go to a dead-letter queue with an alarm.
-4. Do not start a distributed transaction with the broker and the DB unless you know the product supports it and operations can run it.
+1. Inbox table: insert `(consumer, eventId)` uniquely and apply database effects **in the same transaction**, then commit. Skip only events already committed for that logical consumer.
+2. Acknowledge the message or commit its offset after the database commit. A crash between these steps causes redelivery; the inbox makes that safe.
+3. External side effects need downstream idempotency or an outbox. A database rollback cannot undo an HTTP call.
+4. Bound retries; poison messages go to a dead-letter queue with an alarm and a replay procedure. Keep deduplication records for the supported replay horizon.
+5. Do not start a distributed transaction with the broker and the DB unless the product supports it and operations can run it.
 
 ## Ordering and time
 
-- Global order across partitions/queues is a fantasy.
-- Per-key order is available on a partitioned log if one consumer owns the partition.
+- Independent partitions do not provide a global order; total ordering requires coordination and limits throughput.
+- Per-key order requires stable partition routing and processing in partition order. Parallel handlers, retry queues, and partition-count changes can disrupt it.
 - `occurredAt` is useful metadata, not a lock. See clocks in [distributed-systems.md](distributed-systems.md).
 
 ## When *not* to add a broker
@@ -79,7 +82,7 @@ A broker is another production dependency: capacity, lag, ACLs, replay, poison p
 ## Spring / Java notes
 
 - `spring-kafka` / JMS listeners should be stateless and short.
-- Ack after the DB commit of the inbox, or you will replay and must be idempotent anyway.
+- Ack before DB commit risks lost work; DB commit before ack risks replay. Use the latter with atomic inbox processing and verify listener acknowledgment settings.
 - Thread pool of the listener is a bulkhead. Do not share it with HTTP.
 
 ## Gotchas
@@ -89,3 +92,8 @@ A broker is another production dependency: capacity, lag, ACLs, replay, poison p
 - Chatty events per field change flooding consumers.
 - Consuming and calling HTTP to three systems inside one listener without timeouts.
 - Using Kafka as a database nobody can query.
+
+## References
+
+- [RabbitMQ — reliability and acknowledgments](https://www.rabbitmq.com/docs/reliability)
+- [RabbitMQ — consumer acknowledgments and publisher confirms](https://www.rabbitmq.com/docs/confirms)

@@ -1,5 +1,7 @@
 # Application security cheat sheet
 
+> Baseline: Browser applications and Java services; adapt controls to the application threat model. Reviewed: 2026-09-24.
+
 Security for people who *build* the software. Not a pentest playbook. Goal: default-safe design, fewer classes of bug, faster review.
 
 Related: [authentication.md](authentication.md), [authorization.md](authorization.md), [http-and-tls.md](http-and-tls.md).
@@ -33,7 +35,7 @@ OWASP-style classes, in builder language:
 - TLS for anything with credentials ([http-and-tls.md](http-and-tls.md)).
 - Server-side authorization on every object id the client can guess ([authorization.md](authorization.md)).
 - Short-lived tokens; store refresh material carefully ([authentication.md](authentication.md)).
-- CSRF tokens or `SameSite` policy for cookie sessions.
+- Enable framework CSRF protection for cookie-authenticated mutations. Treat `SameSite` as additional protection; replacing tokens requires a documented alternative and threat model, including sibling subdomains.
 - Lock out / rate-limit login and reset.
 
 ## Secrets and config
@@ -70,7 +72,7 @@ OWASP-style classes, in builder language:
 - Bean Validation on request bodies.
 - Central error handler that does not leak stack traces to users.
 - Prepared statements / named parameters (JDBC, MyBatis).
-- Path normalization when touching the filesystem (`../` escapes).
+- Resolve untrusted paths against an allowed root, normalize, and verify containment. Normalization alone does not reject escapes; account for symlinks and races when attackers can modify the filesystem.
 - Redirects only to allow-listed hosts.
 
 ## Review questions
@@ -88,3 +90,8 @@ OWASP-style classes, in builder language:
 - Opening actuator or swagger UI on the public route.
 - `TrustManager` that accepts every certificate “for local.”
 - Treating internal network as a security boundary with no authn between services.
+
+## References
+
+- [OWASP — CSRF prevention](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html)
+- [OWASP — Java security](https://cheatsheetseries.owasp.org/cheatsheets/Java_Security_Cheat_Sheet.html)

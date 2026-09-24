@@ -1,5 +1,7 @@
 # Git cheat sheet
 
+> Baseline: Git 2.23+ for switch/restore; shell commands assume a configured repository and remote. Reviewed: 2026-09-24.
+
 Distributed version control. The unit of work is the **commit**. The unit of collaboration is the **branch** plus the remote.
 
 ## Mental model
@@ -150,3 +152,8 @@ Annotated tags are the release pins Maven and deployment notes should cite.
 - Line endings: `core.autocrlf` fights between Windows and Linux. In mixed teams, use `.gitattributes`.
 - Submodules are easy to get wrong; avoid unless the dependency really is another repo you pin by commit.
 - Large binaries do not belong in Git history. Use Git LFS or an artifact store.
+
+## References
+
+- [Git — pull and integration behavior](https://git-scm.com/docs/git-pull)
+- [Git — reset modes](https://git-scm.com/docs/git-reset)

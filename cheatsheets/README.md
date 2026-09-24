@@ -2,6 +2,12 @@
 
 Quick-reference notes for software engineering and architecture. These are not ADRs and not domain surveys. Use them at the keyboard; put design rationale in `architecture/` and `decisions/`.
 
+Each sheet names its baseline, review date, and primary references. A review date records an editorial/technical review, not a claim that every command was executed or every linked document is frozen at that date. Deployment versions take precedence over examples.
+
+Examples are fragments unless explicitly described as complete. Java imports and surrounding application types are generally omitted; `...`, named domain types, and placeholder paths require project-specific code. A labelled sketch teaches structure and is not a runnable application. Keep prerequisites beside examples intended for copying.
+
+When editing a sheet, compile applicable Java fragments in a small harness, parse complete JSON/YAML/XML examples, check Markdown rendering and local links, and run behavior checks for claims that depend on ordering, failure, or framework configuration. Keep temporary validation harnesses outside the deliverables.
+
 | Sheet | Use when |
 |-------|----------|
 | [Git](git.md) | Branching, history, undo, collaboration |

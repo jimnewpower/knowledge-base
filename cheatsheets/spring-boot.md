@@ -1,5 +1,7 @@
 # Spring Boot cheat sheet
 
+> Baseline: Spring Boot 3.5 / Framework 6.2 / Java 21 examples; consult migration guidance before copying into Boot 4. Reviewed: 2026-09-24.
+
 Spring Boot is the default way this collection’s Java services are wired: auto-configuration, an embedded server, and a component scan over your code.
 
 Related: [java.md](java.md), [maven.md](maven.md), [rest-apis.md](rest-apis.md), [testing.md](testing.md).
@@ -63,7 +65,7 @@ java -jar app.jar --spring.profiles.active=prod
 | Environment variables | `SPRING_DATASOURCE_URL` |
 | Command-line args | `--server.port=8081` |
 
-`@ConfigurationProperties(prefix = "order")` on a typed record/class beats a pile of `@Value`. Fail boot if required properties are missing.
+`@ConfigurationProperties(prefix = "order")` on a typed record/class beats a pile of `@Value`. Register it with configuration-properties scanning or `@EnableConfigurationProperties`; use `@Validated` and appropriate constraints to fail boot for missing required values.
 
 ## Components
 
@@ -87,6 +89,8 @@ class OrderController {
 ```
 
 ## Web
+
+Controller/advice method sketches; domain DTOs and service bodies are omitted:
 
 ```java
 @GetMapping("/{id}")
@@ -112,7 +116,7 @@ Validation: `spring-boot-starter-validation` + `@Valid`. Return HTTP status from
 public void close(OrderId id) { ... }
 ```
 
-Transaction advice lives on public methods of Spring proxies. Self-invocation does not go through the proxy.
+Put transaction boundaries on service methods invoked through Spring-managed proxies. Public methods are the portable convention; Spring 6+ class-based proxies also support protected/package-visible methods by default, while interface proxies require public interface methods. Private methods and self-invocation are not advised in proxy mode. AspectJ weaving has different rules.
 
 ## Actuator
 
@@ -123,7 +127,7 @@ Transaction advice lives on public methods of Spring proxies. Self-invocation do
 </dependency>
 ```
 
-Expose `health` (and maybe `info`) publicly. Keep `env`, `beans`, `heapdump` off the public network.
+Expose only the health information clients need. Keep diagnostic endpoints and Prometheus scraping on authenticated or private management paths. The configuration below selects endpoints; it does not secure them. `prometheus` also requires `micrometer-registry-prometheus`.
 
 ```yaml
 management:
@@ -157,3 +161,8 @@ Details in [testing.md](testing.md).
 - Field injection in tests and production hides required dependencies.
 - `spring.main.allow-bean-definition-overriding=true` papers over name clashes.
 - Starters pull a lot of transitive JARs. Run `mvn dependency:tree` when versions drift.
+
+## References
+
+- [Spring Boot 3.5 — reference documentation](https://docs.spring.io/spring-boot/3.5/reference/)
+- [Spring Framework 6.2 — transactional method visibility and proxies](https://docs.spring.io/spring-framework/reference/6.2/data-access/transaction/declarative/annotations.html)

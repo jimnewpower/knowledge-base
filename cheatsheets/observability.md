@@ -1,5 +1,7 @@
 # Observability cheat sheet
 
+> Baseline: OpenTelemetry concepts, W3C trace context, and Spring Boot 3.5/Micrometer examples. Reviewed: 2026-09-24.
+
 Observability is whether you can **explain a live system’s behavior from its outputs**: logs, metrics, traces, and health. Dashboards are views. They are not the signal.
 
 Related: [devops.md](devops.md), [kubernetes-openshift.md](kubernetes-openshift.md), [spring-boot.md](spring-boot.md).
@@ -34,7 +36,7 @@ Rules:
 - `INFO` for state changes, `WARN` for recovered problems, `ERROR` for failed user/work items.
 - No secrets, tokens, passwords, full card numbers, or session cookies.
 - Log *at the boundary* (accepted, rejected, emitted) rather than every getter.
-- MDC / slf4j context for `traceId` and tenant so you do not pass them through every signature.
+- MDC / logging context for `traceId` and tenant. Propagate context across async boundaries and clear it after work; thread-local state does not automatically follow every executor or reactive stage.
 
 ## Metrics
 
@@ -69,7 +71,7 @@ One request = one trace id. Each hop = a span (`order-api`, `postgres`, `mail`).
          └── [http mail] span
 ```
 
-Propagate `traceparent` (W3C) or B3 headers on outbound calls. Sample in production if volume is high; always sample errors.
+Propagate `traceparent` (W3C) or B3 headers on outbound calls. Head sampling decides before the result is known, so it cannot guarantee retaining every error trace. Tail sampling can select errors or slow traces after spans arrive, at the cost of buffering, routing, and decision latency. It cannot recover spans dropped upstream; budget for late or missing spans and collector limits.
 
 A trace without the SQL span will not tell you the query was the 900 ms.
 
@@ -105,3 +107,8 @@ Pages should have a runbook link. If nobody knows what to do, it is not an alert
 - Health checks that perform the full business transaction.
 - Three tools with three uncorrelated ids.
 - Trace sampling that drops the one slow request you needed.
+
+## References
+
+- [OpenTelemetry — head and tail sampling](https://opentelemetry.io/docs/concepts/sampling/)
+- [W3C — trace context](https://www.w3.org/TR/trace-context/)

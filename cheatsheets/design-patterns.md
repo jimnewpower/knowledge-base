@@ -1,5 +1,7 @@
 # Design patterns cheat sheet
 
+> Baseline: GoF and enterprise pattern vocabulary; Java examples are structural sketches. Reviewed: 2026-09-24.
+
 Named patterns are **vocabulary for recurring structure**. Use them when the name shortens a design talk. Do not sprinkle Factory into every class.
 
 Related: [ood.md](ood.md), [clean-code-and-solid.md](clean-code-and-solid.md), [uml.md](uml.md).
@@ -98,3 +100,8 @@ That is Strategy. A `switch` over two stable variants is also fine.
 - Naming a class `FooManager` does not make it a pattern.
 - Decorator stacks that hide the inner failure.
 - Observer that must be reliable across processes — that is messaging, not Observer. See [messaging-and-events.md](messaging-and-events.md).
+
+## References
+
+- [Fowler — enterprise application pattern catalog](https://martinfowler.com/eaaCatalog/)
+- [Gamma, Helm, Johnson, Vlissides — Design Patterns (publisher)](https://www.informit.com/store/design-patterns-elements-of-reusable-object-oriented-9780201633610)

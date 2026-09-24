@@ -1,5 +1,7 @@
 # Linux diagnostics cheat sheet
 
+> Baseline: Linux with procfs, systemd, iproute2, and optional sysstat tools; container images may omit them. Reviewed: 2026-09-24.
+
 What to type when a process misbehaves on Linux. Pair with [bash.md](bash.md), [observability.md](observability.md), and [kubernetes-openshift.md](kubernetes-openshift.md) when the process is in a pod.
 
 ## Who is this machine, is it dying?
@@ -117,3 +119,8 @@ Inside a pod you often have a thin image (no `ss`, no `curl`). Install debug sid
 - `kill -9` first. Always try `TERM` and read logs.
 - Assuming the hostname in the alert is the same namespace/node you SSHed to.
 - Filling the disk with heap dumps in `/tmp` on a tiny container.
+
+## References
+
+- [Linux kernel — procfs fields and behavior](https://www.kernel.org/doc/html/latest/filesystems/proc.html)
+- [systemd — journalctl manual](https://www.freedesktop.org/software/systemd/man/latest/journalctl.html)

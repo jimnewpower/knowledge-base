@@ -1,5 +1,7 @@
 # TDD cheat sheet
 
+> Baseline: Test-driven development with Java 21, JUnit Jupiter 5.x, and Maven Surefire/Failsafe. Reviewed: 2026-09-24.
+
 Test-driven development is a **design loop**, not a test-volume contest.
 
 ```text
@@ -73,7 +75,7 @@ Prefer fakes for repositories. Mocks shine at interaction-heavy boundaries (a ma
 | Error paths you claim to handle | Generated code |
 | Regression for a production bug | Private methods directly — test them through the contract |
 
-A bug fix without a failing test first will recur.
+A regression test that reproduces a bug before the fix gives evidence that the fix addresses it and protects against recurrence. When reproduction cannot be automated economically, record how the fix was verified and the remaining risk.
 
 ## Outside-in vs inside-out
 
@@ -100,3 +102,8 @@ Coverage tells you what never ran. It does not tell you it was right. Gate on te
 - `@SpringBootTest` for every class. That is an integration suite; keep a fast unit layer.
 - Asserting on full JSON strings when you care about one field.
 - TDD theater: writing the code, then a test that mirrors it line for line, then claiming the loop.
+
+## References
+
+- [Martin Fowler — test-driven development](https://martinfowler.com/bliki/TestDrivenDevelopment.html)
+- [JUnit 5 — user guide](https://docs.junit.org/5.11.4/user-guide/)

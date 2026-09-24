@@ -1,5 +1,7 @@
 # Data structures cheat sheet
 
+> Baseline: Java 21 collections; average, amortized, and worst-case costs differ as noted. Reviewed: 2026-09-24.
+
 A data structure is a **layout plus allowed operations**. Pick from the operations you need (lookup, insert, ordered scan, min, merge), not from habit.
 
 Complexities below are typical average / common-case for the usual implementations. Worst case is noted when it surprises people.
@@ -10,8 +12,8 @@ Complexities below are typical average / common-case for the usual implementatio
 |-----------|------|--------|---------------|-------|
 | Array / `ArrayList` | `ArrayList<T>` | O(1) index | amortized O(1) append; O(n) middle | Default list. Contiguous, cache-friendly |
 | Linked list | `LinkedList<T>` | O(n) | O(1) given a node | Rarely the right default in Java |
-| Stack | `ArrayDeque<T>` | top O(1) | O(1) | Do not use `java.util.Stack` |
-| Queue / deque | `ArrayDeque<T>` | ends O(1) | O(1) | Also the stack |
+| Stack | `ArrayDeque<T>` | top O(1) | amortized O(1) at an end | Prefer over `java.util.Stack` |
+| Queue / deque | `ArrayDeque<T>` | ends O(1) | amortized O(1) at ends | Also the stack |
 | Ring buffer | custom / disruptor | O(1) | O(1) overwrite | Bounded, good for telemetry |
 
 ## Associative
@@ -39,10 +41,23 @@ Complexities below are typical average / common-case for the usual implementatio
 
 | Structure | Use |
 |-----------|-----|
-| Bloom filter | Probabilistic “not present”; false positives, no false negatives |
-| LRU cache | `LinkedHashMap` with `removeEldestEntry` |
+| Bloom filter | Definitely absent or possibly present; a standard correctly maintained filter has false positives, no false negatives |
+| LRU cache | Access-ordered `LinkedHashMap` (`accessOrder=true`) with `removeEldestEntry` |
 | B-tree / B+ | Databases and filesystems; you consume these, you rarely write them |
 | Column / packed arrays | Scientific and geospatial numeric data — locality beats objects |
+
+Local, single-threaded bounded-cache example (the third constructor argument enables access order):
+
+```java
+var cache = new LinkedHashMap<String, String>(16, 0.75f, true) {
+    @Override
+    protected boolean removeEldestEntry(Map.Entry<String, String> eldest) {
+        return size() > 100;
+    }
+};
+```
+
+Default insertion order evicts the oldest insertion, not the least recently accessed entry. Access-order reads can modify the map; concurrent use requires synchronization or a purpose-built cache.
 
 ## How to choose
 
@@ -72,3 +87,8 @@ If the data already lives in the database and the working set is large, the *dat
 - Boxing: `List<Integer>` is not an `int[]`. For tight numeric loops, use primitive arrays or specialized collections.
 - Returning an internal `List` from an entity leaks structure. Copy or wrap unmodifiable.
 - Measuring beats folklore once `n` is large or the hot path is in a GC-sensitive service.
+
+## References
+
+- [Java 21 — LinkedHashMap access order and eviction](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/LinkedHashMap.html)
+- [Java 21 — ArrayDeque operation costs](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/ArrayDeque.html)

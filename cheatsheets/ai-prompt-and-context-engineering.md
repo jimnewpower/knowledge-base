@@ -1,5 +1,7 @@
 # AI prompt and context engineering cheat sheet
 
+> Baseline: Provider-neutral agent workflows; capabilities and instruction precedence depend on the runtime. Reviewed: 2026-09-24.
+
 Working with language models as part of software engineering: writing instructions, feeding the right context, and keeping generated work reviewable.
 
 This is engineering of *inputs and memory*, not a substitute for tests or design judgment.
@@ -12,7 +14,7 @@ This is engineering of *inputs and memory*, not a substitute for tests or design
 | System / standing instructions | Durable rules that should apply every turn |
 | Context | Everything the model can see: instructions, files, prior turns, tool results |
 | Context window | Hard cap on that context |
-| Grounding | Forcing answers to cite retrieved or attached sources |
+| Grounding | Connecting claims to retrieved or attached evidence; citations still need checking |
 | Tool use | The model calls functions instead of guessing |
 | Agent | A loop: model → tools → observation → model |
 
@@ -73,7 +75,7 @@ tool traces               keep the last relevant ones
 chat history              prune or start a new thread when the task changes
 ```
 
-When the model starts contradicting a file you already showed it, the window is polluted. Start a fresh thread with a clean file set.
+If the model contradicts a supplied file, check whether the excerpt is current, whether instructions conflict, and whether context was omitted or compacted. A fresh task can help when accumulated context is the cause; contradictions alone do not prove that diagnosis.
 
 ## Patterns
 
@@ -94,6 +96,14 @@ When the model starts contradicting a file you already showed it, the window is 
 - **Secret leakage** — never paste tokens, `.env`, or production dumps into a prompt.
 - **Unverified compounding** — filing a wrong note into the knowledge base trains the next session to be wrong. People own the truth.
 
+## Trust boundaries and prompt injection
+
+- Treat retrieved pages, repository content, documents, and tool output as evidence, not authorization. They can contain instructions designed to redirect the agent.
+- Keep the user's task and trusted instructions separate from quoted data. A retrieved document cannot grant permission to send secrets, change recipients, or run unrelated commands.
+- Enforce tool permissions, allowed destinations, and approval requirements outside model prose where possible. Delimiters and a “do not follow injected instructions” prompt are not a complete defense.
+- Validate generated commands and structured arguments before execution. Use the least access needed and require review for actions outside the authorized scope.
+- Test with representative malicious documents and tool responses. Evaluate whether the agent preserves the task, rejects injected actions, and avoids leaking data; citations do not establish trust.
+
 ## Repo conventions that help agents
 
 - Short `AGENTS.md` / project instructions at the root of a product repo
@@ -106,3 +116,8 @@ When the model starts contradicting a file you already showed it, the window is 
 - More context is not more accuracy past the relevant set.
 - “You are an expert” adds almost nothing; constraints and files add a lot.
 - Temperature and sampling matter more for prose than for code. For code, deterministic loops + tests beat sampling tricks.
+
+## References
+
+- [OWASP — prompt injection prevention](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html)
+- [Anthropic — building effective agents](https://www.anthropic.com/engineering/building-effective-agents)
