@@ -168,6 +168,7 @@ Update the index in this README when a major note lands. Do not leave generation
 .
 ├── README.md                 # purpose, doctrine, and index
 ├── LICENSE                   # GPL-3.0
+├── app/                      # local search and reader
 ├── cheatsheets/              # keyboard-ready language and practice sheets
 ├── architecture/             # system and application design notes
 ├── decisions/                # architecture decision records
@@ -180,6 +181,24 @@ Update the index in this README when a major note lands. Do not leave generation
 ```
 
 Directories other than `cheatsheets/` are created when the first real note needs them.
+
+---
+
+## Browse locally
+
+The reader in `app/` indexes the Markdown notes in this repository and renders them in a browser.
+
+```powershell
+cd app
+npm install
+npm start
+```
+
+Opens http://127.0.0.1:5180. Press `/` to focus search.
+
+http://127.0.0.1:5180/?q=rebase&doc=cheatsheets/git.md
+
+Keyboard shortcuts and index rules are in `app/README.md`.
 
 ---
 
