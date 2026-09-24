@@ -59,5 +59,21 @@ When editing a sheet, compile applicable Java fragments in a small harness, pars
 | [SQLite in desktop applications](sqlite.md) | WAL, writer contention, connection settings, backup and upgrades |
 | [JavaFX application engineering](javafx.md) | FX thread, tasks, cancellation, bindings, controller boundaries |
 | [Geospatial correctness with GeoTools and JTS](geospatial-correctness.md) | CRS, axis order, measurement, topology, resource ownership |
+| [Spring Security configuration](spring-security.md) | Filter chains, request rules, CSRF/CORS, method security and tests |
+| [Jakarta Faces and PrimeFaces](jakarta-faces-primefaces.md) | Lifecycle, AJAX process/update, scopes, validation and lazy tables |
+| [JDBC and HikariCP](jdbc-hikaricp.md) | Connection ownership, pool sizing, timeout budgets and saturation |
+| [SQL query tuning and PostgreSQL diagnostics](sql-query-tuning.md) | Execution plans, indexes, statistics, blocking and pagination |
+| [JUnit, Mockito, and AssertJ](junit-mockito-assertj.md) | Unit-test boundaries, parameterization, mocks and deterministic fixtures |
+| [GitHub Actions for Maven delivery](github-actions-maven.md) | Verification workflows, PR trust, permissions and artifact promotion |
+| [Spring Integration in practice](spring-integration.md) | Java DSL, channels, threading, transactions and error handling |
+| [HTTP clients and webhook delivery](http-clients-webhooks.md) | Client budgets, signatures, durable reception and replay handling |
+| [OpenTelemetry and Micrometer implementation](opentelemetry-micrometer.md) | Instrumentation ownership, OTLP pipelines, metrics and context |
+| [Dependency and software supply-chain security](software-supply-chain.md) | Inventory, SBOMs, vulnerability triage and provenance verification |
+| [Java date, time, and scheduling](java-time.md) | Temporal types, DST resolution, clocks and recurring jobs |
+| [CSV and Excel processing with Apache POI](csv-excel-poi.md) | Format choice, cell types, precision, streaming and import failures |
+| [Java desktop packaging and distribution](java-desktop-packaging.md) | Runtime images, native installers, resources and upgrade behavior |
+| [Raster GIS and GeoTIFF](raster-gis.md) | Grid alignment, NoData, transforms, resampling and large rasters |
+| [TypeScript and runtime validation](typescript.md) | Strict types, unknown values, narrowing, validation and async state |
+| [React Native offline data and synchronization](react-native-offline.md) | Local transactions, outbox, conflict resolution and mobile lifecycle |
 
 Containers and Docker are one sheet. Authentication and authorization are separate on purpose.

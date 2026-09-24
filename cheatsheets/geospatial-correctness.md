@@ -4,7 +4,7 @@
 
 Geometry is coordinates **plus a spatial reference and interpretation**. Plausible-looking output can still have wrong axis order, units, topology, or measurement semantics.
 
-Related: [integration transformation](integration-transformation.md), [data structures](data-structures.md), [JavaFX](javafx.md), [testing](testing.md).
+Related: [integration transformation](integration-transformation.md), [data structures](data-structures.md), [JavaFX](javafx.md), [testing](testing.md), [raster GIS and GeoTIFF](raster-gis.md).
 
 ## Keep these operations distinct
 
