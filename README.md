@@ -247,6 +247,16 @@ Indexed in [cheatsheets/README.md](cheatsheets/README.md).
 | Integration transformation | [cheatsheets/integration-transformation.md](cheatsheets/integration-transformation.md) |
 | Enterprise Service Bus | [cheatsheets/enterprise-service-bus.md](cheatsheets/enterprise-service-bus.md) |
 | API Gateway | [cheatsheets/api-gateway.md](cheatsheets/api-gateway.md) |
+| JPA and Hibernate | [cheatsheets/jpa-and-hibernate.md](cheatsheets/jpa-and-hibernate.md) |
+| Java and Jakarta modernization | [cheatsheets/java-jakarta-modernization.md](cheatsheets/java-jakarta-modernization.md) |
+| Modular monoliths and architectural boundaries | [cheatsheets/modular-monoliths.md](cheatsheets/modular-monoliths.md) |
+| Database migrations and backfills | [cheatsheets/database-migrations.md](cheatsheets/database-migrations.md) |
+| Jackson and JSON serialization | [cheatsheets/jackson-json.md](cheatsheets/jackson-json.md) |
+| Caching and invalidation | [cheatsheets/caching.md](cheatsheets/caching.md) |
+| Batch processing and reliable imports | [cheatsheets/batch-processing.md](cheatsheets/batch-processing.md) |
+| SQLite in desktop applications | [cheatsheets/sqlite.md](cheatsheets/sqlite.md) |
+| JavaFX application engineering | [cheatsheets/javafx.md](cheatsheets/javafx.md) |
+| Geospatial correctness with GeoTools and JTS | [cheatsheets/geospatial-correctness.md](cheatsheets/geospatial-correctness.md) |
 
 ---
 

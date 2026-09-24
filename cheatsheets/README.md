@@ -49,5 +49,15 @@ When editing a sheet, compile applicable Java fragments in a small harness, pars
 | [Integration transformation](integration-transformation.md) | Translators, enrichment, canonical models, Claim Check |
 | [Enterprise Service Bus](enterprise-service-bus.md) | Shared integration runtimes, legacy mediation, modernization |
 | [API Gateway](api-gateway.md) | API routing, access policies, aggregation, BFFs |
+| [JPA and Hibernate](jpa-and-hibernate.md) | Entity lifecycle, relationships, fetching, batching, optimistic locking |
+| [Java and Jakarta modernization](java-jakarta-modernization.md) | Compatibility matrices, namespace changes, staged upgrades |
+| [Modular monoliths and architectural boundaries](modular-monoliths.md) | Module APIs, ports/adapters, data ownership, extraction decisions |
+| [Database migrations and backfills](database-migrations.md) | Expand/contract, checkpoints, concurrent writes, recovery |
+| [Jackson and JSON serialization](jackson-json.md) | DTOs, mapper policy, precision, streaming, Jackson 2/3 boundaries |
+| [Caching and invalidation](caching.md) | Cache policies, expiration, refresh, invalidation races, stampedes |
+| [Batch processing and reliable imports](batch-processing.md) | Input identity, chunk transactions, restartability, reconciliation |
+| [SQLite in desktop applications](sqlite.md) | WAL, writer contention, connection settings, backup and upgrades |
+| [JavaFX application engineering](javafx.md) | FX thread, tasks, cancellation, bindings, controller boundaries |
+| [Geospatial correctness with GeoTools and JTS](geospatial-correctness.md) | CRS, axis order, measurement, topology, resource ownership |
 
 Containers and Docker are one sheet. Authentication and authorization are separate on purpose.

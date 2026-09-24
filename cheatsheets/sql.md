@@ -4,7 +4,7 @@
 
 SQL is the language of the system of record for most applications in this collection. Model data first; tune queries second.
 
-Related: [transactions-and-isolation.md](transactions-and-isolation.md), [data-structures.md](data-structures.md).
+Related: [transactions-and-isolation.md](transactions-and-isolation.md), [data-structures.md](data-structures.md), [database migrations](database-migrations.md), [SQLite](sqlite.md), [JPA and Hibernate](jpa-and-hibernate.md).
 
 ## Relational basics
 
