@@ -1,0 +1,271 @@
+# Software Engineering Knowledge Base
+
+Working collection of **software engineering and software architecture** notes: decisions, patterns, practices, integration approaches, and operating guidance that should survive beyond a single project or conversation.
+
+This repository is a portable memory for design judgment. It is not source code, not a second product backlog, and not a dump of vendor documentation. Notes here capture *why* a shape was chosen, what it costs, when it fails, and how to implement it in a real stack.
+
+Digital Engineering (threads, twins, PLM, MBSE) is an important *application domain* for this collection. It is not the mission of the repository. Domain-specific DE doctrine and the long-form DE agent charter live in [jimnewpower/digital-engineering](https://github.com/jimnewpower/digital-engineering).
+
+---
+
+## Mission
+
+Produce **actionable synthesis for building and evolving software systems**.
+
+Primary questions this collection exists to answer:
+
+- What architecture is defensible for this class of system, and why not the alternatives?
+- Where does authority live — data, API, workflow, identity, configuration — and what happens when those disagree?
+- How do we modernize a brownfield system without a rip-and-replace?
+- What does “good” look like for interfaces, modularity, quality gates, and operability in the stacks we actually ship?
+- Which practices compound across projects, and which are local exceptions?
+
+A knowledge note is done when a future engineer (or agent) can apply it without re-deriving the tradeoff from scratch.
+
+---
+
+## Scope
+
+### In scope — software engineering and architecture
+
+- System and application architecture: modular monoliths, services, desktops, batch, integration hubs
+- Interface design: REST and related HTTP APIs, schema and contract discipline, versioning, idempotency, error models
+- Data architecture: transactional stores, embedded stores, mapping layers, migration, ownership of records
+- Integration: third-party APIs, adapters, events, files, scientific models and geospatial pipelines as software systems
+- Delivery architecture: build, packaging, containers, CI quality gates, environment promotion, observability
+- Modernization: Java and framework upgrades, strangler patterns, coexistence with legacy UIs and schemas
+- Engineering practice: testing strategy, static analysis, dependency and SBOM hygiene, code layout, review standards
+- Architecture decision records and the rationale that would otherwise live only in someone’s head
+
+Primary technical context is the work this collection is meant to serve: enterprise Java and related services, scientific and geospatial software, desktop and web clients, and the platforms those systems run on (Linux, containers, OpenShift, AWS, and similar).
+
+### Also in scope — domain notes that inform the software
+
+Notes about Digital Engineering, geospatial analysis, or a specific product are welcome **when they change how the software should be structured**: identity of objects, system-of-record boundaries, API contracts, lineage, deployment constraints, classification or data-rights effects on design.
+
+Put those notes under a domain folder. Do not let domain survey papers crowd out architecture and practice.
+
+### Out of scope
+
+- A second copy of a product repository or ticket tracker
+- Vendor marketing restated as architecture
+- Invented customer-internal or lab-internal details
+- Third-party copyrighted manuals dumped wholesale
+- Digital-thread / digital-twin survey work whose home is already the Digital Engineering corpus
+
+---
+
+## Audience
+
+Software architects, senior engineers, and the agents that help them design and ship systems.
+
+Every major note should answer, in practical terms:
+
+> What should we build, how should it be structured, and what will go wrong if we choose the convenient alternative?
+
+When the system lives in a governed or brownfield environment, say so and design for it. Do not assume a greenfield cloud-native blank page unless the note is explicitly about that case.
+
+---
+
+## Architectural stance
+
+These are working heuristics, not a taxonomy to enforce on every system.
+
+1. **Name the system of record before drawing boxes.** Integration diagrams that skip ownership produce shadow databases.
+2. **Prefer progressive enhancement over rip-and-replace.** Strangle, wrap, and coexist when the existing system still carries authority.
+3. **Contracts are architecture.** Public APIs, events, file formats, and database schemas that other teams depend on are decisions; treat them like ADRs.
+4. **Hybrid is normal.** A modular monolith with clear module boundaries is often better than a fleet of services that share a database. Services earn their keep when independently deployable authority requires them.
+5. **Delivery is part of the design.** Packaging, gates, configuration, and operability are not afterthoughts bolted onto a logical architecture.
+6. **Domain constraints bind the software.** Classification, data rights, air-gapped or governed delivery, long-lived scientific codes, and desktop/offline use are first-class requirements when they apply.
+
+Digital Engineering pattern language (PLM-centric vs federated vs semantic overlay) belongs in domain notes. It is not the default lens for a compiler, a REST service, or a JavaFX client.
+
+---
+
+## Guiding principles
+
+1. Prefer primary sources and running systems over slides and vendor blogs.
+2. Capture the technical shape *and* the organizational constraint that made it necessary.
+3. Write tradeoffs. A pattern without failure modes is a slogan.
+4. Favor small, reversible steps and crawl-walk-run paths for modernization.
+5. Synthesis over invention — build on prior notes and cited evidence.
+6. Label inference. Do not present a cost, timeline, or “industry standard” as fact without a source.
+7. Keep language precise: module, service, system of record, contract, adapter, facade — not “platform” for everything.
+
+---
+
+## Source hierarchy
+
+**Tier 1 — start here**
+
+- Running code and schemas in the relevant product repositories
+- Existing notes and ADRs in this knowledge base
+- Official specs and RFCs for the interface style in use (HTTP, OpenAPI, SQL dialects, language specs)
+- Platform and framework documentation for the version actually deployed
+
+**Tier 2**
+
+- Established architecture references (e.g. fundamentals of software architecture, enterprise integration patterns, domain-driven design used as vocabulary — not as liturgy)
+- Language and framework evolution notes (Java LTS lines, Spring, Jakarta EE, and peers) from primary maintainers
+
+**Tier 3**
+
+- High-quality case studies and vendor reference architectures, qualified against deployment evidence
+- Peer-reviewed software-engineering papers when they change a design choice
+
+Qualify marketing claims. Prefer what shipped.
+
+---
+
+## How notes are written
+
+### Architecture or practice note
+
+Use this skeleton for major notes (`Topic_Name.md` or `NNNN-short-title.md` for decisions):
+
+1. Title and one-paragraph purpose
+2. Context — system class, constraints, what is already in place
+3. Problem or question the note settles
+4. Options considered, with tradeoffs
+5. Recommendation and why it wins *here*
+6. Structure — modules, contracts, data ownership, runtime view as needed
+7. Delivery and operability implications
+8. Failure modes, migration path, and what would change the decision
+9. References
+
+Deep dives that compare several approaches can run long. Decision records should stay short enough to reread before a design review.
+
+### Style
+
+- Professional, precise, practical
+- Structured Markdown (H1 / H2 / H3), bullets and tables
+- Explicit pros/cons when comparing options
+- Cite sources; label inference
+- Neutral voice — no brochure language
+- KaTeX for formal expressions when needed
+
+### Naming and placement
+
+| Kind | Location | Name |
+|------|----------|------|
+| Architecture notes | `architecture/` | `Topic_Name.md` |
+| Architecture decision records | `decisions/` | `NNNN-short-title.md` |
+| Engineering practices | `practices/` | short topic name |
+| API and contract notes | `interfaces/` | topic or protocol name |
+| Delivery, CI, packaging | `delivery/` | short topic name |
+| Runbooks | `runbooks/` | imperative title |
+| Domain notes that bind the software | `domains/<name>/` | topic name |
+| Digital Engineering, when it affects software shape | `domains/digital-engineering/` | topic name |
+| Quick-reference cheat sheets | `cheatsheets/` | short topic name |
+
+Update the index in this README when a major note lands. Do not leave generation scripts next to deliverables.
+
+---
+
+## Repository layout
+
+```text
+.
+├── README.md                 # purpose, doctrine, and index
+├── LICENSE                   # GPL-3.0
+├── cheatsheets/              # keyboard-ready language and practice sheets
+├── architecture/             # system and application design notes
+├── decisions/                # architecture decision records
+├── practices/                # engineering standards that should recur
+├── interfaces/               # APIs, schemas, contract rules
+├── delivery/                 # build, package, deploy, observe
+├── runbooks/                 # repeatable operating procedures
+└── domains/                  # domain constraints that change the software
+    └── digital-engineering/  # DE only when it drives design
+```
+
+Directories other than `cheatsheets/` are created when the first real note needs them.
+
+---
+
+## Cheat sheets
+
+Indexed in [cheatsheets/README.md](cheatsheets/README.md).
+
+| Sheet | Path |
+|-------|------|
+| Git | [cheatsheets/git.md](cheatsheets/git.md) |
+| Bash | [cheatsheets/bash.md](cheatsheets/bash.md) |
+| Java | [cheatsheets/java.md](cheatsheets/java.md) |
+| REST APIs | [cheatsheets/rest-apis.md](cheatsheets/rest-apis.md) |
+| Authentication | [cheatsheets/authentication.md](cheatsheets/authentication.md) |
+| Authorization | [cheatsheets/authorization.md](cheatsheets/authorization.md) |
+| Maven | [cheatsheets/maven.md](cheatsheets/maven.md) |
+| AI prompt and context engineering | [cheatsheets/ai-prompt-and-context-engineering.md](cheatsheets/ai-prompt-and-context-engineering.md) |
+| Clean code and SOLID | [cheatsheets/clean-code-and-solid.md](cheatsheets/clean-code-and-solid.md) |
+| Object-oriented design | [cheatsheets/ood.md](cheatsheets/ood.md) |
+| UML | [cheatsheets/uml.md](cheatsheets/uml.md) |
+| Docker and containers | [cheatsheets/docker.md](cheatsheets/docker.md) |
+| Data structures | [cheatsheets/data-structures.md](cheatsheets/data-structures.md) |
+| Algorithms | [cheatsheets/algorithms.md](cheatsheets/algorithms.md) |
+| DevOps | [cheatsheets/devops.md](cheatsheets/devops.md) |
+| Distributed systems | [cheatsheets/distributed-systems.md](cheatsheets/distributed-systems.md) |
+| Markdown | [cheatsheets/markdown.md](cheatsheets/markdown.md) |
+| Regular expressions | [cheatsheets/regex.md](cheatsheets/regex.md) |
+| TDD | [cheatsheets/tdd.md](cheatsheets/tdd.md) |
+| SQL and relational modeling | [cheatsheets/sql.md](cheatsheets/sql.md) |
+| Spring Boot | [cheatsheets/spring-boot.md](cheatsheets/spring-boot.md) |
+| HTTP and TLS | [cheatsheets/http-and-tls.md](cheatsheets/http-and-tls.md) |
+| Transactions and isolation | [cheatsheets/transactions-and-isolation.md](cheatsheets/transactions-and-isolation.md) |
+| Kubernetes and OpenShift | [cheatsheets/kubernetes-openshift.md](cheatsheets/kubernetes-openshift.md) |
+| Testing beyond the unit | [cheatsheets/testing.md](cheatsheets/testing.md) |
+| Observability | [cheatsheets/observability.md](cheatsheets/observability.md) |
+| Java concurrency | [cheatsheets/java-concurrency.md](cheatsheets/java-concurrency.md) |
+| Resilience and integration failure | [cheatsheets/resilience.md](cheatsheets/resilience.md) |
+| Design patterns | [cheatsheets/design-patterns.md](cheatsheets/design-patterns.md) |
+| OpenAPI and JSON Schema | [cheatsheets/openapi-and-json-schema.md](cheatsheets/openapi-and-json-schema.md) |
+| Application security | [cheatsheets/application-security.md](cheatsheets/application-security.md) |
+| JVM performance and GC | [cheatsheets/jvm-performance.md](cheatsheets/jvm-performance.md) |
+| Linux diagnostics | [cheatsheets/linux-diagnostics.md](cheatsheets/linux-diagnostics.md) |
+| Messaging and events | [cheatsheets/messaging-and-events.md](cheatsheets/messaging-and-events.md) |
+
+---
+
+## How to add knowledge
+
+1. Search this README and existing notes before writing. Cross-link; do not duplicate.
+2. Decide whether the note is an architecture explanation, an ADR, a practice, a contract rule, a runbook, a cheat sheet, or a domain constraint.
+3. Research in hierarchy order: running systems and specs first.
+4. Write the tradeoff. State what would falsify the recommendation.
+5. Record durable facts so the next session does not rediscover them.
+6. Index the note here when it is ready.
+
+Filing is cheap. Unverified claims are not safe to compound. People own the truth.
+
+---
+
+## Guardrails
+
+- Do not turn this repository into a Digital Engineering survey by default.
+- Do not invent customer or laboratory internals.
+- Do not copy vendor marketing uncritically.
+- Do not recommend a service decomposition, a framework rewrite, or a platform migration without the failure mode and a coexistence path.
+- Do not treat the knowledge base as the system of record for product data.
+- When uncertain, say so.
+
+---
+
+## Related collections
+
+| Collection | Role relative to this repo |
+|------------|----------------------------|
+| This repository | Software engineering and architecture knowledge |
+| [jimnewpower/digital-engineering](https://github.com/jimnewpower/digital-engineering) | Domain corpus for Digital Threads, Twins, and MBE — cite it, do not fork it here |
+| [jimnewpower/launch-monitor-de](https://github.com/jimnewpower/launch-monitor-de) | Worked example of software + digital-engineering packaging on a constrained system |
+| Product repositories (`meridian`, `apis`, and others) | Systems of record for code and schemas |
+| [newpower.dev](https://newpower.dev) | Public professional context |
+
+---
+
+## License
+
+GNU General Public License v3.0. See [LICENSE](LICENSE).
+
+---
+
+*Last updated: 2026-09-24*
