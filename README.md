@@ -257,6 +257,22 @@ Indexed in [cheatsheets/README.md](cheatsheets/README.md).
 | SQLite in desktop applications | [cheatsheets/sqlite.md](cheatsheets/sqlite.md) |
 | JavaFX application engineering | [cheatsheets/javafx.md](cheatsheets/javafx.md) |
 | Geospatial correctness with GeoTools and JTS | [cheatsheets/geospatial-correctness.md](cheatsheets/geospatial-correctness.md) |
+| Spring Security configuration | [cheatsheets/spring-security.md](cheatsheets/spring-security.md) |
+| Jakarta Faces and PrimeFaces | [cheatsheets/jakarta-faces-primefaces.md](cheatsheets/jakarta-faces-primefaces.md) |
+| JDBC and HikariCP | [cheatsheets/jdbc-hikaricp.md](cheatsheets/jdbc-hikaricp.md) |
+| SQL query tuning and PostgreSQL diagnostics | [cheatsheets/sql-query-tuning.md](cheatsheets/sql-query-tuning.md) |
+| JUnit, Mockito, and AssertJ | [cheatsheets/junit-mockito-assertj.md](cheatsheets/junit-mockito-assertj.md) |
+| GitHub Actions for Maven delivery | [cheatsheets/github-actions-maven.md](cheatsheets/github-actions-maven.md) |
+| Spring Integration in practice | [cheatsheets/spring-integration.md](cheatsheets/spring-integration.md) |
+| HTTP clients and webhook delivery | [cheatsheets/http-clients-webhooks.md](cheatsheets/http-clients-webhooks.md) |
+| OpenTelemetry and Micrometer implementation | [cheatsheets/opentelemetry-micrometer.md](cheatsheets/opentelemetry-micrometer.md) |
+| Dependency and software supply-chain security | [cheatsheets/software-supply-chain.md](cheatsheets/software-supply-chain.md) |
+| Java date, time, and scheduling | [cheatsheets/java-time.md](cheatsheets/java-time.md) |
+| CSV and Excel processing with Apache POI | [cheatsheets/csv-excel-poi.md](cheatsheets/csv-excel-poi.md) |
+| Java desktop packaging and distribution | [cheatsheets/java-desktop-packaging.md](cheatsheets/java-desktop-packaging.md) |
+| Raster GIS and GeoTIFF | [cheatsheets/raster-gis.md](cheatsheets/raster-gis.md) |
+| TypeScript and runtime validation | [cheatsheets/typescript.md](cheatsheets/typescript.md) |
+| React Native offline data and synchronization | [cheatsheets/react-native-offline.md](cheatsheets/react-native-offline.md) |
 
 ---
 

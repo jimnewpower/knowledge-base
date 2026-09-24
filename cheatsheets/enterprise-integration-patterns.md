@@ -4,7 +4,7 @@
 
 Use **Enterprise Integration Patterns (EIP)** to name how independent applications exchange data and coordinate work. Start with the business boundary, delivery requirements, and failure behavior before selecting a broker or framework.
 
-Related: [routing and coordination](integration-routing-and-coordination.md), [message transformation](integration-transformation.md), [messaging and events](messaging-and-events.md), [resilience](resilience.md), [Enterprise Service Bus](enterprise-service-bus.md), [API Gateway](api-gateway.md).
+Related: [routing and coordination](integration-routing-and-coordination.md), [message transformation](integration-transformation.md), [messaging and events](messaging-and-events.md), [resilience](resilience.md), [Enterprise Service Bus](enterprise-service-bus.md), [API Gateway](api-gateway.md), [Spring Integration in practice](spring-integration.md).
 
 ## Choose an integration style
 

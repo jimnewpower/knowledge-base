@@ -4,7 +4,7 @@
 
 Keep the **scene graph responsive and application state consistent** while background work succeeds, fails, or is cancelled.
 
-Related: [Java concurrency](java-concurrency.md), [modular monoliths](modular-monoliths.md), [SQLite](sqlite.md), [testing](testing.md).
+Related: [Java concurrency](java-concurrency.md), [modular monoliths](modular-monoliths.md), [SQLite](sqlite.md), [testing](testing.md), [desktop packaging](java-desktop-packaging.md).
 
 ## Thread boundaries
 

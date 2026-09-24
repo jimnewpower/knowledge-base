@@ -4,7 +4,7 @@
 
 Observability is whether you can **explain a live system’s behavior from its outputs**: logs, metrics, traces, and health. Dashboards are views. They are not the signal.
 
-Related: [devops.md](devops.md), [kubernetes-openshift.md](kubernetes-openshift.md), [spring-boot.md](spring-boot.md).
+Related: [devops.md](devops.md), [kubernetes-openshift.md](kubernetes-openshift.md), [spring-boot.md](spring-boot.md), [OpenTelemetry and Micrometer implementation](opentelemetry-micrometer.md).
 
 ## The three pillars plus health
 
