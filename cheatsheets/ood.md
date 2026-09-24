@@ -1,5 +1,7 @@
 # Object-oriented design cheat sheet
 
+> Baseline: Object-oriented domain modeling; Java examples omit application-specific constructors and collaborators. Reviewed: 2026-09-24.
+
 OOD is designing around **types that encapsulate state and protect invariants**, collaborating through messages (method calls). It is one tool. Data pipelines and functional cores are others. Use objects where there is behavior + invariant, not around every record.
 
 See [clean-code-and-solid.md](clean-code-and-solid.md) and [uml.md](uml.md).
@@ -104,3 +106,8 @@ Draw the dependency arrow toward stability: domain does not import adapters.
 - Inheritance for code reuse of utilities. That is a `final` helper or composition.
 - Bidirectional object graphs that nobody can persist or test.
 - “Manager” / “Util” as a substitute for a name.
+
+## References
+
+- [Martin Fowler — value objects](https://martinfowler.com/bliki/ValueObject.html)
+- [Fowler — enterprise application pattern catalog](https://martinfowler.com/eaaCatalog/)

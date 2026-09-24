@@ -1,5 +1,7 @@
 # UML cheat sheet
 
+> Baseline: UML 2.5.1 notation; C4 is a separate architecture vocabulary. Reviewed: 2026-09-24.
+
 UML is a **shared drawing vocabulary**, not a required ceremony. Draw the view that answers a question. Delete the diagram when the code is clearer.
 
 ## Which diagram
@@ -61,7 +63,7 @@ Client        OrderApi        CloseOrder        Repo
 
 - Synchronous call: solid arrow with filled head.
 - Reply: dashed arrow.
-- Lifeline `X` means the object is created or destroyed there.
+- Lifeline `X` marks destruction. Creation is shown by a create message arriving at the new object's head, where its lifeline begins.
 
 Use a sequence diagram when the *order of collaboration* is the risk (auth then persist then event). Skip it for a single getter.
 
@@ -106,3 +108,8 @@ Package diagrams show layering (`adapter.http` depends on `app`, not the reverse
 - UML is not a proof. Invariants still need tests.
 - Sequence diagrams rot fastest. Draw them for live design discussions, then capture the decision in an ADR.
 - Aggregation vs composition arguments rarely pay. If you are stuck, write the lifetime rule in a sentence instead.
+
+## References
+
+- [OMG — UML 2.5.1 specification](https://www.omg.org/spec/UML/2.5.1)
+- [C4 model — diagram types](https://c4model.com/diagrams)

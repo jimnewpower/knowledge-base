@@ -1,5 +1,7 @@
 # Authentication cheat sheet
 
+> Baseline: OAuth 2.0 security BCP (RFC 9700), OpenID Connect 1.0, and browser sessions. Reviewed: 2026-09-24.
+
 Authentication answers **who is this?** Authorization answers **what may they do?** Keep the two separate in design and in code. See [authorization.md](authorization.md).
 
 ## Building blocks
@@ -40,7 +42,7 @@ Client presents a certificate. Strong for service-to-service inside a mesh or cl
 
 A static secret identifying a *client*, not a person. Fine for low-stakes server-to-server. Rotate. Scope narrowly. Do not embed in mobile apps or public SPAs.
 
-## OAuth 2.1 / OpenID Connect (practical view)
+## OAuth 2 / OpenID Connect (practical view)
 
 OAuth 2 is **delegation**: an authorization server issues an access token so a client can call an API on behalf of a user or itself. OpenID Connect adds an **ID token** (JWT) that authenticates the user to the client.
 
@@ -57,7 +59,7 @@ ID token: what the *client application* consumes to establish a user session. AP
 
 ## JWT, briefly
 
-A JWT is three base64url parts: header, payload, signature.
+A signed JWT in JWS compact form has three dot-separated base64url parts: header, payload, signature. An encrypted JWT in JWE compact form has five parts; use a library implementing the expected token profile.
 
 Validate at least:
 
@@ -100,3 +102,9 @@ Static keys in config maps are an incident waiting for a dump.
 - Putting JWTs in `localStorage` exposes them to XSS. Prefer memory + refresh cookie, or a BFF.
 - “Stateless JWT” does not mean “cannot revoke.” It means revocation is harder (deny list, short TTL).
 - Authenticating a user is not authorization to every resource they can guess the URL of.
+
+## References
+
+- [RFC 9700 — OAuth 2.0 security best current practice](https://www.rfc-editor.org/rfc/rfc9700.html)
+- [OpenID Connect Core 1.0](https://openid.net/specs/openid-connect-core-1_0.html)
+- [OWASP — password storage](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html)

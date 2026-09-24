@@ -1,5 +1,7 @@
 # Clean code and SOLID cheat sheet
 
+> Baseline: Design heuristics for Java-style object-oriented code; these are contextual recommendations. Reviewed: 2026-09-24.
+
 Clean code is code a colleague can change without a ceremony. SOLID is five design heuristics for object-oriented systems. Neither is a scoring rubric. If a principle fights a clear module boundary, keep the boundary.
 
 See also [ood.md](ood.md) and [tdd.md](tdd.md).
@@ -7,7 +9,7 @@ See also [ood.md](ood.md) and [tdd.md](tdd.md).
 ## Clean code — working rules
 
 1. **Names are documentation.** `invoiceTotal` beats `t`. `approve()` beats `doIt()`.
-2. **Functions do one thing at one level of abstraction.** If you narrate it with “and then,” it is two functions.
+2. **Keep functions cohesive and at a clear level of abstraction.** Split independently meaningful responsibilities; a short use-case orchestrator may legitimately perform several steps.
 3. **Small diffs to invariants.** A method that validates, writes SQL, and sends email is three modules wearing a trench coat.
 4. **Delete dead code.** Version control remembers.
 5. **Comments explain why, not what.** If the comment restates the line, fix the name.
@@ -50,7 +52,7 @@ SRP is not “one method per class.” It is “one axis of change per module.�
 
 Open for extension, closed for modification of *stable* modules.
 
-Useful when new variants arrive often (payment methods, export formats). A sealed interface plus new implementations beats editing a 400-line `switch` every week — until the `switch` is the simpler thing. Do not abstract a one-off.
+Useful when new variants arrive often (payment methods, export formats). An interface with interchangeable implementations can localize change. A sealed hierarchy deliberately limits extension and requires updating its permitted types; an exhaustive switch can be clearer for a closed set. Do not abstract a one-off.
 
 ### L — Liskov Substitution
 
@@ -104,3 +106,8 @@ OCP uses those abstractions when variation is real
 - Duplicating six lines twice can be cheaper than an abstraction you will guess wrong.
 
 Principles are for *change you have evidence will happen*, not for ceremony.
+
+## References
+
+- [Robert C. Martin — SOLID relevance](https://blog.cleancoder.com/uncle-bob/2020/10/18/Solid-Relevance.html)
+- [Martin Fowler — Beck design rules](https://martinfowler.com/bliki/BeckDesignRules.html)

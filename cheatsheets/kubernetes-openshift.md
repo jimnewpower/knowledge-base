@@ -1,5 +1,7 @@
 # Kubernetes and OpenShift cheat sheet
 
+> Baseline: Kubernetes apps/v1 Deployments and OpenShift 4.x; image guidance references OpenShift 4.18. Reviewed: 2026-09-24.
+
 Kubernetes schedules **pods** (one or more containers) onto nodes. OpenShift is Kubernetes plus routes, stricter security defaults, `oc`, and an opinionated image/build flow.
 
 Related: [docker.md](docker.md), [devops.md](devops.md), [observability.md](observability.md).
@@ -118,3 +120,8 @@ A Deployment rolls out new pods, waits for readiness, then drops old ones. If re
 - Service exists but Route points at the wrong port.
 - `latest` tag + `imagePullPolicy: Always` is not a release process. Pin digest.
 - One replica + a liveness probe that fails during GC = self-DDoS.
+
+## References
+
+- [Kubernetes — liveness, readiness, and startup probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)
+- [OpenShift 4.18 — creating images and arbitrary UIDs](https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/images/creating-images)

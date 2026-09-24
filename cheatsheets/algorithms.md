@@ -1,5 +1,7 @@
 # Algorithms cheat sheet
 
+> Baseline: Conventional sequential algorithms; Java 21 library examples. Complexity assumptions are stated per operation. Reviewed: 2026-09-24.
+
 An algorithm is a **procedure with a cost**. Cost is usually time and extra memory as a function of input size. Prefer a clear O(n log n) you can test over a clever O(n) you cannot maintain.
 
 See [data-structures.md](data-structures.md).
@@ -103,3 +105,8 @@ Need overlap of subproblems?     DP
 - Shuffling with `Random.nextInt` + swap is Fisher–Yates. Do not sort by `random()`.
 - “O(1) hash” assumes a decent hash function and load factor.
 - Copying an algorithm from a contest site into a service without tests is how off-by-one becomes production.
+
+## References
+
+- [Sedgewick and Wayne — algorithm complexity reference](https://algs4.cs.princeton.edu/cheatsheet/)
+- [Java 21 — Arrays sorting and search contracts](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Arrays.html)

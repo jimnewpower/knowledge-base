@@ -1,8 +1,12 @@
 # Maven cheat sheet
 
+> Baseline: Maven 3.9.x and Java 21; plugin versions and lifecycle bindings belong in the project/parent POM. Reviewed: 2026-09-24.
+
 Maven is the default Java build and dependency tool in this collection’s product context. A build is a `pom.xml`, a lifecycle, and a local cache (`~/.m2/repository`).
 
 ## Coordinates
+
+GAV is `groupId:artifactId:version`. Extended string formats are tool-specific; `dependency:get -Dartifact=...` uses:
 
 ```text
 groupId:artifactId:version[:packaging][:classifier]
@@ -70,7 +74,7 @@ Parent defines plugin versions and dependency versions. Children inherit.
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-dependencies</artifactId>
-      <version>3.5.5</version>
+      <version>${spring-boot.version}</version>
       <type>pom</type>
       <scope>import</scope>
     </dependency>
@@ -78,17 +82,19 @@ Parent defines plugin versions and dependency versions. Children inherit.
 </dependencyManagement>
 ```
 
-BOM import in `dependencyManagement` pins versions without adding the artifacts themselves.
+BOM import in `dependencyManagement` pins versions without adding the artifacts themselves. This POM fragment assumes `spring-boot.version` is set to an approved exact version in the project or parent. Importing the BOM does not supply plugin management; pin build plugins separately or use the appropriate parent.
 
 ## Dependency scopes
 
-| Scope | Compile | Test | Runtime | Packaged |
-|-------|---------|------|---------|----------|
-| `compile` (default) | yes | yes | yes | yes |
-| `provided` | yes | yes | container | no |
-| `runtime` | no | yes | yes | yes |
-| `test` | no | yes | no | no |
-| `import` | BOM only, in `dependencyManagement` | | | |
+| Scope | Main compile classpath | Test classpath | Main runtime classpath |
+|-------|------------------------|----------------|------------------------|
+| `compile` (default) | yes | yes | yes |
+| `provided` | yes | yes | no; deployment environment supplies it |
+| `runtime` | no | yes | yes |
+| `test` | no | yes | no |
+| `import` | BOM only, in `dependencyManagement` | not a classpath dependency | not a classpath dependency |
+
+Scope does not determine physical packaging by itself. An ordinary JAR contains the project's classes/resources, not dependency JARs. WAR, Spring Boot repackage, Shade, and Assembly apply their own packaging rules; check the resulting artifact.
 
 Exclusions cut a transitive you cannot use. Prefer fixing the version in `dependencyManagement` over a pile of exclusions.
 
@@ -99,8 +105,9 @@ Exclusions cut a transitive you cannot use. Prefer fixing the version in `depend
 | `maven-compiler-plugin` | javac |
 | `maven-surefire-plugin` | unit tests |
 | `maven-failsafe-plugin` | integration tests (`*IT`) |
-| `maven-jar-plugin` / Spring Boot plugin | executable artifact |
-| `maven-enforcer-plugin` | ban duplicate classes, require Java version |
+| `maven-jar-plugin` | Project classes/resources; main-class manifest requires configuration |
+| `spring-boot-maven-plugin` | `repackage` builds an executable Boot archive with dependencies |
+| `maven-enforcer-plugin` | Require Java/Maven versions; duplicate-class checks need Extra Enforcer Rules |
 | `jacoco-maven-plugin` | coverage |
 
 Bind failsafe to `integration-test` + `verify`, not to `test`.
@@ -121,7 +128,13 @@ Bind failsafe to `integration-test` + `verify`, not to `test`.
 ## Gotchas
 
 - Two versions of the same library on the classpath: run `mvn dependency:tree` and pin in `dependencyManagement`.
-- `compile` scope JUnit leaks into the runtime artifact. Use `test`.
+- `compile` scope JUnit leaks onto the runtime classpath and may enter packaged distributions. Use `test`.
 - Plugin versions not pinned in a parent will move under you.
 - `mvn clean` is not a personality trait. Use it when outputs are stale, not as a ritual that hides incremental-compile bugs.
 - The Maven Wrapper (`./mvnw`) pins the Maven version for CI and laptops. Prefer it in repos.
+
+## References
+
+- [Maven — dependency scopes and management](https://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html)
+- [Maven — JAR plugin contents](https://maven.apache.org/plugins/maven-jar-plugin/)
+- [MojoHaus — duplicate-class Enforcer rule](https://www.mojohaus.org/extra-enforcer-rules/banDuplicateClasses.html)

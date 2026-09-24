@@ -1,5 +1,7 @@
 # JVM performance and GC cheat sheet
 
+> Baseline: HotSpot on JDK 21/25; collector availability and defaults depend on the JDK distribution and platform. Reviewed: 2026-09-24.
+
 The JVM is a process: heap, stacks, metaspace, compiler, and garbage collector. Most “Java is slow” bugs are allocation rate, I/O wait, or a bad query — not the collector’s brand name.
 
 Related: [java.md](java.md), [java-concurrency.md](java-concurrency.md), [observability.md](observability.md), [docker.md](docker.md).
@@ -66,7 +68,7 @@ JFR “Allocation” events beat guessing.
 
 Hot methods get compiled. First minutes can be slower (warm-up). Do not benchmark a 2-second `main`.
 
-Escape analysis can allocate on the stack. Tiny value objects are cheaper than rumor says; *lots* of huge intermediates are not.
+HotSpot escape analysis can enable scalar replacement, eliminating an object allocation and treating its fields as separate values. This is not general stack allocation of objects. Measure allocation in the compiled hot path rather than counting every `new` in source.
 
 ## Leaks that look like GC problems
 
@@ -92,3 +94,8 @@ p99 is where GC pauses and slow queries show. Averages lie.
 - Benchmarking with `System.out` and `currentTimeMillis` in a micro-loop.
 - Blaming GC because CPU is at 4% and the database is at 90%.
 - Finalizers / cleaners as a resource-management strategy. Use try-with-resources.
+
+## References
+
+- [Oracle Java 25 — HotSpot optimizations and escape analysis](https://docs.oracle.com/en/java/javase/25/vm/java-hotspot-virtual-machine-performance-enhancements.html)
+- [Oracle Java 21 — GC tuning guide](https://docs.oracle.com/en/java/javase/21/gctuning/)

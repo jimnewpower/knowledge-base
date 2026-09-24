@@ -1,6 +1,8 @@
 # Java concurrency cheat sheet
 
-Concurrency is **more than one thread of execution touching shared state**. Correctness first, then throughput. See [java.md](java.md) for the short version and [resilience.md](resilience.md) for timeouts across the network.
+> Baseline: Java 21 executors and memory model; monitor-pinning changes for JDK 24+ are called out. Reviewed: 2026-09-24.
+
+Concurrency is **multiple tasks making progress during overlapping periods**; shared mutable state adds coordination problems. Correctness first, then throughput. See [java.md](java.md) for the short version and [resilience.md](resilience.md) for timeouts across the network.
 
 ## Happens-before (what you actually rely on)
 
@@ -10,17 +12,15 @@ The JMM is not folklore. If thread A writes `ready = true` and thread B reads it
 - `volatile` write → later `volatile` read of that field
 - Thread start / successful join
 - Concurrent collections / atomics documenting that guarantee
-- Constructor finish → first action after the reference is safely published
+- Publication through a volatile reference, lock, or concurrent collection makes prior initialization visible to the receiving thread
 
-No edge → stale reads, torn objects, “impossible” bugs.
+Without appropriate ordering, reads can observe stale or partially initialized state. Properly constructed `final` fields have additional initialization guarantees; constructor completion alone is not general safe publication.
 
 ## Threads and executors
 
-```java
-try (var exec = Executors.newVirtualThreadPerTaskExecutor()) {
-    exec.submit(() -> handle(req));
-}
+Executor configuration fragment; the owning component must shut the pool down:
 
+```java
 var pool = new ThreadPoolExecutor(
     4, 16, 60, TimeUnit.SECONDS,
     new ArrayBlockingQueue<>(256),
@@ -36,7 +36,31 @@ var pool = new ThreadPoolExecutor(
 
 Virtual threads do not make shared mutable state safe. They make blocking cheaper.
 
-Pinning (21–24 especially): a virtual thread inside `synchronized` that blocks I/O can pin a carrier. Prefer `ReentrantLock` around blocking work, or keep `synchronized` blocks tiny and CPU-only.
+On **JDK 21–23**, blocking inside `synchronized` can pin a virtual thread to its carrier; consider `ReentrantLock` for frequent, long blocking sections. **JDK 24+** removes monitor-related pinning (JEP 491). Native/foreign calls can still cause pinning; do not replace every monitor merely because virtual threads are in use.
+
+Use a semaphore or another explicit limit for scarce downstream resources. Virtual threads are not an admission-control policy. With the pool above, tasks queue after four busy workers; expansion toward sixteen starts when the queue fills. `CallerRunsPolicy` may execute work on the submitting request/UI thread.
+
+## Results, interruption, and cancellation
+
+Method fragment using an executor owned by the caller:
+
+```java
+static <T> T awaitTask(ExecutorService executor, Callable<T> task)
+        throws InterruptedException, ExecutionException {
+    var result = executor.submit(task);
+    try {
+        return result.get();
+    } catch (InterruptedException ex) {
+        result.cancel(true);
+        throw ex;
+    }
+}
+```
+
+- `Future.get()` exposes failure as `ExecutionException`; inspect its cause. Ignoring a submitted task's `Future` can hide its failure.
+- Propagate `InterruptedException` when the API permits it. If a worker boundary catches it, restore the flag with `Thread.currentThread().interrupt()` and exit or follow an explicit cancellation policy.
+- `cancel(true)` requests interruption; it does not forcibly stop work. Tasks and I/O APIs must cooperate. A timed `get` bounds waiting, not execution; cancel or otherwise manage the task after timeout.
+- Try-with-resources on an executor waits for termination. It is not a substitute for task deadlines; closing may still wait for uncooperative work.
 
 ## Shared state toolkit
 
@@ -82,7 +106,7 @@ Dump: `jstack <pid>` or `jcmd <pid> Thread.print`. Look for `BLOCKED` and identi
 
 - `System.nanoTime()` for elapsed time on one JVM.
 - `Clock` at domain edges for “now.”
-- `Thread.sleep` in production code is almost always a bug (use waits, futures, or a scheduler).
+- Use waits, futures, or a scheduler to coordinate work. `Thread.sleep` can implement an intentional delay or backoff, but it does not establish ordering or prove another task has completed; handle interruption.
 
 ## Gotchas
 
@@ -91,3 +115,9 @@ Dump: `jstack <pid>` or `jcmd <pid> Thread.print`. Look for `BLOCKED` and identi
 - Catching `InterruptedException`, swallowing it, and leaving the interrupt flag cleared.
 - Unbounded `newCachedThreadPool()` under load.
 - Parallel streams on a tiny list with a side-effecting lambda.
+
+## References
+
+- [Java 21 — concurrency package and memory consistency](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/package-summary.html)
+- [Java 21 — Future completion and cancellation](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/Future.html)
+- [Oracle — JDK 24 virtual-thread pinning change](https://www.oracle.com/java/technologies/javase/24-relnote-issues.html)

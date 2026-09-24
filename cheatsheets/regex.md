@@ -1,5 +1,7 @@
 # Regular expressions cheat sheet
 
+> Baseline: Java 21 Pattern syntax unless labelled grep/POSIX; shell and Java string escaping are separate layers. Reviewed: 2026-09-24.
+
 A regular expression is a **pattern that matches text**. In Java it is `java.util.regex`; in Bash it is whatever `grep -E` / `[[ =~ ]]` implements. They are not the same dialect. When it matters, say which engine.
 
 ## Literal and metacharacters
@@ -123,3 +125,8 @@ The engine tries enormous partitions. Tighten the pattern, use possessive quanti
 - `grep` basic regex treats `(` as literal unless you pass `-E`.
 - Greedy `.*` across the whole file is how you accidentally match from the first quote to the last.
 - Locale and Unicode: `[A-Z]` is not “any letter.”
+
+## References
+
+- [Java 21 — Pattern syntax and flags](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/regex/Pattern.html)
+- [GNU grep — regular expressions](https://www.gnu.org/software/grep/manual/grep.html)

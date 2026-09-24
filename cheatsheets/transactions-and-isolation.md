@@ -1,5 +1,7 @@
 # Transactions and isolation cheat sheet
 
+> Baseline: SQL-standard isolation vocabulary; PostgreSQL examples and Spring Framework 6.2 proxy transactions. Reviewed: 2026-09-24.
+
 A transaction is a **bounded unit of work** against a database: all of it becomes visible, or none of it does. Isolation is how much other transactions can interfere while it is open.
 
 Related: [sql.md](sql.md), [resilience.md](resilience.md), [messaging-and-events.md](messaging-and-events.md).
@@ -13,7 +15,7 @@ Related: [sql.md](sql.md), [resilience.md](resilience.md), [messaging-and-events
 | Isolation | Concurrent transactions do not surprise you *beyond the level you chose* |
 | Durability | After commit, a crash does not lose the row (modulo disk/replication config) |
 
-Distributed ACID across two databases is 2PC. Prefer a local transaction plus an outbox. See [distributed-systems.md](distributed-systems.md).
+2PC can coordinate atomic commit across participating databases; it does not by itself provide every ACID guarantee. A local transaction plus an outbox often fits asynchronous integration, but does not make multiple databases atomically visible. See [distributed-systems.md](distributed-systems.md).
 
 ## Lifecycle
 
@@ -22,7 +24,7 @@ BEGIN → reads/writes → COMMIT
                     → ROLLBACK
 ```
 
-In Spring: `@Transactional` starts on the way in and commits on success, rolls back on a runtime exception (by default). Checked exceptions do not roll back unless configured.
+In Spring proxy mode, default `@Transactional` propagation joins an existing transaction or starts one. The owner commits on success; an escaping runtime exception or `Error` triggers rollback by default. Checked exceptions need configured rollback rules. An inner call can mark a shared transaction rollback-only even if an outer caller catches the exception.
 
 ```java
 @Transactional
@@ -67,13 +69,13 @@ UPDATE orders SET status = 'OPEN', version = version + 1
 WHERE id = '4821' AND version = 3;
 ```
 
-Zero rows = conflict. Retry or return `409`. No long-held locks.
+Zero rows means the expected row/version was not found. Return a conflict or reread and re-evaluate the command; blindly retrying a stale user edit can overwrite another user's change. The UPDATE still takes database locks, but no lock is held during the user's editing interval.
 
 Prefer optimistic at HTTP edges. Use `FOR UPDATE` inside a short transaction when the invariant is a scarce resource (inventory).
 
 ## Deadlocks
 
-Two transactions grab locks in opposite order. The engine aborts one. Treat deadlock as a retryable error with jitter. Consistent lock order across use cases prevents most of them.
+Two transactions grab locks in opposite order. The engine aborts one. If the use case is safe to replay, retry the **whole transaction** with bounded attempts and jitter, outside the failed transaction. Re-read state and re-evaluate invariants. Consistent lock order across use cases prevents many deadlocks.
 
 ## Connection pools
 
@@ -101,7 +103,12 @@ The event is committed with the row. Dual-write to DB and Kafka in one request i
 
 ## Gotchas
 
-- `@Transactional` on a private method or self-call: no proxy, no transaction.
+- In proxy mode, private methods and self-calls receive no new transaction advice; they may still run inside an existing caller transaction. See [spring-boot.md](spring-boot.md) for method visibility.
 - Read-only queries still start transactions in some setups; mark `@Transactional(readOnly = true)` when it is true.
 - Autocommit plus a multi-statement use case is not atomic.
-- Isolation `SERIALIZABLE` without a retry loop is an incident report.
+- Serializable transactions can abort on serialization conflicts. Define bounded whole-transaction retries or a deliberate conflict response.
+
+## References
+
+- [PostgreSQL 16 — transaction isolation and retries](https://www.postgresql.org/docs/16/transaction-iso.html)
+- [Spring Framework 6.2 — declarative transactions](https://docs.spring.io/spring-framework/reference/6.2/data-access/transaction/declarative/annotations.html)

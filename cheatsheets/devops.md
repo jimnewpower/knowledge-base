@@ -1,5 +1,7 @@
 # DevOps cheat sheet
 
+> Baseline: Java/Maven delivery to containers; deployment policies depend on the operating environment. Reviewed: 2026-09-24.
+
 DevOps here means **making delivery and operations part of the software design**: build, test, package, promote, observe, recover. It is not a job title and not “we installed Jenkins.”
 
 Related: [maven.md](maven.md), [docker.md](docker.md), [git.md](git.md), [distributed-systems.md](distributed-systems.md).
@@ -79,7 +81,7 @@ Alert on user-visible failure and budget burn, not on every CPU blip.
 
 ## Operations habits
 
-- Runbooks next to the service: start, stop, rollback, rotate a secret — [runbooks/](../runbooks/) when they exist
+- Runbooks next to the service: start, stop, rollback, rotate a secret. Create `runbooks/` when the first actual runbook is ready, then link it.
 - Rollback is a first-class pipeline action (previous image digest)
 - Feature flags for risky behavior; they need an owner and an expiry
 - On-call without dashboards is theater
@@ -91,3 +93,8 @@ Alert on user-visible failure and budget burn, not on every CPU blip.
 - Snowflake prod that drifted from IaC. The console change will win until it is imported or destroyed.
 - Health checks that hit the database on every kube probe and then take the app down.
 - Treating OpenShift/K8s YAML as an implementation detail nobody reviews.
+
+## References
+
+- [DORA — continuous delivery capability](https://dora.dev/capabilities/continuous-delivery/)
+- [Docker — image digests](https://docs.docker.com/dhi/core-concepts/digests/)

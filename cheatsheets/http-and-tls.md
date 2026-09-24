@@ -1,23 +1,28 @@
 # HTTP and TLS cheat sheet
 
+> Baseline: RFC 9110 semantics, HTTP/1.1 example syntax, TLS 1.2/1.3, and browser cookie rules. Reviewed: 2026-09-24.
+
 HTTP is the application protocol. TLS is the encrypted tunnel it almost always rides on. REST ([rest-apis.md](rest-apis.md)) is a style on top of HTTP.
 
 ## HTTP message
+
+Separate request and response header excerpts; the response body is omitted:
 
 ```http
 GET /api/v1/orders/4821 HTTP/1.1
 Host: api.example.com
 Accept: application/json
 Authorization: Bearer ...
+```
 
+```http
 HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 128
 ```
 
 Request line: method, target, version. Headers are name/value. Body is optional and typed by `Content-Type`.
 
-HTTP/1.1 is text and connection-reuse via `keep-alive`. HTTP/2 multiplexes streams on one TLS connection. HTTP/3 runs on QUIC/UDP. APIs rarely care beyond “the client and proxy speak a version the server accepts.”
+HTTP/1.1 uses textual headers and persistent connections by default. HTTP/2 multiplexes binary streams, normally over TLS in browser deployments. HTTP/3 uses QUIC over UDP with TLS 1.3 integrated. Check client/proxy/server support rather than assuming all hops use the same version.
 
 ## Methods, safety, idempotency
 
@@ -45,7 +50,7 @@ Hop-by-hop headers (`Connection`, `Transfer-Encoding`) are for the next hop, not
 |-------|---------|
 | 1xx | Intermediate (rare in app code) |
 | 2xx | Success |
-| 3xx | Go look somewhere else |
+| 3xx | Redirection or cache validation (`304` reuses a stored representation) |
 | 4xx | Client / call problem |
 | 5xx | Server / dependency problem |
 
@@ -59,7 +64,7 @@ https://api.example.com:443/api/v1/orders/4821?status=OPEN#frag
 scheme  host              port path             query       fragment (not sent)
 ```
 
-Origin = scheme + host + port. Cookies and CORS are origin-scoped. Path encoding: do not hand-roll; use a URL library.
+Origin = scheme + host + port. CORS governs browser access across origins. Cookies use host/domain and path matching plus attributes such as `Secure` and `SameSite`; **ports do not isolate cookies**. Same-site and same-origin are different boundaries. Use a URL library for path encoding.
 
 ## TLS
 
@@ -112,3 +117,9 @@ End-to-end TLS (passthrough or re-encrypt) is stricter and operationally heavier
 - Missing intermediate cert: works in a browser (AIA fetch) and fails in Java.
 - `localhost` certificates and corporate MITM proxies break developer trust stores.
 - Logging `Authorization` or full cookies is a credential leak.
+
+## References
+
+- [RFC 9110 — HTTP semantics](https://www.rfc-editor.org/rfc/rfc9110.html)
+- [RFC 6265 — cookie scope and port isolation](https://datatracker.ietf.org/doc/html/rfc6265#section-8.5)
+- [RFC 8446 — TLS 1.3](https://www.rfc-editor.org/rfc/rfc8446.html)

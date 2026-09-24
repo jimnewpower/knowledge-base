@@ -1,5 +1,7 @@
 # SQL and relational modeling cheat sheet
 
+> Baseline: PostgreSQL 16-compatible examples; PostgreSQL 18 skip scans and Oracle differences are labelled. Reviewed: 2026-09-24.
+
 SQL is the language of the system of record for most applications in this collection. Model data first; tune queries second.
 
 Related: [transactions-and-isolation.md](transactions-and-isolation.md), [data-structures.md](data-structures.md).
@@ -18,6 +20,8 @@ Related: [transactions-and-isolation.md](transactions-and-isolation.md), [data-s
 Normalize until update anomalies go away; denormalize only with a measured read path and an owner for the copy.
 
 ## DDL worth knowing
+
+PostgreSQL example; assumes `customers(id)` already exists with a compatible key. Later query fragments also assume `customers.name` and `line_items.order_id`:
 
 ```sql
 CREATE TABLE orders (
@@ -66,12 +70,14 @@ Filter on `WHERE` before grouping; filter groups with `HAVING`.
 WHERE notes IS NULL
 WHERE notes IS NOT NULL
 WHERE status IN ('OPEN', 'SUBMITTED')
-WHERE created_at >= TIMESTAMP '2026-01-01 00:00:00+00'
+WHERE created_at >= TIMESTAMP WITH TIME ZONE '2026-01-01 00:00:00+00'
 WHERE name LIKE 'Newp%'          -- prefix can use an index
 WHERE name LIKE '%power'         -- leading wildcard usually cannot
 ```
 
 `NOT IN (SELECT …)` with NULLs in the subquery is a classic empty-result bug. Prefer `NOT EXISTS`.
+
+These are independent predicate fragments. In PostgreSQL, plain `TIMESTAMP` means without time zone and ignores an offset in its literal. `TIMESTAMPTZ` represents an instant; it does not preserve the original named timezone.
 
 ## Subqueries and CTEs
 
@@ -88,7 +94,7 @@ WHERE EXISTS (
 );
 ```
 
-`EXISTS` short-circuits. `IN` + large list can be fine; `IN` + nullable subquery is not.
+`EXISTS` asks whether any row matches; do not rely on evaluating every subquery row. A positive `IN` predicate can be appropriate even with NULLs: a match yields true, while no match plus a NULL yields unknown. Negating that unknown is the common `NOT IN` trap.
 
 ## Indexes
 
@@ -96,10 +102,12 @@ WHERE EXISTS (
 |-------|-----|
 | B-tree (default) | Equality, range, `ORDER BY` that matches |
 | Unique | Constraint + lookup |
-| Composite `(a, b)` | Lookup on `a` or `a,b`, not `b` alone |
+| Composite `(a, b)` | Usually most efficient with leading-column predicates; `b` alone may still use the index |
 | Covering / include | Index-only scan when the engine supports it |
 
 An index is a write cost. Add it for a query you can show in `EXPLAIN`.
+
+PostgreSQL 18 can use B-tree skip scans for some predicates that omit leading columns, especially when those columns have few distinct values. Check the plan for the deployed engine/version.
 
 ```sql
 EXPLAIN ANALYZE
@@ -125,12 +133,19 @@ The `version` predicate is optimistic concurrency. Zero rows updated means a con
 ## Migrations
 
 - Forward-only scripts, versioned (`V0014__orders_notes.sql`).
-- Expand/contract: add column nullable → backfill → switch writes → drop old.
+- Expand/contract for replacing a column: add the new column → deploy compatible synchronized writes → backfill in bounded batches → reconcile and validate → switch reads → retire old readers/writers → drop the old column in a later release.
+- Keep old and new representations synchronized while backfilling (application writes, a trigger, or a controlled write pause). Ensure old application instances cannot bypass synchronization, and prevent backfill from overwriting newer values. A backfill followed by an unsynchronized write switch can lose concurrent changes.
 - Never edit a migration that already ran in a shared environment.
 
 ## Gotchas
 
 - `SELECT *` in application code couples you to every future column.
 - `DISTINCT` is not a join-fixer; it hides a bad join.
-- Pagination with `OFFSET 100000` gets slower as you go. Prefer keyset/`WHERE (created_at, id) < (?, ?)`.
+- Pagination with `OFFSET 100000` gets slower as you go. Consider keyset `WHERE (created_at, id) < (?, ?)` with matching `ORDER BY created_at DESC, id DESC`, a unique tie-breaker, and an index supporting that order.
 - Connection pools plus forgotten transactions lock rows. See [transactions-and-isolation.md](transactions-and-isolation.md).
+
+## References
+
+- [PostgreSQL 16 — date/time literals](https://www.postgresql.org/docs/16/datatype-datetime.html)
+- [PostgreSQL 18 — multicolumn indexes and skip scans](https://www.postgresql.org/docs/18/indexes-multicolumn.html)
+- [PostgreSQL 16 — subquery and NULL semantics](https://www.postgresql.org/docs/16/functions-subquery.html)

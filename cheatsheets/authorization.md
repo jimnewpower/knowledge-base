@@ -1,5 +1,7 @@
 # Authorization cheat sheet
 
+> Baseline: General policy models; Spring examples target Security 6.x and proxy-based method security. Reviewed: 2026-09-24.
+
 Authorization answers **what may this principal do to this resource, right now?** It is not login. See [authentication.md](authentication.md).
 
 ## Separate the concerns
@@ -93,6 +95,18 @@ Pick a hide-vs-reveal policy for sensitive objects and apply it everywhere.
 
 ## Java / Spring sketch
 
+Enable method security in a configuration class scanned by Spring (Spring Security 6+):
+
+```java
+@Configuration
+@EnableMethodSecurity
+class MethodSecurityConfig {}
+```
+
+The security starter does not enable method authorization automatically. Calls must pass through the Spring-managed proxy; self-invocation bypasses this advice. Test a denied call through the injected bean.
+
+Service-method sketch; domain types and method body are application-specific:
+
 ```java
 @PreAuthorize("hasAuthority('order.submit')")
 public Order submit(OrderId id, Principal user) { ... }
@@ -112,3 +126,8 @@ Annotations catch the coarse case. Domain checks catch the object case. You usua
 - Multi-tenant apps that authorize only by role and forget `tenant_id`.
 - Service tokens with `*` scopes “for convenience.”
 - Mixing system-user bypasses into business methods until nobody can see the real policy.
+
+## References
+
+- [Spring Security — method authorization and activation](https://docs.spring.io/spring-security/reference/servlet/authorization/method-security.html)
+- [OWASP — authorization](https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html)

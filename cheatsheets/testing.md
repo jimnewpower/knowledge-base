@@ -1,5 +1,7 @@
 # Testing beyond the unit cheat sheet
 
+> Baseline: Spring Boot 3.5 / Framework 6.2, JUnit 5, Testcontainers 1.x, and PostgreSQL 16 examples. Reviewed: 2026-09-24.
+
 [TDD](tdd.md) is the design loop for a single unit. This sheet is the rest of the pyramid: what else to run, where, and how expensive it may be.
 
 Related: [spring-boot.md](spring-boot.md), [maven.md](maven.md), [rest-apis.md](rest-apis.md).
@@ -41,13 +43,15 @@ Keep unit tests off the network. Integration tests may boot Testcontainers.
 
 ## Testcontainers
 
+Spring Boot 3.5 / Testcontainers 1.x wiring sketch. Requires the PostgreSQL and JUnit Jupiter Testcontainers modules, `spring-boot-testcontainers`, a container runtime, and the application's Boot configuration. Add repository tests for the actual schema:
+
 ```java
 @Testcontainers
+@SpringBootTest
 class OrderRepositoryIT {
   @Container
+  @ServiceConnection
   static PostgreSQLContainer<?> db = new PostgreSQLContainer<>("postgres:16");
-
-  // point Spring datasource at db.getJdbcUrl()
 }
 ```
 
@@ -64,7 +68,7 @@ Reuse containers across tests in a class. Pin the image tag. Do not depend on a 
 | `@SpringBootTest` | high | wiring, one happy path per module |
 | `@SpringBootTest` + `RANDOM_PORT` | highest | real HTTP to yourself |
 
-Replace neighbors with `@MockitoBean` / `@MockBean` only at the slice boundary. Prefer a fake repository for application-service tests.
+Replace neighbors with `@MockitoBean` (Spring Framework 6.2+) at the slice boundary. `@MockBean` is a legacy Boot API deprecated since Boot 3.4; check migration guidance for the target Boot line. Prefer a fake repository when it faithfully represents the application-service contract.
 
 ## Contract tests
 
@@ -76,7 +80,8 @@ A contract test fails when a field is removed or a status code changes — befor
 ## Fixtures and data
 
 - Build objects with helpers or builders, not 40-line constructors copied everywhere.
-- Integration tests: isolate schema (`@Transactional` rollback *or* unique keys per test). Do not assume an empty shared DB.
+- Test-managed `@Transactional` rollback covers participating work on the test thread. HTTP tests using `RANDOM_PORT`/`DEFINED_PORT` run server transactions on other threads; the test's rollback does not undo those writes. Async work and `REQUIRES_NEW` can also escape it.
+- For those tests, use an isolated database/schema or explicit cleanup after work completes. Unique IDs prevent key collisions but do not isolate counts, list queries, or shared constraints.
 - Time: inject a `Clock`. Do not sleep for 2 seconds to “wait for async.”
 
 ## What to automate vs poke
@@ -91,3 +96,8 @@ Poke by hand: visual layout, exploratory weirdness, one-off prod data.
 - Order-dependent tests that pass only with a given class order.
 - Snapshotting full JSON when you care about one field.
 - Running Selenium against localhost as the only CI signal.
+
+## References
+
+- [Spring Boot 3.5 — testing applications and transaction boundaries](https://docs.spring.io/spring-boot/3.5/reference/testing/spring-boot-applications.html)
+- [Spring Boot 3.5 — Testcontainers service connections](https://docs.spring.io/spring-boot/3.5/reference/testing/testcontainers.html)

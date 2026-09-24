@@ -1,5 +1,7 @@
 # Docker and containers cheat sheet
 
+> Baseline: Linux containers, Docker BuildKit and Compose v2; Java 21 and PostgreSQL 16 examples. Reviewed: 2026-09-24.
+
 A **container** is an isolated process with its own filesystem view, built from an **image**. Docker is the common builder and runtime; Kubernetes / OpenShift schedule the same kind of image. This sheet covers the image and the local runtime.
 
 ## Mental model
@@ -20,7 +22,7 @@ docker build -t order-api:1.4.0 .
 docker run --rm -p 8080:8080 --env-file .env order-api:1.4.0
 docker ps
 docker logs -f container
-docker exec -it container bash
+docker exec -it container sh  # if the image includes a shell
 docker stop container
 docker image ls
 docker rmi order-api:1.4.0
@@ -28,7 +30,9 @@ docker rmi order-api:1.4.0
 
 `docker compose up --build` for multi-process local stacks.
 
-## Dockerfile that will not embarrass you
+## Runtime Dockerfile
+
+Assumes CI produced an executable `target/order-service.jar` (for example with Spring Boot repackage and Maven `finalName` set to `order-service`). An ordinary Maven JAR may need external dependencies and a main-class manifest.
 
 ```dockerfile
 # syntax=docker/dockerfile:1
@@ -44,54 +48,78 @@ EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]
 ```
 
-Multi-stage when you compile in Docker:
+Multi-stage alternative; keep `mvnw` LF-terminated in Git. This example runs the Maven verification lifecycle:
 
 ```dockerfile
 FROM eclipse-temurin:21-jdk-alpine AS build
 WORKDIR /src
 COPY . .
-RUN ./mvnw -q -DskipTests package
+RUN chmod +x mvnw && ./mvnw -q verify
 
 FROM eclipse-temurin:21-jre-alpine
-COPY --from=build /src/target/order-service.jar /app/app.jar
-# ...
+RUN addgroup -S app && adduser -S app -G app
+WORKDIR /app
+COPY --from=build --chown=app:app /src/target/order-service.jar app.jar
+USER app
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
 ```
 
 Better in many Java shops: **build the jar on CI, copy only the jar into a JRE image.** The Dockerfile stays small and Maven stays the compiler of record.
 
 ## Layers and cache
 
-Order instructions from least-changing to most-changing:
+For a single-module project, replace the build stage with this fragment. Copy the wrapper and its configuration before invoking it; multi-module builds also need their module POMs:
 
 ```dockerfile
+FROM eclipse-temurin:21-jdk-alpine AS build
+WORKDIR /src
+COPY mvnw .
+COPY .mvn/ .mvn/
 COPY pom.xml .
+RUN chmod +x mvnw
 RUN ./mvnw -q -DskipTests dependency:go-offline
 COPY src ./src
-RUN ./mvnw -q -DskipTests package
+RUN ./mvnw -q verify
 ```
 
-A one-line source change should not re-download the internet.
+A source change can reuse downloaded dependencies. `dependency:go-offline` is a cache optimization, not proof that every build plugin can run offline. Projects using Testcontainers need a suitable container runtime in their build environment.
 
 ## Compose sketch
+
+Local development example using the runtime Dockerfile and an already-built JAR. The credentials below are for this disposable local database only:
 
 ```yaml
 services:
   api:
     build: .
-    ports: ["8080:8080"]
+    ports: ["127.0.0.1:8080:8080"]
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/orders
-    depends_on: [db]
+      SPRING_DATASOURCE_USERNAME: orders
+      SPRING_DATASOURCE_PASSWORD: local
+    depends_on:
+      db:
+        condition: service_healthy
   db:
     image: postgres:16
     environment:
+      POSTGRES_DB: orders
+      POSTGRES_USER: orders
       POSTGRES_PASSWORD: local
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U orders -d orders"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
     volumes: [pgdata:/var/lib/postgresql/data]
 volumes:
   pgdata:
 ```
 
-Compose is a development and demo tool. It is not an orchestrator for production.
+Database initialization variables apply only to an empty data directory. Short-form `depends_on: [db]` orders startup but does not wait for readiness. Applications still need to handle later connection failures.
+
+Compose can run production services on one host; multi-host scheduling and failover need an orchestrator or other operational tooling.
 
 ## Runtime knobs
 
@@ -128,3 +156,9 @@ Promote by digest across environments. Retagging `:latest` is not a release proc
 - PID 1 and signals: use an exec-form `ENTRYPOINT` so `stop` reaches the JVM.
 - Host networking hides port bugs that will appear in a cluster.
 - “Works in Docker” with a volume-mounted source tree is not the same as the image CI ships.
+
+## References
+
+- [Docker — Dockerfile reference](https://docs.docker.com/reference/dockerfile/)
+- [Docker — Compose startup order](https://docs.docker.com/compose/how-tos/startup-order/)
+- [PostgreSQL official image — initialization variables](https://hub.docker.com/_/postgres)

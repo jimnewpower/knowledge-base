@@ -1,5 +1,7 @@
 # Bash cheat sheet
 
+> Baseline: Bash 5.x with GNU/Linux utilities; Bash syntax is not portable /bin/sh syntax. Reviewed: 2026-09-24.
+
 Bash is the default interactive shell on most Linux systems and the language of delivery scripts. Write for `bash`, not for an unspecified `/bin/sh`, unless you need POSIX portability.
 
 ```bash
@@ -7,9 +9,11 @@ Bash is the default interactive shell on most Linux systems and the language of 
 set -euo pipefail
 ```
 
-- `-e` exit on unchecked command failure
+- `-e` exit on some unhandled failures; conditions, `&&`/`||` lists, and other contexts have exceptions
 - `-u` treat unset variables as errors
 - `-o pipefail` fail a pipeline if any stage fails
+
+These options do not replace explicit error handling. For example, `grep` returns 1 for no match, and `-e` may be ignored inside a function invoked as a condition.
 
 ## Filesystem and navigation
 
@@ -85,16 +89,18 @@ cp -- "$src" "$dest"
 ## Expansion
 
 ```bash
-echo ${#name}               # length
-echo ${name%.txt}           # strip shortest suffix
-echo ${name##*/}            # basename-like
-echo ${name%/*}             # dirname-like
+echo "${#name}"             # length
+echo "${name%.txt}"         # strip shortest suffix
+echo "${name##*/}"          # basename-like
+echo "${name%/*}"           # dirname-like; unchanged if there is no slash
 files=(*.md)
 echo "${files[@]}"
 echo "${#files[@]}"
 ```
 
 Globs: `*` `?` `[abc]`. Enable recursive glob with `shopt -s globstar` then `**/*.java`.
+
+An unmatched glob stays literal by default. Use `shopt -s nullglob` when an empty match should produce an empty array or no loop iterations.
 
 ## Control flow
 
@@ -151,13 +157,15 @@ main "$@"
 | Special | Meaning |
 |---------|---------|
 | `$0` | script name |
-| `$1 … $n` | arguments |
+| `$1`, `${2}`, … `${10}` | positional arguments; braces required for two-digit positions |
 | `$#` | argument count |
 | `"$@"` | all args, correctly quoted |
 | `$?` | last exit status |
-| `$PIPESTATUS` | statuses of each pipeline stage |
+| `"${PIPESTATUS[@]}"` | statuses of all pipeline stages; `$PIPESTATUS` alone is element zero |
 
 Exit `0` success, non-zero failure. Reserve `2` for usage errors.
+
+Capture `PIPESTATUS` immediately after the pipeline, before another command overwrites it. With `set -e -o pipefail`, an unhandled failed pipeline can exit before the capture; place it in an explicit error-handling context when collecting failures.
 
 ## Pipelines, redirection, jobs
 
@@ -184,14 +192,19 @@ jq . response.json
 # Wait for a port
 until bash -c "echo >/dev/tcp/127.0.0.1/8080" 2>/dev/null; do sleep 1; done
 
-# Portable dirname of this script
+# Directory containing this Bash script (does not resolve a symlink to the script)
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ```
 
 ## Gotchas
 
 - Word splitting on unquoted `$var` breaks paths with spaces.
-- `cd /tmp && rm -rf $dir` with empty `$dir` can become `rm -rf` of the current directory. Quote and use `set -u`.
+- With empty `$dir`, `rm -rf $dir` has no operand; it does not delete the current directory. Actual hazards include word splitting, globbing, and an empty variable in a larger path such as `"$dir/"`. Validate a nonempty target inside the intended root, quote it, and use `--`. `set -u` catches unset variables, not empty ones; `${dir:?dir required}` rejects both.
 - Pipelines run in subshells; variables assigned inside `cmd | while read` do not persist.
 - `ls` is for humans. In scripts, use globs or `find`.
 - Do not parse `ls` output.
+
+## References
+
+- [GNU Bash reference manual](https://www.gnu.org/s/bash/manual/bash.html)
+- [GNU Coreutils — rm behavior](https://www.gnu.org/s/coreutils/manual/html_node/rm-invocation.html)
