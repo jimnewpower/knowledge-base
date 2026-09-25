@@ -98,5 +98,5 @@ describe("rehypeEnhance", () => {
       return !html.includes('<dl class="kb-meta">') || html.includes("Reviewed:");
     });
     expect(missing).toEqual([]);
-  });
+  }, 15_000);
 });

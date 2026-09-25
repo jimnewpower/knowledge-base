@@ -12,7 +12,7 @@ Opens http://127.0.0.1:5180.
 
 ## Browse by category
 
-The home page presents nine categories with icons, descriptions, and counts of their primary pages, plus a reading-path guide. Each category starts with conceptual and implementation entry points, then groups notes with “Use this for” summaries. Content-type and topic filters narrow the primary list; a separate **Related topics** section holds selected references from other categories.
+The home page presents ten categories with icons, descriptions, and counts of their primary pages, plus a reading-path guide. Each category starts with conceptual and implementation entry points, then groups notes with “Use this for” summaries. Content-type and topic filters narrow the primary list; a separate **Related topics** section holds selected references from other categories.
 
 - Category: http://127.0.0.1:5180/?category=architecture-design
 - Filtered category: http://127.0.0.1:5180/?category=languages-tools&tag=Java

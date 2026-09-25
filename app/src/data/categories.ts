@@ -73,10 +73,41 @@ export const categories: Category[] = [
         {"path":"cheatsheets/bash.md","description":"Shell, pipelines, scripting on Linux","tags":[]},
         {"path":"cheatsheets/maven.md","description":"Build, dependencies, multi-module Java","tags":["Java"]},
         {"path":"cheatsheets/markdown.md","description":"Notation used in this repository","tags":[]},
-        {"path":"cheatsheets/ai-prompt-and-context-engineering.md","description":"Prompts, context windows, agent working memory","tags":[]},
       ] },
     ],
     related: [],
+  },
+  {
+    id: "ai",
+    title: "AI",
+    description: "Understand language models, develop with assistants, and build reliable AI systems.",
+    startHere: [
+      { path: "cheatsheets/llm-fundamentals.md", kind: "Concepts", reason: "Learn what models, tokens, retrieval, and tools actually provide." },
+      { path: "cheatsheets/ai-assisted-development.md", kind: "Implementation", reason: "Delegate bounded coding tasks and verify the resulting changes." },
+    ],
+    sections: [
+      { title: "Foundations & Development", pages: [
+        { path: "cheatsheets/llm-fundamentals.md", description: "Tokens, inference, context limits, generation controls, and model adaptation", tags: ["Getting started"] },
+        { path: "cheatsheets/ai-assisted-development.md", description: "Task scoping, repository context, implementation, review, and verification", tags: ["Developer workflow"] },
+        { path: "cheatsheets/ai-prompt-and-context-engineering.md", description: "Overview of instructions, working context, and agent collaboration", tags: ["Getting started"] },
+      ] },
+      { title: "Instructions & Context", pages: [
+        { path: "cheatsheets/prompt-engineering.md", description: "Task contracts, examples, grounded answers, and prompt iteration", tags: ["Developer workflow"] },
+        { path: "cheatsheets/context-engineering.md", description: "Evidence selection, context budgets, checkpoints, memory, and freshness", tags: ["Developer workflow"] },
+        { path: "cheatsheets/agent-skills-development.md", description: "Skill scope, SKILL.md structure, progressive loading, and validation", tags: ["Developer workflow"] },
+      ] },
+      { title: "Retrieval & Tool Integration", pages: [
+        { path: "cheatsheets/embeddings-and-vector-search.md", description: "Embedding spaces, similarity, lexical/hybrid retrieval, and index contracts", tags: ["Retrieval"] },
+        { path: "cheatsheets/rag.md", description: "Ingestion, authorized retrieval, evidence, citations, and failure diagnosis", tags: ["Retrieval"] },
+        { path: "cheatsheets/mcp.md", description: "Hosts, clients, servers, primitives, transports, and tool contracts", tags: ["Agents"] },
+        { path: "cheatsheets/ai-agents-and-workflows.md", description: "Workflows, bounded agent loops, tool design, and recovery", tags: ["Agents", "Reliability"] },
+      ] },
+      { title: "Evaluation & Security", pages: [
+        { path: "cheatsheets/ai-evaluation.md", description: "Datasets, graders, retrieval metrics, regression checks, and release criteria", tags: ["Reliability"] },
+        { path: "cheatsheets/ai-security.md", description: "Prompt injection, data boundaries, tool permissions, and adversarial checks", tags: ["Reliability"] },
+      ] },
+    ],
+    related: ["cheatsheets/testing.md", "cheatsheets/authorization.md"],
   },
   {
     id: "application-development",

@@ -8,12 +8,12 @@ The collection serves developers and architects across languages and platforms. 
 
 - [Browse all cheat sheets](cheatsheets/README.md) for topic summaries.
 - [Start with a reading path](guides/start-here.md) to distinguish concepts from implementation.
-- Use the reader's nine categories, topic filters, related links, and full-text search.
+- Use the reader's ten categories, topic filters, related links, and full-text search.
 - Search by concept, API, command, or acronym: `virtual threads`, `rebase`, `JPA`, `a11y`, or `i18n`. Prefixes, common aliases, limited typo tolerance, and a category filter help narrow results.
 
 ## Scope
 
-References cover languages, browser fundamentals, application architecture, APIs, integration, persistence, security, testing, delivery, and operations. Specialized technologies are welcome when the explanation is reusable across projects.
+References cover languages, browser fundamentals, application architecture, APIs, integration, persistence, security, testing, delivery, operations, and AI. The AI category covers assisted development, model fundamentals, prompting, context, retrieval, tools, skills, evaluation, and security. Specialized technologies are welcome when the explanation is reusable across projects.
 
 This collection does not hold product plans, project histories, private organizational knowledge, domain doctrine, or project architecture decision records. Guidance about writing ADRs is a reference topic; individual decisions belong with their projects. Examples use generic names and identify assumptions explicitly.
 

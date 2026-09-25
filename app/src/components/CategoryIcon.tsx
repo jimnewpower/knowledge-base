@@ -1,4 +1,5 @@
 const paths: Record<string, string> = {
+  "ai": "M7 7h10v10H7z M10 10h4v4h-4z M9 3v4 M15 3v4 M9 17v4 M15 17v4 M3 9h4 M3 15h4 M17 9h4 M17 15h4",
   "architecture-design": "M9 3h6v5H9z M3 16h6v5H3z M15 16h6v5h-6z M12 8v4 M6 16v-4h12v4",
   "languages-tools": "m8 6-6 6 6 6 m8-12 6 6-6 6 M14 3l-4 18",
   "application-development": "M3 4h18v13H3z M8 21h8 M12 17v4 M3 8h18",
