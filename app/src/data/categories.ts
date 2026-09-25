@@ -14,6 +14,7 @@ export const categories: Category[] = [
         {"path":"cheatsheets/architecture-documentation.md","description":"Organize architecture views, decisions, risks, and authoritative sources","tags":[]},
       ] },
       { title: "System Structure", pages: [
+        {"path":"cheatsheets/application-design.md","description":"Vertical slices, data ownership, UI/service boundaries and staged replacement","tags":["Modeling","Modernization"]},
         {"path":"cheatsheets/architecture-styles.md","description":"Compare layers, modules, services, events, workers, and plugins","tags":["Modeling"]},
         {"path":"cheatsheets/modular-monoliths.md","description":"Module APIs, ports/adapters, data ownership, extraction decisions","tags":["Modernization"]},
         {"path":"cheatsheets/distributed-systems.md","description":"Failure, consistency, coordination","tags":["Reliability"]},
@@ -43,6 +44,9 @@ export const categories: Category[] = [
         {"path":"cheatsheets/jvm-performance.md","description":"Heap, allocation, pauses","tags":["Java","Performance"]},
       ] },
       { title: "Languages & Fundamentals", pages: [
+        {"path":"cheatsheets/javascript.md","description":"Runtime semantics, promises, cancellation, Fetch and browser boundaries","tags":[]},
+        {"path":"cheatsheets/python.md","description":"Virtual environments, language idioms, files, subprocesses and runtime boundaries","tags":[]},
+        {"path":"cheatsheets/c.md","description":"Memory ownership, types, undefined behavior, diagnostics and sanitizers","tags":[]},
         {"path":"cheatsheets/typescript.md","description":"Strict types, unknown values, narrowing, validation and async state","tags":[]},
         {"path":"cheatsheets/data-structures.md","description":"When to use which structure","tags":["Performance"]},
         {"path":"cheatsheets/algorithms.md","description":"Complexity and core algorithms","tags":["Performance"]},
@@ -64,6 +68,8 @@ export const categories: Category[] = [
     description: "Build and modernize web, desktop, and mobile applications.",
     sections: [
       { title: "Web Applications", pages: [
+        {"path":"cheatsheets/angular.md","description":"Standalone components, signals, forms, HTTP streams and frontend delivery","tags":[]},
+        {"path":"cheatsheets/quarkus.md","description":"CDI, configuration phases, REST execution, packaging and native-image tradeoffs","tags":["Java"]},
         {"path":"cheatsheets/spring-boot.md","description":"Wiring, config, web, actuator","tags":["Java"]},
         {"path":"cheatsheets/jakarta-faces-primefaces.md","description":"Lifecycle, AJAX process/update, scopes, validation and lazy tables","tags":["Java","Modernization"]},
       ] },
@@ -91,6 +97,7 @@ export const categories: Category[] = [
         {"path":"cheatsheets/api-gateway.md","description":"API routing, access policies, aggregation, BFFs","tags":[]},
       ] },
       { title: "Messaging & Integration", pages: [
+        {"path":"cheatsheets/scientific-model-integration.md","description":"Process/library boundaries, units, provenance, numerical validation and repeatability","tags":["Modeling","Reliability"]},
         {"path":"cheatsheets/messaging-and-events.md","description":"Brokers, outbox, consumers","tags":["Reliability"]},
         {"path":"cheatsheets/enterprise-integration-patterns.md","description":"Integration styles, channels, endpoints, pattern selection","tags":[]},
         {"path":"cheatsheets/integration-routing-and-coordination.md","description":"Routers, splitters, aggregators, workflow coordination","tags":[]},
@@ -110,12 +117,16 @@ export const categories: Category[] = [
     description: "Store, query, transform, and move data reliably.",
     sections: [
       { title: "Databases & Transactions", pages: [
+        {"path":"cheatsheets/h2.md","description":"Embedded URLs, in-memory lifetime, SQL fixtures and target-engine test boundaries","tags":["Java"]},
+        {"path":"cheatsheets/dynamodb.md","description":"Access patterns, keys, indexes, query pagination, consistency and conditional writes","tags":[]},
+        {"path":"cheatsheets/oracle.md","description":"SQL dialect, types, DDL commits, JDBC behavior and query diagnostics","tags":[]},
         {"path":"cheatsheets/sql.md","description":"Tables, joins, indexes, migrations","tags":["Modeling"]},
         {"path":"cheatsheets/transactions-and-isolation.md","description":"ACID, levels, outbox","tags":["Reliability"]},
         {"path":"cheatsheets/sqlite.md","description":"WAL, writer contention, connection settings, backup and upgrades","tags":["Offline"]},
         {"path":"cheatsheets/sql-query-tuning.md","description":"Execution plans, indexes, statistics, blocking and pagination","tags":["Performance"]},
       ] },
       { title: "Java Persistence", pages: [
+        {"path":"cheatsheets/mybatis.md","description":"SQL mapping, bound parameters, session ownership, transactions and query behavior","tags":["Java"]},
         {"path":"cheatsheets/jpa-and-hibernate.md","description":"Entity lifecycle, relationships, fetching, batching, optimistic locking","tags":["Java"]},
         {"path":"cheatsheets/jdbc-hikaricp.md","description":"Connection ownership, pool sizing, timeout budgets and saturation","tags":["Java","Performance"]},
       ] },
@@ -137,11 +148,15 @@ export const categories: Category[] = [
     description: "Protect applications, control access, and secure dependencies.",
     sections: [
       { title: "Identity & Access", pages: [
+        {"path":"cheatsheets/entra-id.md","description":"App registrations, identity flows, API token validation and permission diagnosis","tags":[]},
         {"path":"cheatsheets/authentication.md","description":"Proving identity","tags":[]},
         {"path":"cheatsheets/authorization.md","description":"Deciding what an identity may do","tags":[]},
         {"path":"cheatsheets/spring-security.md","description":"Filter chains, request rules, CSRF/CORS, method security and tests","tags":["Java"]},
       ] },
       { title: "Application & Dependency Security", pages: [
+        {"path":"cheatsheets/licensing-ip-compliance.md","description":"Component provenance, SPDX, notices, distribution context and release evidence","tags":[]},
+        {"path":"cheatsheets/licensing-telemetry.md","description":"Entitlements, signed licenses, offline policy, usage events and reconciliation","tags":["Offline"]},
+        {"path":"cheatsheets/secrets-management.md","description":"Workload identity, credential delivery, rotation, revocation and exposure paths","tags":[]},
         {"path":"cheatsheets/application-security.md","description":"Builder-facing OWASP","tags":[]},
         {"path":"cheatsheets/software-supply-chain.md","description":"Inventory, SBOMs, vulnerability triage and provenance verification","tags":[]},
       ] },
@@ -160,6 +175,9 @@ export const categories: Category[] = [
       { title: "Java Testing", pages: [
         {"path":"cheatsheets/junit-mockito-assertj.md","description":"Unit-test boundaries, parameterization, mocks and deterministic fixtures","tags":["Java"]},
       ] },
+      { title: "Analysis & Quality Gates", pages: [
+        {"path":"cheatsheets/static-analysis-coverage.md","description":"Quality signals, JaCoCo wiring, thresholds, suppression and CI gates","tags":["Java"]},
+      ] },
     ],
     related: ["cheatsheets/quality-attributes.md"],
   },
@@ -169,15 +187,26 @@ export const categories: Category[] = [
     description: "Build, deploy, observe, and troubleshoot running software.",
     sections: [
       { title: "Build & Deployment", pages: [
+        {"path":"cheatsheets/gitlab-ci.md","description":"Workflow rules, Maven verification, runners, artifacts and protected releases","tags":["Java"]},
+        {"path":"cheatsheets/jenkins.md","description":"Declarative verification, agent trust, credentials, test reports and promotion","tags":["Java"]},
+        {"path":"cheatsheets/reproducible-builds.md","description":"Controlled build inputs, archive timestamps, artifact comparison and release evidence","tags":["Java"]},
         {"path":"cheatsheets/devops.md","description":"Delivery loop, gates, operability","tags":[]},
         {"path":"cheatsheets/docker.md","description":"Images, containers, Compose","tags":[]},
         {"path":"cheatsheets/kubernetes-openshift.md","description":"Pods, probes, routes, rollouts","tags":[]},
         {"path":"cheatsheets/github-actions-maven.md","description":"Verification workflows, PR trust, permissions and artifact promotion","tags":["Java"]},
       ] },
       { title: "Observability & Diagnostics", pages: [
+        {"path":"cheatsheets/splunk.md","description":"SPL pipelines, field extraction, aggregation, ingestion and alert checks","tags":[]},
+        {"path":"cheatsheets/cloudtrail-cloudwatch.md","description":"AWS audit events, metrics, Logs Insights, alarms and retention","tags":["Reliability"]},
+        {"path":"cheatsheets/windows-powershell.md","description":"Processes, ports, services, quoting, native commands and runtime context","tags":[]},
         {"path":"cheatsheets/observability.md","description":"Logs, metrics, traces, health","tags":["Reliability"]},
         {"path":"cheatsheets/opentelemetry-micrometer.md","description":"Instrumentation ownership, OTLP pipelines, metrics and context","tags":[]},
         {"path":"cheatsheets/linux-diagnostics.md","description":"Process, disk, network, signals","tags":[]},
+      ] },
+      { title: "Cloud & Infrastructure", pages: [
+        {"path":"cheatsheets/terraform.md","description":"Plan review, state protection, version locks, drift, refactoring and apply","tags":[]},
+        {"path":"cheatsheets/azure.md","description":"Tenants, subscriptions, identities, service choices, RBAC and networking","tags":[]},
+        {"path":"cheatsheets/aws.md","description":"Accounts, roles, Regions, service choices, access diagnosis and recovery","tags":[]},
       ] },
     ],
     related: ["cheatsheets/software-supply-chain.md"],
