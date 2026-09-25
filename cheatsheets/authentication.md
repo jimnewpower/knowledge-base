@@ -59,6 +59,8 @@ ID token: what the *client application* consumes to establish a user session. AP
 
 ## JWT, briefly
 
+See the [JWT cheat sheet](jwt.md) for claim meanings, validation steps, key rotation, and troubleshooting.
+
 A signed JWT in JWS[^jws] compact form has three dot-separated base64url parts: header, payload, signature. An encrypted JWT in JWE[^jwe] compact form has five parts; use a library implementing the expected token profile.
 
 Validate at least:
