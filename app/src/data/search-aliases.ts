@@ -1,5 +1,9 @@
 // Discovery terms connect readers to a topic; they do not assert technical equivalence.
 export const searchAliases: Record<string, string[]> = {
+  "cheatsheets/aws-services.md": ["aws", "amazon web services", "aws services", "cloud providers"],
+  "cheatsheets/azure-services.md": ["microsoft azure", "azure services", "cloud providers"],
+  "cheatsheets/gcp-services.md": ["gcp", "google cloud platform", "google cloud services", "cloud providers"],
+  "cheatsheets/oracle-cloud-services.md": ["oci", "oracle cloud infrastructure", "oracle cloud services", "cloud providers"],
   "cheatsheets/llm-fundamentals.md": ["llm", "large language model", "generative ai", "tokens", "fine tuning"],
   "cheatsheets/ai-assisted-development.md": ["ai coding", "coding assistant", "agentic coding", "pair programming"],
   "cheatsheets/prompt-engineering.md": ["prompting", "few shot", "prompt design"],

@@ -4,7 +4,7 @@
 
 Verify the account, role, and Region before interpreting an AWS result or changing a resource.
 
-Related: [DynamoDB](dynamodb.md), [CloudTrail and CloudWatch](cloudtrail-cloudwatch.md), [Terraform](terraform.md), [secrets management](secrets-management.md).
+Related: [AWS service catalog](aws-services.md), [DynamoDB](dynamodb.md), [CloudTrail and CloudWatch](cloudtrail-cloudwatch.md), [Terraform](terraform.md), [secrets management](secrets-management.md).
 
 ## Establish context
 

@@ -284,6 +284,10 @@ export const categories: Category[] = [
         {"path":"cheatsheets/linux-diagnostics.md","description":"Process, disk, network, signals","tags":[]},
       ] },
       { title: "Cloud & Infrastructure", pages: [
+        {"path":"cheatsheets/aws-services.md","description":"AWS service roles across compute, data, networking, integration, security, AI, and operations","tags":[]},
+        {"path":"cheatsheets/azure-services.md","description":"Azure service roles, hosting choices, data platforms, identity, and delivery","tags":[]},
+        {"path":"cheatsheets/gcp-services.md","description":"Google Cloud service roles, projects, compute, databases, analytics, and operations","tags":[]},
+        {"path":"cheatsheets/oracle-cloud-services.md","description":"Oracle Cloud infrastructure, managed databases, integration, security, and operations","tags":[]},
         {"path":"cheatsheets/terraform.md","description":"Plan review, state protection, version locks, drift, refactoring and apply","tags":[]},
         {"path":"cheatsheets/azure.md","description":"Tenants, subscriptions, identities, service choices, RBAC and networking","tags":[]},
         {"path":"cheatsheets/aws.md","description":"Accounts, roles, Regions, service choices, access diagnosis and recovery","tags":[]},
