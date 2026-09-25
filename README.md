@@ -204,7 +204,7 @@ Keyboard shortcuts and index rules are in `app/README.md`.
 
 ## Cheat sheets
 
-Indexed in [cheatsheets/README.md](cheatsheets/README.md).
+Indexed in [cheatsheets/README.md](cheatsheets/README.md), including a [résumé skills coverage map](cheatsheets/README.md#resume-skills-coverage).
 
 | Sheet | Path |
 |-------|------|
@@ -280,6 +280,31 @@ Indexed in [cheatsheets/README.md](cheatsheets/README.md).
 | Raster GIS and GeoTIFF | [cheatsheets/raster-gis.md](cheatsheets/raster-gis.md) |
 | TypeScript and runtime validation | [cheatsheets/typescript.md](cheatsheets/typescript.md) |
 | React Native offline data and synchronization | [cheatsheets/react-native-offline.md](cheatsheets/react-native-offline.md) |
+| Greenfield, desktop, and web application design | [cheatsheets/application-design.md](cheatsheets/application-design.md) |
+| Scientific model and data integration | [cheatsheets/scientific-model-integration.md](cheatsheets/scientific-model-integration.md) |
+| C | [cheatsheets/c.md](cheatsheets/c.md) |
+| Python | [cheatsheets/python.md](cheatsheets/python.md) |
+| JavaScript | [cheatsheets/javascript.md](cheatsheets/javascript.md) |
+| Quarkus | [cheatsheets/quarkus.md](cheatsheets/quarkus.md) |
+| MyBatis | [cheatsheets/mybatis.md](cheatsheets/mybatis.md) |
+| Angular | [cheatsheets/angular.md](cheatsheets/angular.md) |
+| Windows and PowerShell diagnostics | [cheatsheets/windows-powershell.md](cheatsheets/windows-powershell.md) |
+| AWS application operations | [cheatsheets/aws.md](cheatsheets/aws.md) |
+| Azure application operations | [cheatsheets/azure.md](cheatsheets/azure.md) |
+| Terraform | [cheatsheets/terraform.md](cheatsheets/terraform.md) |
+| Oracle Database | [cheatsheets/oracle.md](cheatsheets/oracle.md) |
+| DynamoDB | [cheatsheets/dynamodb.md](cheatsheets/dynamodb.md) |
+| H2 database | [cheatsheets/h2.md](cheatsheets/h2.md) |
+| CloudTrail and CloudWatch | [cheatsheets/cloudtrail-cloudwatch.md](cheatsheets/cloudtrail-cloudwatch.md) |
+| Splunk search and operations | [cheatsheets/splunk.md](cheatsheets/splunk.md) |
+| Microsoft Entra ID, SSO, and JWT | [cheatsheets/entra-id.md](cheatsheets/entra-id.md) |
+| Secrets management | [cheatsheets/secrets-management.md](cheatsheets/secrets-management.md) |
+| Application licensing and telemetry | [cheatsheets/licensing-telemetry.md](cheatsheets/licensing-telemetry.md) |
+| Linters, static analysis, SAST, and coverage | [cheatsheets/static-analysis-coverage.md](cheatsheets/static-analysis-coverage.md) |
+| Reproducible Maven builds and releases | [cheatsheets/reproducible-builds.md](cheatsheets/reproducible-builds.md) |
+| Jenkins Maven pipelines | [cheatsheets/jenkins.md](cheatsheets/jenkins.md) |
+| GitLab CI/CD for Maven | [cheatsheets/gitlab-ci.md](cheatsheets/gitlab-ci.md) |
+| Software licensing and IP compliance | [cheatsheets/licensing-ip-compliance.md](cheatsheets/licensing-ip-compliance.md) |
 
 ---
 
@@ -325,4 +350,4 @@ GNU General Public License v3.0. See [LICENSE](LICENSE).
 
 ---
 
-*Last updated: 2026-09-24*
+*Last updated: 2026-09-25*
