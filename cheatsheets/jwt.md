@@ -4,7 +4,7 @@
 
 Use this when inspecting a token, configuring a verifier, or diagnosing rejected requests. **Decoding exposes claims; validation establishes whether to trust them.**
 
-Related: [authentication](authentication.md) for login flows, [authorization](authorization.md) for permissions, [Spring Security](spring-security.md) for Java configuration, and [Microsoft Entra](entra-id.md) for provider-specific rules.
+Related: [authentication](authentication.md) for identity patterns, [delegated access flows](oauth.md) for obtaining tokens, [authorization](authorization.md) for permissions, [Spring Security](spring-security.md) for Java configuration, and [Microsoft Entra](entra-id.md) for provider-specific rules.
 
 ## Format and purpose
 

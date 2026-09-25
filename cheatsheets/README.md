@@ -22,6 +22,7 @@ When editing a sheet, compile applicable Java fragments in a small harness, pars
 | [Python library reference](python-libraries.md) | Standard library, package/import names, HTTP[^http], scientific computing, GIS and testing |
 | [REST APIs](rest-apis.md)[^rest] | HTTP APIs, resources, errors, versioning |
 | [Authentication](authentication.md) | Proving identity |
+| [OAuth and OAuth 2.0](oauth.md)[^oauth] | Protocol roles, grant selection, PKCE[^pkce], token lifecycle and redirect troubleshooting |
 | [JWT](jwt.md)[^jwt] | Token structure, claims, validation, key rotation, storage and troubleshooting |
 | [Authorization](authorization.md) | Deciding what an identity may do |
 | [Maven](maven.md) | Build, dependencies, multi-module Java |
@@ -263,6 +264,8 @@ This map connects engineering skills to practical references. A skill can span s
 [^id]: Identifier (or identity in a product name such as Microsoft Entra ID).
 [^sso]: Single Sign-On.
 [^jwt]: JSON Web Token; JSON means JavaScript Object Notation.
+[^oauth]: Open Authorization — a framework for delegated access.
+[^pkce]: Proof Key for Code Exchange — binds authorization-code redemption to the initiating client.
 [^sast]: Static Application Security Testing.
 [^jacoco]: Java Code Coverage.
 [^ci]: Continuous Integration.

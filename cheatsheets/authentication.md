@@ -44,6 +44,8 @@ A static secret identifying a *client*, not a person. Fine for low-stakes server
 
 ## OAuth 2 / OpenID Connect (practical view)
 
+See [OAuth and OAuth 2.0](oauth.md) for protocol roles, grant selection, code exchange, and token lifecycle.
+
 OAuth 2 is **delegation**: an authorization server issues an access token so a client can call an API on behalf of a user or itself. OpenID Connect adds an **ID token** (JWT[^jwt]) that authenticates the user to the client.
 
 | Grant | Who uses it |

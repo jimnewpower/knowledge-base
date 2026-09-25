@@ -4,7 +4,7 @@
 
 Single sign-on reuses an identity-provider login. Each application still needs its own session/token handling and authorization policy.
 
-Related: [authentication](authentication.md), [JWT](jwt.md), [authorization](authorization.md), [Spring Security](spring-security.md), [Azure](azure.md).
+Related: [authentication](authentication.md), [OAuth flows](oauth.md), [JWT](jwt.md), [authorization](authorization.md), [Spring Security](spring-security.md), [Azure](azure.md).
 
 ## Objects and flows
 
