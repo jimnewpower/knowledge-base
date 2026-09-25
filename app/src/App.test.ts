@@ -45,6 +45,32 @@ async function click(selector: string) {
 }
 
 describe("category browsing", () => {
+  it("keeps search scope on result navigation and restores it through history", async () => {
+    history.replaceState(null, "", "/?q=security");
+    await act(async () => root.render(createElement(App)));
+    const scope = container.querySelector<HTMLSelectElement>(".search-scope select")!;
+    await act(async () => { scope.value = "security-identity"; scope.dispatchEvent(new Event("change", { bubbles: true })); });
+    expect(window.location.search).toContain("scope=security-identity");
+    expect(container.querySelectorAll(".result")).toHaveLength(1);
+    await click(".result");
+    expect(window.location.search).toContain("scope=security-identity");
+    expect(window.location.search).toContain("doc=cheatsheets");
+    await act(async () => { history.back(); await new Promise((resolve) => window.addEventListener("popstate", resolve, { once: true })); });
+    expect(container.querySelector<HTMLSelectElement>(".search-scope select")?.value).toBe("security-identity");
+    await act(async () => { history.back(); await new Promise((resolve) => window.addEventListener("popstate", resolve, { once: true })); });
+    expect(container.querySelector<HTMLSelectElement>(".search-scope select")?.value).toBe("");
+  });
+
+  it("recovers from a category with no search hits without discarding the query", async () => {
+    history.replaceState(null, "", "/?q=security&scope=data-persistence");
+    await act(async () => root.render(createElement(App)));
+    expect(container.querySelector(".search-help")?.textContent).toContain("in this category");
+    await click(".search-help button");
+    expect(container.querySelectorAll(".result")).toHaveLength(1);
+    expect(container.querySelector<HTMLInputElement>('input[type="search"]')?.value).toBe("security");
+    expect(window.location.search).not.toContain("scope=");
+  });
+
   it("closes the mobile browse menu after choosing a category", async () => {
     await act(async () => root.render(createElement(App)));
     await click(".mobile-browse-toggle");
@@ -62,7 +88,7 @@ describe("category browsing", () => {
 
     await click('.category-card[href="?category=architecture-design"]');
     expect(container.querySelectorAll(".page-link")).toHaveLength(2);
-    const topic = container.querySelectorAll("select")[1];
+    const topic = container.querySelectorAll<HTMLSelectElement>(".category-filters select")[1];
     await act(async () => { topic.value = "Modeling"; topic.dispatchEvent(new Event("change", { bubbles: true })); });
     expect(container.querySelectorAll(".page-link")).toHaveLength(1);
     expect(window.location.search).toContain("tag=Modeling");
@@ -72,7 +98,7 @@ describe("category browsing", () => {
     expect(window.location.search).toBe("?doc=cheatsheets%2Fc4-diagrams.md");
     await act(async () => { history.back(); await new Promise((resolve) => window.addEventListener("popstate", resolve, { once: true })); });
     expect(container.querySelectorAll(".page-link")).toHaveLength(1);
-    expect(container.querySelectorAll("select")[1].value).toBe("Modeling");
+    expect(container.querySelectorAll<HTMLSelectElement>(".category-filters select")[1].value).toBe("Modeling");
     await act(async () => { history.forward(); await new Promise((resolve) => window.addEventListener("popstate", resolve, { once: true })); });
     expect(container.querySelector(".breadcrumbs")?.textContent).toContain("C4 architecture diagrams");
   });

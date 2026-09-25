@@ -710,6 +710,18 @@ kbd {
 .outline a[aria-current="location"] { color: var(--link); }
 .outline .depth-3 a { padding-left: 0.9rem; }
 
+.search-scope { display: grid; gap: 0.3rem; margin-top: 0.6rem; font-size: 0.8rem; }
+.search-scope select { width: 100%; min-width: 0; padding: 0.35rem; color: #f6f3ed; background: #332c27; border: 1px solid #706256; border-radius: 4px; }
+.search-help button { display: block; margin: 0.6rem 0; padding: 0.4rem 0.6rem; color: #f6f3ed; background: #332c27; border: 1px solid #706256; border-radius: 4px; text-align: left; }
+.search-help ul { padding-left: 1rem; }
+.start-here { margin: 1.5rem 0; padding: 1rem; background: #efe8dc; border-radius: 8px; }
+.start-here h2 { margin: 0 0 0.8rem; font-size: 1.1rem; }
+.start-here ul { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); gap: 1rem; }
+.start-here p { margin: 0.4rem 0 0; font-size: 0.88rem; }
+.start-here a { color: var(--link); }
+.entry-kind { display: block; font-size: 0.75rem; font-weight: 600; margin-bottom: 0.25rem; }
+.use-when { font-weight: 600; }
+
 @media (max-width: 1100px) {
   .category-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .reading { grid-template-columns: minmax(0, 1fr); }

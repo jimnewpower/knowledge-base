@@ -4,7 +4,7 @@
 
 TypeScript checks what your program claims about values. Validate external data before turning those values into trusted application types.
 
-Related: [OpenAPI and JSON Schema](openapi-and-json-schema.md), [REST APIs](rest-apis.md), [React Native offline data](react-native-offline.md).
+Related: [OpenAPI and JSON Schema](openapi-and-json-schema.md), [REST APIs](rest-apis.md), [React fundamentals](react.md), [React Native offline data](react-native-offline.md).
 
 ## Compiler settings
 

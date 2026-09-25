@@ -2,6 +2,11 @@ import { describe, expect, it } from "vitest";
 import { home, locationHref, readLocation } from "./navigation";
 
 describe("navigation URLs", () => {
+  it("preserves search scope when opening a note and ignores unknown scopes", () => {
+    const location = { ...home, q: "auth", searchCategory: "security-identity", doc: "cheatsheets/authentication.md" };
+    expect(readLocation(new URL(locationHref(location), "https://kb.test"))).toEqual(location);
+    expect(readLocation(new URL("https://kb.test/?q=auth&scope=missing")).searchCategory).toBe("");
+  });
   it("preserves existing note, query, view, and fragment links", () => {
     const url = new URL("https://kb.test/?q=C4&doc=cheatsheets/c4-diagrams.md&view=enhanced#Choose%20the%20view");
     const location = readLocation(url);

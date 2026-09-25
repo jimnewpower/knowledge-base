@@ -31,7 +31,7 @@ Do not keep the only copy of an edit in component state or an in-memory retry qu
 
 Example outbox payload; names and semantics belong to your API, not a React Native standard. Keep the operation ID unchanged across retries and retain credentials outside this record.
 
-```json
+```json validate
 {
   "operationId": "6e4a4bfc-2c72-4c06-9b96-29156089acba",
   "entityId": "track-42",

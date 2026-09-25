@@ -10,7 +10,7 @@ Related: [Jenkins](jenkins.md), [GitHub Actions](github-actions-maven.md), [Mave
 
 Example `.gitlab-ci.yml` for a Maven application. Configure a dedicated runner tagged `linux-jdk21` with a pinned JDK/toolchain and isolated clean workspaces. Commit executable `mvnw`, wrapper configuration, and LF line endings. A Docker/Kubernetes runner needs an explicit reviewed image in addition to suitable tags.
 
-```yaml
+```yaml validate
 workflow:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'

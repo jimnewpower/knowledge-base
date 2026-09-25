@@ -6,7 +6,14 @@ export const categories: Category[] = [
     id: "architecture-design",
     title: "Architecture & Design",
     description: "Structure systems, communicate designs, and record decisions.",
+    startHere: [
+      { path: "cheatsheets/architecture-styles.md", kind: "Concepts", reason: "Compare system structures before choosing a framework." },
+      { path: "cheatsheets/modular-monoliths.md", kind: "Implementation", reason: "Turn boundaries into module APIs and dependency checks." },
+    ],
     sections: [
+      { title: "Reading Paths", pages: [
+        { path: "guides/start-here.md", description: "Choose a starting point and distinguish concepts from implementation", tags: ["Getting started"] },
+      ] },
       { title: "Diagrams & Communication", pages: [
         {"path":"cheatsheets/c4-diagrams.md","description":"Context, container, component, dynamic, and deployment views","tags":["Modeling"]},
         {"path":"cheatsheets/structurizr-dsl.md","description":"Model architecture as code, validate workspaces, and export views","tags":["Modeling"]},
@@ -36,6 +43,10 @@ export const categories: Category[] = [
     id: "languages-tools",
     title: "Languages & Developer Tools",
     description: "Work effectively with languages, algorithms, and everyday tools.",
+    startHere: [
+      { path: "cheatsheets/data-structures.md", kind: "Concepts", reason: "Understand the tradeoffs behind collection choices." },
+      { path: "cheatsheets/java-libraries.md", kind: "Implementation", reason: "Find JDK facilities and library entry points." },
+    ],
     sections: [
       { title: "Java & the JVM", pages: [
         {"path":"cheatsheets/java.md","description":"Language, types, concurrency, modern Java","tags":["Java"]},
@@ -70,8 +81,18 @@ export const categories: Category[] = [
     id: "application-development",
     title: "Application Development",
     description: "Build and modernize web, desktop, and mobile applications.",
+    startHere: [
+      { path: "cheatsheets/html-css-browser.md", kind: "Concepts", reason: "Learn browser and layout behavior shared by web frameworks." },
+      { path: "cheatsheets/react.md", kind: "Implementation", reason: "Apply component state, event, and Effect boundaries." },
+    ],
     sections: [
+      { title: "Web Foundations", pages: [
+        { path: "cheatsheets/html-css-browser.md", description: "Semantic elements, forms, layout debugging, and browser boundaries", tags: ["Web", "Getting started"] },
+        { path: "cheatsheets/accessibility.md", description: "Keyboard access, labels, focus, status updates, and workflow checks", tags: ["Web", "Accessibility"] },
+        { path: "cheatsheets/localization.md", description: "Locale, translation, formatting, writing direction, and input policies", tags: ["Web"] },
+      ] },
       { title: "Web Applications", pages: [
+        { path: "cheatsheets/react.md", description: "State ownership, controlled inputs, events, Effects, and identity", tags: ["Web"] },
         {"path":"cheatsheets/angular.md","description":"Standalone components, signals, forms, HTTP streams and frontend delivery","tags":[]},
         {"path":"cheatsheets/quarkus.md","description":"CDI, configuration phases, REST execution, packaging and native-image tradeoffs","tags":["Java"]},
         {"path":"cheatsheets/spring-boot.md","description":"Wiring, config, web, actuator","tags":["Java"]},
@@ -92,6 +113,10 @@ export const categories: Category[] = [
     id: "apis-integration",
     title: "APIs & Integration",
     description: "Connect systems through APIs, messages, and workflows.",
+    startHere: [
+      { path: "cheatsheets/enterprise-integration-patterns.md", kind: "Concepts", reason: "Choose an integration style and name its failure semantics." },
+      { path: "cheatsheets/spring-integration.md", kind: "Implementation", reason: "Translate the patterns into channels, flows, and error handling." },
+    ],
     sections: [
       { title: "HTTP & API Contracts", pages: [
         {"path":"cheatsheets/rest-apis.md","description":"HTTP APIs, resources, errors, versioning","tags":[]},
@@ -119,6 +144,10 @@ export const categories: Category[] = [
     id: "data-persistence",
     title: "Data & Persistence",
     description: "Store, query, transform, and move data reliably.",
+    startHere: [
+      { path: "cheatsheets/transactions-and-isolation.md", kind: "Concepts", reason: "Understand concurrency and consistency guarantees." },
+      { path: "cheatsheets/jpa-and-hibernate.md", kind: "Implementation", reason: "Apply those constraints to entity lifecycle and fetching." },
+    ],
     sections: [
       { title: "Databases & Transactions", pages: [
         {"path":"cheatsheets/h2.md","description":"Embedded URLs, in-memory lifetime, SQL fixtures and target-engine test boundaries","tags":["Java"]},
@@ -150,6 +179,10 @@ export const categories: Category[] = [
     id: "security-identity",
     title: "Security & Identity",
     description: "Protect applications, control access, and secure dependencies.",
+    startHere: [
+      { path: "cheatsheets/authentication.md", kind: "Concepts", reason: "Separate identity proof from authorization decisions." },
+      { path: "cheatsheets/spring-security.md", kind: "Implementation", reason: "Configure and test enforcement in a Java servlet application." },
+    ],
     sections: [
       { title: "Identity & Access", pages: [
         {"path":"cheatsheets/entra-id.md","description":"App registrations, identity flows, API token validation and permission diagnosis","tags":[]},
@@ -171,6 +204,10 @@ export const categories: Category[] = [
     id: "testing-quality",
     title: "Testing & Quality",
     description: "Verify behavior and build confidence in changes.",
+    startHere: [
+      { path: "cheatsheets/testing.md", kind: "Concepts", reason: "Decide which test layer can prove the behavior you need." },
+      { path: "cheatsheets/junit-mockito-assertj.md", kind: "Implementation", reason: "Write focused Java tests with useful assertions and fixtures." },
+    ],
     sections: [
       { title: "Testing Practice", pages: [
         {"path":"cheatsheets/tdd.md","description":"Test-first design loop","tags":[]},
@@ -189,6 +226,10 @@ export const categories: Category[] = [
     id: "delivery-operations",
     title: "Delivery & Operations",
     description: "Build, deploy, observe, and troubleshoot running software.",
+    startHere: [
+      { path: "cheatsheets/observability.md", kind: "Concepts", reason: "Choose signals that explain user-visible behavior." },
+      { path: "cheatsheets/opentelemetry-micrometer.md", kind: "Implementation", reason: "Wire instrumentation and export signals without duplication." },
+    ],
     sections: [
       { title: "Build & Deployment", pages: [
         {"path":"cheatsheets/gitlab-ci.md","description":"Workflow rules, Maven verification, runners, artifacts and protected releases","tags":["Java"]},
@@ -200,6 +241,7 @@ export const categories: Category[] = [
         {"path":"cheatsheets/github-actions-maven.md","description":"Verification workflows, PR trust, permissions and artifact promotion","tags":["Java"]},
       ] },
       { title: "Observability & Diagnostics", pages: [
+        { path: "cheatsheets/log4j2.md", description: "Configuration ownership, rolling files, context, duplicate events, and verification", tags: ["Java"] },
         {"path":"cheatsheets/splunk.md","description":"SPL pipelines, field extraction, aggregation, ingestion and alert checks","tags":[]},
         {"path":"cheatsheets/cloudtrail-cloudwatch.md","description":"AWS audit events, metrics, Logs Insights, alarms and retention","tags":["Reliability"]},
         {"path":"cheatsheets/windows-powershell.md","description":"Processes, ports, services, quoting, native commands and runtime context","tags":[]},
@@ -219,6 +261,10 @@ export const categories: Category[] = [
     id: "gis-geospatial",
     title: "GIS & Geospatial",
     description: "Handle spatial data, coordinate systems, and rasters correctly.",
+    startHere: [
+      { path: "cheatsheets/geospatial-correctness.md", kind: "Concepts", reason: "Establish coordinate, unit, and geometry assumptions." },
+      { path: "cheatsheets/raster-gis.md", kind: "Implementation", reason: "Inspect, align, and resample grids with explicit validity rules." },
+    ],
     sections: [
       { title: "Spatial Data", pages: [
         {"path":"cheatsheets/geospatial-correctness.md","description":"CRS, axis order, measurement, topology, resource ownership","tags":["Java","Modeling"]},

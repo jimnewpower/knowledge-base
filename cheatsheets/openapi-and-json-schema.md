@@ -14,7 +14,7 @@ A published spec is a contract. Removing a promised response field can break cal
 
 Complete OpenAPI 3.0.3 document for one operation; authentication and other production operations are outside this example:
 
-```yaml
+```yaml validate
 openapi: 3.0.3
 info:
   title: Order API
@@ -63,7 +63,7 @@ components:
 
 Standalone JSON Schema 2020-12 document, not an OpenAPI 3.0 Schema Object. This example intentionally restricts the top-level fields and models nonnegative amounts with two decimal places:
 
-```json
+```json validate
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
