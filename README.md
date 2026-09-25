@@ -2,18 +2,18 @@
 
 A public, searchable software engineering reference: concise explanations, practical examples, tradeoffs, and troubleshooting guidance. Use it to look up a concept, compare approaches, or find implementation details.
 
-The collection serves developers and architects across languages and platforms. Java has substantial coverage, alongside web development, data, security, integration, testing, delivery, and geospatial software libraries.
+The collection serves developers and architects across languages and platforms. Java has substantial coverage, alongside web development, AI, data, security, integration, testing and delivery.
 
 ## Find what you need
 
 - [Browse all cheat sheets](cheatsheets/README.md) for topic summaries.
 - [Start with a reading path](guides/start-here.md) to distinguish concepts from implementation.
-- Use the reader's ten categories, topic filters, related links, and full-text search.
+- Use the reader's categories, topic filters, related links, and full-text search.
 - Search by concept, API, command, or acronym: `virtual threads`, `rebase`, `JPA`, `a11y`, or `i18n`. Prefixes, common aliases, limited typo tolerance, and a category filter help narrow results.
 
 ## Scope
 
-References cover languages, browser fundamentals, application architecture, APIs, integration, persistence, security, testing, delivery, operations, and AI. The AI category covers assisted development, model fundamentals, prompting, context, retrieval, tools, skills, evaluation, and security. Specialized technologies are welcome when the explanation is reusable across projects.
+References cover languages, browser fundamentals, application architecture, APIs, integration, persistence, security, testing, delivery, operations, and AI. The AI category covers assisted development, model fundamentals, prompting, context, retrieval, tools, skills, evaluation, and security.
 
 This collection does not hold product plans, project histories, private organizational knowledge, domain doctrine, or project architecture decision records. Guidance about writing ADRs is a reference topic; individual decisions belong with their projects. Examples use generic names and identify assumptions explicitly.
 
