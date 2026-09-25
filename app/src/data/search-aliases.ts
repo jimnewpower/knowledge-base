@@ -12,6 +12,7 @@ export const searchAliases: Record<string, string[]> = {
   "cheatsheets/ai-evaluation.md": ["evals", "llm evaluation", "model evaluation"],
   "cheatsheets/ai-security.md": ["prompt injection", "tool poisoning", "ai security"],
   "cheatsheets/authentication.md": ["auth", "login", "sign in", "identity verification"],
+  "cheatsheets/jwt.md": ["jwt", "json web token", "jws", "jwe", "jwks", "token validation", "bearer token"],
   "cheatsheets/authorization.md": ["auth", "permissions", "access control"],
   "cheatsheets/jpa-and-hibernate.md": ["jpa", "hibernate", "orm", "object relational mapping"],
   "cheatsheets/java-concurrency.md": ["multithreading", "parallelism", "virtual threads"],

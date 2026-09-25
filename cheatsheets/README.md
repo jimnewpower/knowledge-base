@@ -22,6 +22,7 @@ When editing a sheet, compile applicable Java fragments in a small harness, pars
 | [Python library reference](python-libraries.md) | Standard library, package/import names, HTTP[^http], scientific computing, GIS and testing |
 | [REST APIs](rest-apis.md)[^rest] | HTTP APIs, resources, errors, versioning |
 | [Authentication](authentication.md) | Proving identity |
+| [JWT](jwt.md)[^jwt] | Token structure, claims, validation, key rotation, storage and troubleshooting |
 | [Authorization](authorization.md) | Deciding what an identity may do |
 | [Maven](maven.md) | Build, dependencies, multi-module Java |
 | [AI prompt and context engineering](ai-prompt-and-context-engineering.md)[^ai] | Overview of instructions, working context, and agent collaboration |
@@ -186,7 +187,7 @@ This map connects engineering skills to practical references. A skill can span s
 |-------|--------------|
 | Microsoft Entra ID | [Entra ID, SSO, and JWT](entra-id.md) |
 | Single sign-on (SSO) | [Entra ID, SSO, and JWT](entra-id.md), [authentication](authentication.md) |
-| JWT authentication | [Authentication](authentication.md), [Entra API token validation](entra-id.md), [Spring Security](spring-security.md) |
+| JWT authentication | [JWT](jwt.md), [authentication](authentication.md), [Entra API token validation](entra-id.md), [Spring Security](spring-security.md) |
 | Secrets management | [Secrets management](secrets-management.md) |
 | Licensing telemetry | [Application licensing and telemetry](licensing-telemetry.md) |
 

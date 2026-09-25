@@ -219,6 +219,7 @@ export const categories: Category[] = [
       { title: "Identity & Access", pages: [
         {"path":"cheatsheets/entra-id.md","description":"App registrations, identity flows, API token validation and permission diagnosis","tags":[]},
         {"path":"cheatsheets/authentication.md","description":"Proving identity","tags":[]},
+        {"path":"cheatsheets/jwt.md","description":"Token structure, claims, validation, key rotation and troubleshooting","tags":[]},
         {"path":"cheatsheets/authorization.md","description":"Deciding what an identity may do","tags":[]},
         {"path":"cheatsheets/spring-security.md","description":"Filter chains, request rules, CSRF/CORS, method security and tests","tags":["Java"]},
       ] },
