@@ -168,3 +168,26 @@ describe("category browsing", () => {
     expect(container.querySelectorAll(".page-link")).toHaveLength(2);
   });
 });
+
+describe("theme switch", () => {
+  afterEach(() => {
+    localStorage.clear();
+    delete document.documentElement.dataset.theme;
+  });
+
+  it("starts from the pre-applied theme and persists each toggle", async () => {
+    document.documentElement.dataset.theme = "light";
+    await act(async () => root.render(createElement(App)));
+    const toggle = container.querySelector<HTMLButtonElement>(".theme-switch")!;
+    expect(toggle.getAttribute("aria-checked")).toBe("false");
+
+    await click(".theme-switch");
+    expect(toggle.getAttribute("aria-checked")).toBe("true");
+    expect(document.documentElement.dataset.theme).toBe("dark");
+    expect(localStorage.getItem("kb-theme")).toBe("dark");
+
+    await click(".theme-switch");
+    expect(document.documentElement.dataset.theme).toBe("light");
+    expect(localStorage.getItem("kb-theme")).toBe("light");
+  });
+});

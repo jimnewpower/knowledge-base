@@ -4,6 +4,7 @@ import type { IndexedDoc, SearchHit, TreeNode } from "../types";
 import { categories } from "../data/categories";
 import { availablePages, categoryFor } from "../lib/catalog";
 import { home } from "../lib/navigation";
+import { useTheme } from "../lib/theme";
 import type { LocationState, Navigate } from "../lib/navigation";
 import CategoryIcon from "./CategoryIcon";
 import NavigationLink from "./NavigationLink";
@@ -64,6 +65,7 @@ export default function Sidebar({
   onRetry,
 }: Props) {
   const [mobileBrowse, setMobileBrowse] = useState(false);
+  const { theme, toggleTheme } = useTheme();
   const openLocation: Navigate = (next) => {
     navigate(next);
     setMobileBrowse(false);
@@ -71,16 +73,22 @@ export default function Sidebar({
   return (
     <aside className={`sidebar${mobileBrowse || showResults ? " mobile-open" : ""}`}>
       <div className="sidebar-head">
-        <NavigationLink className="brand" to={home} navigate={openLocation} aria-label="Knowledge base home">
-          <svg viewBox="0 0 32 32" className="brand-mark" aria-hidden="true">
-            <rect width="32" height="32" rx="6" fill="#3a2a22" />
-            <path d="M8 9h16v2.2H8zm0 5.8h16v2.2H8zm0 5.8h10v2.2H8z" fill="#f6f3ed" />
-          </svg>
-          <div>
-            <div className="brand-kicker">Software engineering</div>
-            <div className="brand-title">Knowledge base</div>
-          </div>
-        </NavigationLink>
+        <div className="sidebar-top">
+          <NavigationLink className="brand" to={home} navigate={openLocation} aria-label="Knowledge base home">
+            <svg viewBox="0 0 32 32" className="brand-mark" aria-hidden="true">
+              <rect width="32" height="32" rx="6" fill="#3a2a22" />
+              <path d="M8 9h16v2.2H8zm0 5.8h16v2.2H8zm0 5.8h10v2.2H8z" fill="#f6f3ed" />
+            </svg>
+            <div>
+              <div className="brand-kicker">Software engineering</div>
+              <div className="brand-title">Knowledge base</div>
+            </div>
+          </NavigationLink>
+          <button type="button" className="theme-switch" role="switch" aria-checked={theme === "dark"} aria-label="Dark mode"
+            title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"} onClick={toggleTheme}>
+            <span className="theme-switch-thumb" aria-hidden="true" />
+          </button>
+        </div>
         <button className="mobile-browse-toggle" type="button" aria-expanded={mobileBrowse || showResults} aria-controls="sidebar-content" onClick={() => {
           onShowLibrary();
           setMobileBrowse(showResults ? true : !mobileBrowse);
