@@ -4,7 +4,7 @@
 
 Choose the credential model first, then make filter-chain coverage and authorization explicit.
 
-Related: [authentication](authentication.md), [token validation](jwt.md), [authorization](authorization.md), [application security](application-security.md), [Spring Boot](spring-boot.md).
+Related: [authentication](authentication.md), [delegated access flows](oauth.md), [token validation](jwt.md), [authorization](authorization.md), [application security](application-security.md), [Spring Boot](spring-boot.md).
 
 ## Configuration boundaries
 
