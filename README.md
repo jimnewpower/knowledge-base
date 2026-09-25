@@ -186,7 +186,7 @@ Directories other than `cheatsheets/` are created when the first real note needs
 
 ## Browse locally
 
-The reader in `app/` indexes the Markdown notes in this repository and renders them in a browser.
+The reader in `app/` indexes the Markdown notes in this repository and renders them in a browser. Its homepage offers nine topic categories; category pages group notes with summaries, content-type and topic filters, and selected related links. Search and the sidebar's **All files** view also cover the complete collection.
 
 ```powershell
 cd app

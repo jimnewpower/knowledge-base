@@ -10,6 +10,25 @@ npm start
 
 Opens http://127.0.0.1:5180.
 
+## Browse by category
+
+The home page presents nine categories with icons, descriptions, and counts of their primary pages. Each category groups its notes into sections with short summaries. Content-type and topic filters narrow the primary list; a separate **Related topics** section holds selected references from other categories.
+
+- Category: http://127.0.0.1:5180/?category=architecture-design
+- Filtered category: http://127.0.0.1:5180/?category=languages-tools&tag=Java
+- Note: http://127.0.0.1:5180/?doc=cheatsheets/c4-diagrams.md
+
+Breadcrumbs return to the note's primary category, including when it was opened through a related link or search. Browser Back and Forward restore pages and category filters. The brand and Home link return to the category grid. **All files** in the sidebar retains access to the complete repository tree, including index pages and notes not yet categorized. On narrow screens, **Browse** toggles the category/file navigation; search results open automatically.
+
+Category membership lives in `src/data/categories.ts`. When adding a note:
+
+1. Add its repository-relative path, a short description, and relevant tags to exactly one category section.
+2. Optionally list the same path in one other category's `related` array. Do not duplicate the file or give it a second primary home.
+3. Update the Markdown indexes as usual. Titles come from each note's H1.
+4. Run `npm test` and `npm run build`. Catalog tests detect missing sheets, duplicate primary homes, broken paths, and excess secondary memberships.
+
+Content types are independent of categories: `cheatsheets/`, `architecture/`, `decisions/`, and `runbooks/` map to Cheat sheet, Architecture note, ADR, and Runbook; other paths use Note. Add future documents from those folders to the same category catalog. Counts reflect available primary documents and exclude related links.
+
 Run it from a checkout. The dev server reads the Markdown beside `app/`. Opening `dist/index.html` as a file will not load notes, because the index is served by that server. The port is set in `vite.config.ts`.
 
 ## Search

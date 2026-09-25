@@ -2,32 +2,22 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { KeyboardEvent } from "react";
 import Sidebar from "./components/Sidebar";
 import Viewer from "./components/Viewer";
-import { ancestors, defaultExpanded, isCheatSheet } from "./lib/paths";
+import { ancestors, defaultExpanded } from "./lib/paths";
 import { runSearch } from "./lib/search";
-import type { View } from "./types";
+import { categories } from "./data/categories";
+import { categoryFor, pageTitle } from "./lib/catalog";
+import { home, useNavigation } from "./lib/navigation";
+import BrowsePage from "./components/Browse";
+import Breadcrumbs from "./components/Breadcrumbs";
 import { useCorpus } from "./useCorpus";
 
-function readUrl() {
-  const params = new URLSearchParams(window.location.search);
-  const rawHash = window.location.hash.replace(/^#/, "");
-  let hash = rawHash;
-  try {
-    hash = decodeURIComponent(rawHash);
-  } catch {
-    hash = rawHash;
-  }
-  const view: View = params.get("view") === "enhanced" ? "enhanced" : "original";
-  return { q: params.get("q") ?? "", doc: params.get("doc"), hash, view };
-}
-
 export default function App() {
-  const initial = useRef(readUrl());
+  const { location, navigate } = useNavigation();
+  const { q: query, doc: selected, hash, view } = location;
+  const category = categories.find((item) => item.id === location.category);
+  const initialQuery = useRef(query);
   const inputRef = useRef<HTMLInputElement>(null);
   const { tree, docs, mini, revision, loading, error, reload } = useCorpus();
-  const [query, setQuery] = useState(initial.current.q);
-  const [selected, setSelected] = useState<string | null>(initial.current.doc);
-  const [hash, setHash] = useState(initial.current.hash);
-  const [view, setView] = useState<View>(initial.current.view);
   const [browseLocked, setBrowseLocked] = useState(false);
   const [userExpanded, setUserExpanded] = useState<Set<string> | null>(null);
   const [activeHit, setActiveHit] = useState(0);
@@ -38,35 +28,34 @@ export default function App() {
   );
   const showResults = Boolean(query.trim()) && !browseLocked;
   const expanded = userExpanded ?? defaultExpanded(tree, selected);
-
-  useEffect(() => {
-    if (selected || loading || docs.length === 0) return;
-    if (docs.some((doc) => doc.path === "README.md")) setSelected("README.md");
-    else setSelected(docs[0].path);
-  }, [selected, loading, docs]);
+  const selectedDoc = docs.find((doc) => doc.path === selected);
+  const selectedTitle = selectedDoc ? pageTitle(selectedDoc) : selected ?? "";
+  const previousPage = useRef(`${selected}|${location.category}`);
 
   useEffect(() => {
     const doc = docs.find((item) => item.path === selected);
-    document.title = doc ? `${doc.title} · Knowledge base` : "Knowledge base";
-  }, [docs, selected]);
+    const title = doc ? pageTitle(doc) : category?.title;
+    document.title = title ? `${title} · Knowledge base` : "Knowledge base";
+  }, [docs, selected, category]);
 
   useEffect(() => {
-    const params = new URLSearchParams();
-    if (query.trim()) params.set("q", query.trim());
-    if (selected) params.set("doc", selected);
-    if (view === "enhanced" && isCheatSheet(selected)) params.set("view", view);
-    const qs = params.toString();
-    const next = `${window.location.pathname}${qs ? `?${qs}` : ""}${hash ? `#${hash}` : ""}`;
-    const current = `${window.location.pathname}${window.location.search}${window.location.hash}`;
-    if (current !== next) history.replaceState(null, "", next);
-  }, [query, selected, hash, view]);
+    setBrowseLocked(false);
+  }, [selected, location.category]);
+
+  useEffect(() => {
+    const main = document.getElementById("main-content");
+    main?.scrollTo({ top: 0 });
+    const page = `${selected}|${location.category}`;
+    if (previousPage.current !== page) main?.focus({ preventScroll: true });
+    previousPage.current = page;
+  }, [selected, location.category]);
 
   useEffect(() => {
     setActiveHit(0);
   }, [query]);
 
   useEffect(() => {
-    if (initial.current.q) inputRef.current?.focus();
+    if (initialQuery.current) inputRef.current?.focus();
   }, []);
 
   useEffect(() => {
@@ -74,7 +63,7 @@ export default function App() {
       if (event.key !== "/" || event.metaKey || event.ctrlKey || event.altKey) return;
       const target = event.target;
       if (!(target instanceof HTMLElement)) return;
-      if (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable) return;
+      if (["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName) || target.isContentEditable) return;
       event.preventDefault();
       inputRef.current?.focus();
       inputRef.current?.select();
@@ -91,15 +80,14 @@ export default function App() {
 
   const openPath = useCallback(
     (path: string, hashId?: string) => {
-      setSelected(path);
-      setHash(hashId ?? "");
+      navigate({ ...home, q: query, doc: path, hash: hashId ?? "", view });
       setUserExpanded((prev) => {
         const next = new Set(prev ?? defaultExpanded(tree, path));
         for (const dir of ancestors(path)) next.add(dir);
         return next;
       });
     },
-    [tree],
+    [tree, query, view, navigate],
   );
 
   const onToggle = useCallback(
@@ -118,7 +106,7 @@ export default function App() {
     if (event.key === "Escape") {
       event.preventDefault();
       if (query) {
-        setQuery("");
+        navigate({ ...location, q: "" }, true);
         setBrowseLocked(false);
       } else {
         event.currentTarget.blur();
@@ -146,10 +134,14 @@ export default function App() {
 
   return (
     <div className="workspace">
+      <a className="skip-link" href="#main-content">Skip to content</a>
       <Sidebar
+        location={location}
+        navigate={navigate}
+        docs={docs}
         query={query}
         onQuery={(value) => {
-          setQuery(value);
+          navigate({ ...location, q: value }, true);
           setBrowseLocked(false);
         }}
         onSubmit={openActiveHit}
@@ -170,15 +162,17 @@ export default function App() {
         docCount={docs.length}
         onRetry={() => void reload()}
       />
-      <Viewer
+      {selected ? <Viewer
         path={selected}
         query={query}
         hash={hash}
         revision={revision}
         view={view}
-        onView={setView}
+        onView={(nextView) => navigate({ ...location, view: nextView }, true)}
         onNavigate={openPath}
-      />
+        breadcrumbs={<Breadcrumbs category={categoryFor(selected)} title={selectedTitle} navigate={navigate} />}
+      /> : <BrowsePage docs={docs} location={location} navigate={navigate} loading={loading} error={error} onRetry={() => void reload()} />}
+
     </div>
   );
 }
