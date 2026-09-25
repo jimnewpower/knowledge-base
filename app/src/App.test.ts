@@ -12,6 +12,7 @@ const docs: IndexedDoc[] = [
   ["quality-attributes", "Quality attributes and architecture review", "Measurable quality scenarios"],
   ["spring-boot", "Spring Boot", "Application configuration"],
   ["spring-security", "Spring Security configuration", "Security filters"],
+  ["rag", "RAG cheat sheet", "Retrieval-augmented generation"],
 ].map(([slug, title, text]) => ({ id: `cheatsheets/${slug}.md`, path: `cheatsheets/${slug}.md`, title, text }));
 
 vi.mock("./useCorpus", () => ({ useCorpus: () => ({ tree: [], docs, mini: buildSearch(docs), revision: 1, loading: false, error: null, reload: vi.fn() }) }));
@@ -45,6 +46,17 @@ async function click(selector: string) {
 }
 
 describe("category browsing", () => {
+  it("opens AI from the home page and keeps its category on note navigation", async () => {
+    await act(async () => root.render(createElement(App)));
+    await click('.category-card[href="?category=ai"]');
+    expect(container.querySelector("h1")?.textContent).toBe("AI");
+    expect(container.querySelector(".filter-count")?.textContent).toBe("1 page");
+    expect(container.querySelector(".category-header .category-icon path")?.getAttribute("d")).toBeTruthy();
+    await click('.page-link[href="?doc=cheatsheets%2Frag.md"]');
+    expect(container.querySelector(".breadcrumbs")?.textContent).toContain("AI");
+    expect(window.location.search).toBe("?doc=cheatsheets%2Frag.md");
+  });
+
   it.each(["original", "enhanced"])("supports acronym footnotes and return links in the %s view", async (view) => {
     vi.mocked(fetch).mockResolvedValue({
       ok: true,
@@ -112,7 +124,7 @@ describe("category browsing", () => {
 
   it("opens a category, filters its pages, and restores state through back and forward", async () => {
     await act(async () => root.render(createElement(App)));
-    expect(container.querySelectorAll(".category-card")).toHaveLength(9);
+    expect(container.querySelectorAll(".category-card")).toHaveLength(10);
     expect(container.querySelector("h1")?.textContent).toBe("Knowledge, ready to use.");
 
     await click('.category-card[href="?category=architecture-design"]');
@@ -149,7 +161,7 @@ describe("category browsing", () => {
     expect(container.querySelectorAll(".result")).toHaveLength(1);
     expect(window.location.hash).toBe("#choose-the-view");
     await click('a[aria-label="Knowledge base home"]');
-    expect(container.querySelectorAll(".category-card")).toHaveLength(9);
+    expect(container.querySelectorAll(".category-card")).toHaveLength(10);
     expect(container.querySelector<HTMLInputElement>('input[type="search"]')?.value).toBe("");
   });
 

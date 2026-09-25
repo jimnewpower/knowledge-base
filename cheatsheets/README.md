@@ -24,7 +24,18 @@ When editing a sheet, compile applicable Java fragments in a small harness, pars
 | [Authentication](authentication.md) | Proving identity |
 | [Authorization](authorization.md) | Deciding what an identity may do |
 | [Maven](maven.md) | Build, dependencies, multi-module Java |
-| [AI prompt and context engineering](ai-prompt-and-context-engineering.md)[^ai] | Prompts, context windows, agent working memory |
+| [AI prompt and context engineering](ai-prompt-and-context-engineering.md)[^ai] | Overview of instructions, working context, and agent collaboration |
+| [LLM fundamentals](llm-fundamentals.md)[^llm] | Tokens, inference, context limits, generation controls, and model adaptation |
+| [AI-assisted development](ai-assisted-development.md) | Task scoping, implementation, review, and verification |
+| [Prompt engineering](prompt-engineering.md) | Task contracts, examples, grounded answers, and prompt iteration |
+| [Context engineering](context-engineering.md) | Evidence selection, context budgets, checkpoints, memory, and freshness |
+| [Agent skills development](agent-skills-development.md) | Skill scope, SKILL.md structure, supporting resources, and validation |
+| [Embeddings and vector search](embeddings-and-vector-search.md) | Similarity, lexical/hybrid retrieval, and index contracts |
+| [RAG](rag.md)[^rag] | Ingestion, authorized retrieval, evidence, citations, and failure diagnosis |
+| [MCP](mcp.md)[^mcp] | Hosts, clients, servers, primitives, transports, and tool contracts |
+| [AI agents and workflows](ai-agents-and-workflows.md) | Bounded agent loops, tool design, checkpoints, and recovery |
+| [AI evaluation](ai-evaluation.md) | Datasets, graders, retrieval metrics, regression checks, and release criteria |
+| [AI application security](ai-security.md) | Prompt injection, data boundaries, tool permissions, and adversarial checks |
 | [Clean code and SOLID](clean-code-and-solid.md)[^solid] | Readability and design principles |
 | [Object-oriented design](ood.md) | Objects, responsibilities, composition |
 | [UML](uml.md)[^uml] | Diagrams that earn their keep |
@@ -207,6 +218,9 @@ This map connects engineering skills to practical references. A skill can span s
 [^http]: Hypertext Transfer Protocol.
 [^rest]: Representational State Transfer.
 [^ai]: Artificial Intelligence.
+[^llm]: Large Language Model.
+[^rag]: Retrieval-Augmented Generation.
+[^mcp]: Model Context Protocol.
 [^solid]: Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, and Dependency Inversion — five object-oriented design principles.
 [^uml]: Unified Modeling Language.
 [^c4]: Context, Containers, Components, and Code — the four levels of the C4 architecture model.

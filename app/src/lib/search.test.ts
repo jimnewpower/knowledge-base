@@ -25,6 +25,13 @@ describe("runSearch", () => {
     ["log rotation", "log4j2"],
     ["accesibility", "accessibility"],
     ["autentication", "authentication"],
+    ["rag", "rag"],
+    ["mcp", "mcp"],
+    ["prompt engineering", "prompt-engineering"],
+    ["context engineering", "context-engineering"],
+    ["skill authoring", "agent-skills-development"],
+    ["coding assistant", "ai-assisted-development"],
+    ["evals", "ai-evaluation"],
   ])("finds %s in the first three results", (query, slug) => {
     expect(runSearch(index, corpus, query).slice(0, 3).map((hit) => hit.path)).toContain(`cheatsheets/${slug}.md`);
   });
@@ -33,6 +40,14 @@ describe("runSearch", () => {
     const paths = runSearch(index, corpus, "auth", "security-identity").map((hit) => hit.path);
     expect(paths).toContain("cheatsheets/authentication.md");
     expect(paths).toContain("cheatsheets/authorization.md");
+  });
+
+  it("finds AI topics within their primary category", () => {
+    const hits = runSearch(index, corpus, "retrieval", "ai");
+    expect(hits.map((hit) => hit.path)).toContain("cheatsheets/rag.md");
+    expect(hits.every((hit) => categoryFor(hit.path)?.id === "ai")).toBe(true);
+    expect(runSearch(index, corpus, "rag", "languages-tools").map((hit) => hit.path)).not.toContain("cheatsheets/rag.md");
+    expect(categoryFor("cheatsheets/ai-prompt-and-context-engineering.md")?.id).toBe("ai");
   });
 
   it("filters before limiting results and keeps short unknown tokens exact", () => {

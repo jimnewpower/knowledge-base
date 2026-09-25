@@ -19,6 +19,9 @@ Use this guide when several sheets seem to answer the same question. Start with 
 | How do I diagnose production behavior? | [Observability](../cheatsheets/observability.md) | [OpenTelemetry/Micrometer](../cheatsheets/opentelemetry-micrometer.md), [Log4j 2](../cheatsheets/log4j2.md) |
 | How do I ship repeatably? | [DevOps](../cheatsheets/devops.md) | [Reproducible builds](../cheatsheets/reproducible-builds.md), [GitHub Actions](../cheatsheets/github-actions-maven.md) |
 | How do I handle spatial data? | [Geospatial correctness](../cheatsheets/geospatial-correctness.md) | [Raster processing](../cheatsheets/raster-gis.md) |
+| How do I develop with an AI assistant? | [Language-model fundamentals](../cheatsheets/llm-fundamentals.md), [prompt engineering](../cheatsheets/prompt-engineering.md) | [AI-assisted development](../cheatsheets/ai-assisted-development.md), [context engineering](../cheatsheets/context-engineering.md) |
+| How do I answer from my own documents? | [Embeddings and vector search](../cheatsheets/embeddings-and-vector-search.md) | [RAG](../cheatsheets/rag.md), [evaluation](../cheatsheets/ai-evaluation.md) |
+| How do I give an assistant reusable procedures and tools? | [Agents and workflows](../cheatsheets/ai-agents-and-workflows.md) | [MCP](../cheatsheets/mcp.md), [skills development](../cheatsheets/agent-skills-development.md), [AI security](../cheatsheets/ai-security.md) |
 
 ## Related does not mean interchangeable
 
@@ -26,6 +29,7 @@ Use this guide when several sheets seem to answer the same question. Start with 
 - Integration patterns describe reusable shapes. An ESB is a shared integration runtime; an API gateway is an API boundary. Neither replaces the pattern's delivery or recovery contract.
 - Observability explains which signals are useful. Log4j configures Java logging; OpenTelemetry and Micrometer cover instrumentation and export.
 - Architecture styles compare structures. ADR guidance explains how to document a decision, not which structure every system should adopt.
+- Prompt engineering defines a task; context engineering supplies and maintains its evidence. Retrieval supplies source material, MCP connects tools and resources, and skills package reusable procedures. Evaluation checks whether the combined system succeeds.
 
 ## Search effectively
 

@@ -1,5 +1,16 @@
 // Discovery terms connect readers to a topic; they do not assert technical equivalence.
 export const searchAliases: Record<string, string[]> = {
+  "cheatsheets/llm-fundamentals.md": ["llm", "large language model", "generative ai", "tokens", "fine tuning"],
+  "cheatsheets/ai-assisted-development.md": ["ai coding", "coding assistant", "agentic coding", "pair programming"],
+  "cheatsheets/prompt-engineering.md": ["prompting", "few shot", "prompt design"],
+  "cheatsheets/context-engineering.md": ["context window", "compaction", "agent memory"],
+  "cheatsheets/agent-skills-development.md": ["agent skills", "skill development", "skill authoring", "skill.md"],
+  "cheatsheets/embeddings-and-vector-search.md": ["semantic search", "vector database", "embeddings", "hybrid search"],
+  "cheatsheets/rag.md": ["rag", "retrieval augmented generation", "grounded answers"],
+  "cheatsheets/mcp.md": ["mcp", "model context protocol", "mcp server"],
+  "cheatsheets/ai-agents-and-workflows.md": ["agentic ai", "tool calling", "function calling", "agent orchestration"],
+  "cheatsheets/ai-evaluation.md": ["evals", "llm evaluation", "model evaluation"],
+  "cheatsheets/ai-security.md": ["prompt injection", "tool poisoning", "ai security"],
   "cheatsheets/authentication.md": ["auth", "login", "sign in", "identity verification"],
   "cheatsheets/authorization.md": ["auth", "permissions", "access control"],
   "cheatsheets/jpa-and-hibernate.md": ["jpa", "hibernate", "orm", "object relational mapping"],

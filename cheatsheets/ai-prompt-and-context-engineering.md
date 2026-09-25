@@ -1,10 +1,12 @@
 # AI[^ai] prompt and context engineering cheat sheet
 
-> Baseline: Provider-neutral agent workflows; capabilities and instruction precedence depend on the runtime. Reviewed: 2026-09-24.
+> Baseline: Provider-neutral agent workflows; capabilities and instruction precedence depend on the runtime. Reviewed: 2026-09-25.
 
 Working with language models as part of software engineering: writing instructions, feeding the right context, and keeping generated work reviewable.
 
 This is engineering of *inputs and memory*, not a substitute for tests or design judgment.
+
+Use this as an overview. Focused references: [AI-assisted development](ai-assisted-development.md), [prompt engineering](prompt-engineering.md), [context engineering](context-engineering.md), [retrieval-augmented generation](rag.md), [tool integration](mcp.md), [skills development](agent-skills-development.md), [evaluation](ai-evaluation.md), and [security](ai-security.md).
 
 ## Terms
 
@@ -96,7 +98,7 @@ If the model contradicts a supplied file, check whether the excerpt is current, 
 - **Scope creep** — reformatting the module while adding a flag. Constrain paths.
 - **Lost constraints** — long threads forget the Java version. Repeat standing rules in the repo (`AGENTS.md`, this knowledge base).
 - **Secret leakage** — never paste tokens, `.env`, or production dumps into a prompt.
-- **Unverified compounding** — filing a wrong note into the knowledge base trains the next session to be wrong. People own the truth.
+- **Unverified compounding** — filing a wrong note into the knowledge base supplies false context to the next session; it does not train the model's weights. Verify durable notes against evidence.
 
 ## Trust boundaries and prompt injection
 
@@ -116,8 +118,8 @@ If the model contradicts a supplied file, check whether the excerpt is current, 
 ## Gotchas
 
 - More context is not more accuracy past the relevant set.
-- “You are an expert” adds almost nothing; constraints and files add a lot.
-- Temperature and sampling matter more for prose than for code. For code, deterministic loops + tests beat sampling tricks.
+- A role description does not replace concrete constraints, relevant files, or acceptance criteria.
+- Lower temperature does not guarantee identical or correct code. Use compilation, tests, and review to evaluate generated work.
 
 ## References
 

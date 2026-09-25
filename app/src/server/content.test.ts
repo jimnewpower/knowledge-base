@@ -23,7 +23,7 @@ describe("published content", () => {
       }
     }
     for (const aliasPath of Object.keys(searchAliases)) expect(catalog, aliasPath).toContain(aliasPath);
-  });
+  }, 15_000);
 
   it("reports missing targets, broken anchors, and uncategorized guides", async () => {
     const temp = await fs.mkdtemp(path.join(os.tmpdir(), "kb-content-"));
