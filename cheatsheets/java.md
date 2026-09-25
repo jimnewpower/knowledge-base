@@ -1,6 +1,6 @@
 # Java cheat sheet
 
-> Baseline: Java 21 language/API[^api] examples; JDK[^jdk] 25 lifecycle notes where stated. Imports and surrounding methods are omitted. Reviewed: 2026-09-24.
+> Baseline: Java 21 language/API[^api] examples; JDK[^jdk] history through 25 and lifecycle notes where stated. Imports and surrounding methods are omitted. Reviewed: 2026-09-25.
 
 Primary language of this knowledge base’s product context: enterprise services, desktops, and scientific/geospatial tools. Pin the deployed JDK. Examples use Java 21 syntax; Java 17 requires alternatives to record patterns and virtual threads.
 
@@ -153,10 +153,60 @@ var label = switch (status) {
 - `finalize` remains in JDK 25, deprecated for removal. Use try-with-resources for deterministic resource cleanup.
 - Serializing domain objects with Java serialization is a trap. Prefer JSON[^json]/Avro/protobuf at boundaries.
 
+## LTS version history
+
+LTS[^lts] releases from Java 8 onward are listed below using the [Oracle support roadmap](https://www.oracle.com/java/technologies/java-se-support-roadmap.html). Each entry highlights additions since the previous LTS; parentheses identify the version where a feature became final. Preview and incubator features are excluded. Support periods depend on the JDK vendor.
+
+### Java 8 — March 2014
+
+- Lambdas and method references for passing behavior to APIs.
+- Default and static interface methods.
+- Streams for collection processing and `Optional` for potentially absent results.
+- `java.time` for dates, times, time zones, and durations.
+- `CompletableFuture` for composing asynchronous operations.
+
+### Java 11 — September 2018
+
+- Modules, `jlink` custom runtime images, and the JShell interactive shell (9).
+- Collection factories such as `List.of`, `Set.of`, and `Map.of` (9).
+- Local variable type inference with `var` (10); `var` in lambda parameters (11).
+- Standard HTTP[^http] client with HTTP/2 and WebSocket support (11).
+- Run a single source file with `java Hello.java`; new helpers such as `String.isBlank`, `String.lines`, and `Files.readString` (11).
+
+### Java 17 — September 2021
+
+- Switch expressions with arrow cases and `yield` (14).
+- Text blocks for multiline strings (15).
+- Records for concise data carriers and pattern matching for `instanceof` (16).
+- `Stream.toList` and `jpackage` for native application installers (16).
+- Sealed classes and interfaces to restrict permitted subtypes (17).
+
+### Java 21 — September 2023
+
+- Virtual threads for scalable blocking workloads (21).
+- Record patterns for unpacking record components (21).
+- Pattern matching for `switch`, including guarded cases and `case null` (21).
+- Sequenced collections with consistent first/last element access and reversed views (21).
+
+### Java 25 — September 2025
+
+- Unnamed variables and patterns using `_` for intentionally unused values (22).
+- Foreign Function and Memory API for calling native code and accessing native memory (22).
+- Scoped values for sharing context within a bounded execution scope (25).
+- Module import declarations, compact source files, and instance `main` methods (25).
+- Flexible constructor bodies allow restricted initialization and validation before `super(...)` or `this(...)` (25).
+
 ## References
 
 - [Java 21 — language changes and syntax](https://docs.oracle.com/en/java/javase/21/language/java-language-changes.html)
 - [Java 25 — Object equality and deprecated finalization](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html)
+- [Oracle Java support roadmap — LTS releases and release dates](https://www.oracle.com/java/technologies/java-se-support-roadmap.html)
+- [Java 8 — feature overview](https://www.oracle.com/java/technologies/javase/8-whats-new.html)
+- [Java 11 — release notes](https://www.oracle.com/java/technologies/javase/11-relnote-issues.html)
+- [Java 25 — language changes by release](https://docs.oracle.com/en/java/javase/25/language/java-language-changes-summary.html)
+- [Java 21 — release notes](https://www.oracle.com/java/technologies/javase/21-relnote-issues.html)
+- [Java 22 — significant changes](https://docs.oracle.com/en/java/javase/25/migrate/significant-changes-jdk-22.html)
+- [Java 25 — release notes](https://www.oracle.com/java/technologies/javase/25-relnote-issues.html)
 
 [^api]: Application Programming Interface — the contract through which software components interact.
 [^jdk]: Java Development Kit.
@@ -166,3 +216,5 @@ var label = switch (status) {
 [^jpms]: Java Platform Module System.
 [^json]: JavaScript Object Notation.
 [^vm]: Virtual Machine.
+[^lts]: Long-Term Support — a vendor commitment to maintain selected releases for an extended period.
+[^http]: Hypertext Transfer Protocol — the request/response protocol used by web clients and servers.
