@@ -211,6 +211,8 @@ Indexed in [cheatsheets/README.md](cheatsheets/README.md), including a [résumé
 | Git | [cheatsheets/git.md](cheatsheets/git.md) |
 | Bash | [cheatsheets/bash.md](cheatsheets/bash.md) |
 | Java | [cheatsheets/java.md](cheatsheets/java.md) |
+| Java library reference | [cheatsheets/java-libraries.md](cheatsheets/java-libraries.md) |
+| Python library reference | [cheatsheets/python-libraries.md](cheatsheets/python-libraries.md) |
 | REST APIs | [cheatsheets/rest-apis.md](cheatsheets/rest-apis.md) |
 | Authentication | [cheatsheets/authentication.md](cheatsheets/authentication.md) |
 | Authorization | [cheatsheets/authorization.md](cheatsheets/authorization.md) |

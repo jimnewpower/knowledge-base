@@ -13,6 +13,8 @@ When editing a sheet, compile applicable Java fragments in a small harness, pars
 | [Git](git.md) | Branching, history, undo, collaboration |
 | [Bash](bash.md) | Shell, pipelines, scripting on Linux |
 | [Java](java.md) | Language, types, concurrency, modern Java |
+| [Java library reference](java-libraries.md) | JDK APIs, Maven coordinates, library selection, testing, desktop and GIS |
+| [Python library reference](python-libraries.md) | Standard library, package/import names, HTTP, scientific computing, GIS and testing |
 | [REST APIs](rest-apis.md) | HTTP APIs, resources, errors, versioning |
 | [Authentication](authentication.md) | Proving identity |
 | [Authorization](authorization.md) | Deciding what an identity may do |
