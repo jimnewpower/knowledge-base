@@ -53,6 +53,7 @@ When editing a sheet, compile applicable Java fragments in a small harness, pars
 | [Java concurrency](java-concurrency.md) | Happens-before, pools, virtual threads |
 | [Resilience and integration failure](resilience.md) | Timeouts, retries, idempotency |
 | [Design patterns](design-patterns.md) | GoF[^gof] and enterprise names |
+| [JSON](json.md) | Objects, arrays, value types, escaping, and common syntax errors |
 | [OpenAPI and JSON Schema](openapi-and-json-schema.md) | HTTP and JSON contracts |
 | [Application security](application-security.md) | Builder-facing OWASP[^owasp] |
 | [JVM performance and GC](jvm-performance.md)[^jvm][^gc] | Heap, allocation, pauses |
