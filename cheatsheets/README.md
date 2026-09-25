@@ -112,7 +112,11 @@ When editing a sheet, compile applicable Java fragments in a small harness, pars
 | [MyBatis](mybatis.md) | SQL mapping, bound parameters, session ownership, transactions and query behavior |
 | [Angular](angular.md) | Standalone components, signals, forms, HTTP streams and frontend delivery |
 | [Windows and PowerShell diagnostics](windows-powershell.md) | Processes, ports, services, quoting, native commands and runtime context |
-| [AWS application operations](aws.md)[^aws] | Accounts, roles, Regions, service choices, access diagnosis and recovery |
+| [AWS cloud services](aws-services.md)[^aws] | Service breakdown across compute, data, networking, integration, security, AI, and operations |
+| [Azure cloud services](azure-services.md) | Microsoft cloud service roles, hosting choices, data platforms, identity, and delivery |
+| [Google Cloud services](gcp-services.md)[^gcp] | Google cloud service roles, projects, compute, databases, analytics, and operations |
+| [Oracle Cloud services](oracle-cloud-services.md)[^oci] | Oracle infrastructure, managed databases, integration, security, and operations |
+| [AWS application operations](aws.md) | Accounts, roles, Regions, service choices, access diagnosis and recovery |
 | [Azure application operations](azure.md) | Tenants, subscriptions, identities, service choices, RBAC[^rbac] and networking |
 | [Terraform](terraform.md) | Plan review, state protection, version locks, drift, refactoring and apply |
 | [Oracle Database](oracle.md) | SQL dialect, types, DDL[^ddl] commits, JDBC behavior and query diagnostics |
@@ -173,8 +177,10 @@ This map connects engineering skills to practical references. A skill can span s
 | Linux | [Linux diagnostics](linux-diagnostics.md), [Bash](bash.md) |
 | Docker | [Docker and containers](docker.md) |
 | OpenShift | [Kubernetes and OpenShift](kubernetes-openshift.md) |
-| AWS | [AWS application operations](aws.md) |
-| Azure | [Azure application operations](azure.md) |
+| AWS | [AWS cloud services](aws-services.md), [AWS application operations](aws.md) |
+| Azure | [Azure cloud services](azure-services.md), [Azure application operations](azure.md) |
+| Google Cloud | [Google Cloud services](gcp-services.md) |
+| Oracle Cloud | [Oracle Cloud services](oracle-cloud-services.md) |
 | Terraform | [Terraform](terraform.md) |
 | Oracle Database | [Oracle Database](oracle.md) |
 | DynamoDB | [DynamoDB](dynamodb.md) |
@@ -257,6 +263,8 @@ This map connects engineering skills to practical references. A skill can span s
 [^ui]: User Interface.
 [^cdi]: Contexts and Dependency Injection.
 [^aws]: Amazon Web Services.
+[^gcp]: Google Cloud Platform.
+[^oci]: Oracle Cloud Infrastructure.
 [^rbac]: Role-Based Access Control.
 [^ddl]: Data Definition Language — statements that change database structures.
 [^url]: Uniform Resource Locator.

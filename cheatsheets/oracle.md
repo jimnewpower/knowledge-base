@@ -4,7 +4,7 @@
 
 Check Oracle behavior directly when porting SQL or testing a Java persistence layer. Compatibility modes in another database do not reproduce transaction, optimizer, or type semantics.
 
-Related: [SQL](sql.md), [MyBatis](mybatis.md), [transactions](transactions-and-isolation.md), [H2](h2.md).
+Related: [Oracle Cloud services](oracle-cloud-services.md), [SQL](sql.md), [MyBatis](mybatis.md), [transactions](transactions-and-isolation.md), [H2](h2.md).
 
 ## Dialect and type reminders
 

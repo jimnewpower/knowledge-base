@@ -4,7 +4,7 @@
 
 Tenant, subscription, resource group, and resource are different scopes. Verify them before debugging role assignments, networking, or deployment.
 
-Related: [Entra ID](entra-id.md)[^id], [Terraform](terraform.md), [secrets management](secrets-management.md), [observability](observability.md).
+Related: [Azure service catalog](azure-services.md), [Entra ID](entra-id.md)[^id], [Terraform](terraform.md), [secrets management](secrets-management.md), [observability](observability.md).
 
 ## Establish context
 
