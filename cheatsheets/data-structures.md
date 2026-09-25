@@ -21,7 +21,7 @@ Complexities below are typical average / common-case for the usual implementatio
 | Structure | Java | Lookup | Insert | Notes |
 |-----------|------|--------|--------|-------|
 | Hash table | `HashMap` / `HashSet` | average O(1) | average O(1) | Needs `equals`/`hashCode`. Worst O(n) if hashes collapse |
-| Linked hash | `LinkedHashMap` | average O(1) | average O(1) | Predictable iteration / LRU building block |
+| Linked hash | `LinkedHashMap` | average O(1) | average O(1) | Predictable iteration / LRU[^lru] building block |
 | Balanced tree | `TreeMap` / `TreeSet` | O(log n) | O(log n) | Sorted by `compareTo` |
 | Hash + concurrency | `ConcurrentHashMap` | average O(1) | average O(1) | Default concurrent map |
 | Identity map | `IdentityHashMap` | average O(1) | average O(1) | `==` not `equals` — rare |
@@ -30,7 +30,7 @@ Complexities below are typical average / common-case for the usual implementatio
 
 | Structure | Use |
 |-----------|-----|
-| Binary tree / BST | Ordered hierarchy; prefer balanced (`TreeMap`) over hand-rolled BST |
+| Binary tree / BST[^bst] | Ordered hierarchy; prefer balanced (`TreeMap`) over hand-rolled BST |
 | Heap | Priority queue — `PriorityQueue` is a binary heap, peek min/max O(1), insert O(log n) |
 | Trie | Prefix search, dictionaries |
 | Graph (adj list) | Networks, dependencies, workflows — `Map<N, List<N>>` |
@@ -61,6 +61,8 @@ Default insertion order evicts the oldest insertion, not the least recently acce
 
 ## How to choose
 
+Example abbreviations: DB[^db].
+
 ```text
 Need index by position?          list / array
 Need key -> value?               hash map
@@ -86,9 +88,14 @@ If the data already lives in the database and the working set is large, the *dat
 - `LinkedList` as a queue is slower than `ArrayDeque` for almost all application code.
 - Boxing: `List<Integer>` is not an `int[]`. For tight numeric loops, use primitive arrays or specialized collections.
 - Returning an internal `List` from an entity leaks structure. Copy or wrap unmodifiable.
-- Measuring beats folklore once `n` is large or the hot path is in a GC-sensitive service.
+- Measuring beats folklore once `n` is large or the hot path is in a GC[^gc]-sensitive service.
 
 ## References
 
 - [Java 21 — LinkedHashMap access order and eviction](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/LinkedHashMap.html)
 - [Java 21 — ArrayDeque operation costs](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/ArrayDeque.html)
+
+[^lru]: Least Recently Used.
+[^bst]: Binary Search Tree.
+[^gc]: Garbage Collection (or Garbage Collector, depending on context).
+[^db]: Database.

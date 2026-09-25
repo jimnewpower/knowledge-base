@@ -1,10 +1,10 @@
 # Web accessibility cheat sheet
 
-> Baseline: WCAG 2.2 vocabulary and WAI implementation guidance for web interfaces. Reviewed: 2026-09-25.
+> Baseline: WCAG[^wcag] 2.2 vocabulary and WAI[^wai] implementation guidance for web interfaces. Reviewed: 2026-09-25.
 
 Use this when designing controls or checking keyboard, assistive-technology, and enlarged-text workflows. This is an implementation starting point, not a conformance audit.
 
-Related: [HTML and CSS](html-css-browser.md), [React](react.md), [testing](testing.md), [localization](localization.md).
+Related: [HTML and CSS](html-css-browser.md)[^html][^css], [React](react.md), [testing](testing.md), [localization](localization.md).
 
 ## Build meaning into the page
 
@@ -17,7 +17,7 @@ Related: [HTML and CSS](html-css-browser.md), [React](react.md), [testing](testi
 | Forms | Persistent labels, instructions, field-specific errors |
 | Status | Announce relevant asynchronous results without unnecessary focus movement |
 
-ARIA exposes semantics; it does not implement keyboard interactions. A custom widget needs both. See [WAI tutorials](https://www.w3.org/WAI/tutorials/).
+ARIA[^aria] exposes semantics; it does not implement keyboard interactions. A custom widget needs both. See [WAI tutorials](https://www.w3.org/WAI/tutorials/).
 
 ## Label and explain input
 
@@ -47,3 +47,9 @@ Record browser/assistive-technology versions and observed failures. A passing sc
 
 - [WCAG 2.2](https://www.w3.org/TR/WCAG22/)
 - [WAI Easy Checks](https://www.w3.org/WAI/test-evaluate/preliminary/)
+
+[^wcag]: Web Content Accessibility Guidelines.
+[^wai]: Web Accessibility Initiative.
+[^html]: Hypertext Markup Language.
+[^css]: Cascading Style Sheets.
+[^aria]: Accessible Rich Internet Applications — semantics exposed to assistive technology.

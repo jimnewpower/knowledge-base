@@ -1,10 +1,10 @@
 # Internationalization and localization cheat sheet
 
-> Baseline: Unicode text, BCP 47 locale identifiers, and JavaScript Intl APIs in modern browsers/Node.js. Reviewed: 2026-09-25.
+> Baseline: Unicode text, BCP[^bcp] 47 locale identifiers, and JavaScript Intl APIs[^api] in modern browsers/Node.js. Reviewed: 2026-09-25.
 
-Use this when adapting interfaces to languages, regional formats, or writing directions. Internationalization (i18n) enables adaptation; localization (l10n) supplies a particular experience. See [W3C terminology](https://www.w3.org/International/questions/qa-i18n).
+Use this when adapting interfaces to languages, regional formats, or writing directions. Internationalization (i18n) enables adaptation; localization (l10n) supplies a particular experience. See [W3C terminology](https://www.w3.org/International/questions/qa-i18n)[^w3c].
 
-Related: [Java date and time](java-time.md), [JavaScript](javascript.md), [HTML and CSS](html-css-browser.md), [accessibility](accessibility.md).
+Related: [Java date and time](java-time.md), [JavaScript](javascript.md), [HTML and CSS](html-css-browser.md)[^html][^css], [accessibility](accessibility.md).
 
 ## Separate the choices
 
@@ -43,10 +43,17 @@ Spacing and punctuation can vary with locale data. Do not parse formatted output
 
 ## Layout and input
 
-Declare document language and appropriate direction. Prefer CSS logical properties when layout should follow writing direction. Test long labels and mixed-direction content. Date-only values and instants need different models; a birthday is not an instant at midnight UTC.
+Declare document language and appropriate direction. Prefer CSS logical properties when layout should follow writing direction. Test long labels and mixed-direction content. Date-only values and instants need different models; a birthday is not an instant at midnight UTC[^utc].
 
 Define parsing separately from formatting. Reject ambiguous input with useful feedback. Keep search normalization separate from identity comparisons; do not alter stored names to simplify search.
 
 ## Verification
 
 Test contrasting locales, right-to-left layout, plural boundaries, missing translations, and zone/day boundaries. Content-example tests exercise explicit locale and time-zone behavior without pinning incidental punctuation.
+
+[^bcp]: Best Current Practice — a series of Internet standards guidance documents.
+[^api]: Application Programming Interface — the contract through which software components interact.
+[^w3c]: World Wide Web Consortium.
+[^html]: Hypertext Markup Language.
+[^css]: Cascading Style Sheets.
+[^utc]: Coordinated Universal Time.

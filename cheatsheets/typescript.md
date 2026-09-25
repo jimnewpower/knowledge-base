@@ -1,10 +1,10 @@
 # TypeScript and runtime validation cheat sheet
 
-> Baseline: TypeScript 5.8 with strict checking; examples use standard JavaScript runtime APIs. Reviewed: 2026-09-24.
+> Baseline: TypeScript 5.8 with strict checking; examples use standard JavaScript runtime APIs[^api]. Reviewed: 2026-09-24.
 
 TypeScript checks what your program claims about values. Validate external data before turning those values into trusted application types.
 
-Related: [OpenAPI and JSON Schema](openapi-and-json-schema.md), [REST APIs](rest-apis.md), [React fundamentals](react.md), [React Native offline data](react-native-offline.md).
+Related: [OpenAPI and JSON Schema](openapi-and-json-schema.md)[^json], [REST APIs](rest-apis.md)[^rest], [React fundamentals](react.md), [React Native offline data](react-native-offline.md).
 
 ## Compiler settings
 
@@ -65,7 +65,7 @@ Use an exhaustive `switch` with a `never` check when every union variant must be
 
 ## Async boundaries
 
-Handle rejected promises and non-success HTTP responses separately. `fetch` normally resolves for HTTP 4xx/5xx; inspect status before accepting the body. Cancel obsolete requests where supported and prevent stale completions from overwriting newer state. Validate persisted data after app upgrades as well as network data.
+Handle rejected promises and non-success HTTP[^http] responses separately. `fetch` normally resolves for HTTP 4xx/5xx; inspect status before accepting the body. Cancel obsolete requests where supported and prevent stale completions from overwriting newer state. Validate persisted data after app upgrades as well as network data.
 
 Test malformed objects, missing fields, nulls, non-finite numbers, range boundaries, and the chosen extra-field policy. Compile checks and runtime checks address different failure modes.
 
@@ -75,3 +75,8 @@ Test malformed objects, missing fields, nulls, non-finite numbers, range boundar
 - [Strict mode](https://www.typescriptlang.org/tsconfig/strict.html)
 - [TypeScript object types](https://www.typescriptlang.org/docs/handbook/2/objects.html)
 - [Fetch response handling](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)
+
+[^api]: Application Programming Interface — the contract through which software components interact.
+[^json]: JavaScript Object Notation.
+[^rest]: Representational State Transfer.
+[^http]: Hypertext Transfer Protocol.

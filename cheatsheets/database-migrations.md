@@ -1,6 +1,6 @@
 # Database migrations and backfills cheat sheet
 
-> Baseline: relational migration workflow; SQL examples target PostgreSQL 16 and require the stated existing schema. SQLite upgrades have a separate sheet. Reviewed: 2026-09-24.
+> Baseline: relational migration workflow; SQL[^sql] examples target PostgreSQL 16 and require the stated existing schema. SQLite upgrades have a separate sheet. Reviewed: 2026-09-24.
 
 A migration changes both **stored data and the contract used by running binaries**. Design the coexistence period and recovery path before changing production tables.
 
@@ -10,7 +10,7 @@ Related: [SQL](sql.md), [transactions](transactions-and-isolation.md), [SQLite](
 
 | Operation | Purpose | Typical concern |
 |-----------|---------|-----------------|
-| Schema expansion | Add a compatible representation | DDL lock duration, defaults, old clients |
+| Schema expansion | Add a compatible representation | DDL[^ddl] lock duration, defaults, old clients |
 | Data backfill | Populate historical rows | Concurrent writes, restartability, load |
 | Schema contraction | Remove the obsolete representation | Old binaries, jobs, reports, and rollback needs |
 
@@ -43,7 +43,7 @@ begin transaction
 commit
 ```
 
-This is a transactional sketch, not executable SQL. If effects and checkpoint cannot commit together, make replay safe through idempotency or a durable work ledger. Record mapping version and input scope. A high-water ID alone does not capture later updates or inserts below that watermark; retain change capture/synchronized writes and reconcile separately.
+This is a transactional sketch, not executable SQL. If effects and checkpoint cannot commit together, make replay safe through idempotency or a durable work ledger. Record mapping version and input scope. A high-water ID[^id] alone does not capture later updates or inserts below that watermark; retain change capture/synchronized writes and reconcile separately.
 
 Throttle using observed lock waits, replica lag, log volume, and application latency. Measure rows examined, changed, rejected, and remaining. A fast benchmark on an empty database is not a rollout plan.
 
@@ -78,3 +78,7 @@ Configure the migration tool for this nontransactional operation. Check index va
 - [Fowler and Sadalage — evolutionary database design](https://martinfowler.com/articles/evodb.html)
 - [PostgreSQL 16 — ALTER TABLE](https://www.postgresql.org/docs/16/sql-altertable.html)
 - [PostgreSQL 16 — CREATE INDEX](https://www.postgresql.org/docs/16/sql-createindex.html)
+
+[^sql]: Structured Query Language.
+[^ddl]: Data Definition Language — statements that change database structures.
+[^id]: Identifier (or identity in a product name such as Microsoft Entra ID).

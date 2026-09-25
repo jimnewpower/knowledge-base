@@ -32,7 +32,7 @@ docker rmi order-api:1.4.0
 
 ## Runtime Dockerfile
 
-Assumes CI produced an executable `target/order-service.jar` (for example with Spring Boot repackage and Maven `finalName` set to `order-service`). An ordinary Maven JAR may need external dependencies and a main-class manifest.
+Assumes CI[^ci] produced an executable `target/order-service.jar` (for example with Spring Boot repackage and Maven `finalName` set to `order-service`). An ordinary Maven JAR[^jar] may need external dependencies and a main-class manifest.
 
 ```dockerfile
 # syntax=docker/dockerfile:1
@@ -48,7 +48,7 @@ EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]
 ```
 
-Multi-stage alternative; keep `mvnw` LF-terminated in Git. This example runs the Maven verification lifecycle:
+Multi-stage alternative; keep `mvnw` LF[^lf]-terminated in Git. This example runs the Maven verification lifecycle:
 
 ```dockerfile
 FROM eclipse-temurin:21-jdk-alpine AS build
@@ -65,11 +65,11 @@ EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]
 ```
 
-Better in many Java shops: **build the jar on CI, copy only the jar into a JRE image.** The Dockerfile stays small and Maven stays the compiler of record.
+Better in many Java shops: **build the jar on CI, copy only the jar into a JRE[^jre] image.** The Dockerfile stays small and Maven stays the compiler of record.
 
 ## Layers and cache
 
-For a single-module project, replace the build stage with this fragment. Copy the wrapper and its configuration before invoking it; multi-module builds also need their module POMs:
+For a single-module project, replace the build stage with this fragment. Copy the wrapper and its configuration before invoking it; multi-module builds also need their module POMs[^pom]:
 
 ```dockerfile
 FROM eclipse-temurin:21-jdk-alpine AS build
@@ -125,8 +125,8 @@ Compose can run production services on one host; multi-host scheduling and failo
 
 | Concern | Knob |
 |---------|------|
-| Memory | `docker run -m 512m` and JVM `-XX:MaxRAMPercentage=75` |
-| CPU | `--cpus` |
+| Memory | `docker run -m 512m` and JVM[^jvm] `-XX:MaxRAMPercentage=75` |
+| CPU[^cpu] | `--cpus` |
 | Config | env vars or mounted files; not baked secrets |
 | Data | named volumes or mounts; containers are disposable |
 | Health | `HEALTHCHECK` or orchestrator probes against `/actuator/health` |
@@ -153,7 +153,7 @@ Promote by digest across environments. Retagging `:latest` is not a release proc
 
 - `COPY . .` with no `.dockerignore` ships `.git` and `target/`.
 - Binding `8080:8080` on a laptop is not service discovery.
-- PID 1 and signals: use an exec-form `ENTRYPOINT` so `stop` reaches the JVM.
+- PID[^pid] 1 and signals: use an exec-form `ENTRYPOINT` so `stop` reaches the JVM.
 - Host networking hides port bugs that will appear in a cluster.
 - “Works in Docker” with a volume-mounted source tree is not the same as the image CI ships.
 
@@ -162,3 +162,12 @@ Promote by digest across environments. Retagging `:latest` is not a release proc
 - [Docker — Dockerfile reference](https://docs.docker.com/reference/dockerfile/)
 - [Docker — Compose startup order](https://docs.docker.com/compose/how-tos/startup-order/)
 - [PostgreSQL official image — initialization variables](https://hub.docker.com/_/postgres)
+
+[^ci]: Continuous Integration.
+[^jar]: Java Archive.
+[^lf]: Line Feed — the newline character used by Unix-style text files.
+[^jre]: Java Runtime Environment.
+[^pom]: Project Object Model — Maven's project configuration.
+[^jvm]: Java Virtual Machine.
+[^cpu]: Central Processing Unit.
+[^pid]: Process Identifier.

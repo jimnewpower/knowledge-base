@@ -1,8 +1,8 @@
 # CloudTrail and CloudWatch cheat sheet
 
-> Baseline: AWS CloudTrail event history, CloudWatch metrics/logs, and Logs Insights QL. Reviewed: 2026-09-25.
+> Baseline: AWS[^aws] CloudTrail event history, CloudWatch metrics/logs, and Logs Insights QL[^ql]. Reviewed: 2026-09-25.
 
-Use CloudTrail to investigate supported AWS API activity and CloudWatch to inspect operational telemetry. Correlate them when a configuration change precedes a runtime failure.
+Use CloudTrail to investigate supported AWS API[^api] activity and CloudWatch to inspect operational telemetry. Correlate them when a configuration change precedes a runtime failure.
 
 Related: [AWS](aws.md), [observability](observability.md), [Splunk](splunk.md).
 
@@ -20,7 +20,7 @@ CloudTrail event history covers the past 90 days of management events in a Regio
 
 ## Inspect recent changes
 
-AWS CLI v2 with an authorized profile; replace the illustrative Region/profile and event name. Narrow the time window when investigating a specific incident.
+AWS CLI[^cli] v2 with an authorized profile; replace the illustrative Region/profile and event name. Narrow the time window when investigating a specific incident.
 
 ```bash
 aws cloudtrail lookup-events \
@@ -28,7 +28,7 @@ aws cloudtrail lookup-events \
   --profile engineering-dev --region us-west-2
 ```
 
-Resolve assumed-role sessions to the initiating identity where evidence permits. Keep timestamps, request IDs, source address, error code, and resource identifiers together; names alone can be ambiguous.
+Resolve assumed-role sessions to the initiating identity where evidence permits. Keep timestamps, request IDs[^id], source address, error code, and resource identifiers together; names alone can be ambiguous.
 
 ## Logs Insights query
 
@@ -40,7 +40,7 @@ fields @timestamp, service, durationMs
 | stats count(*) as requests, pct(durationMs, 95) as p95Ms by bin(5m), service
 ```
 
-This counts only events containing duration. Compare against expected request volume; missing telemetry can make a chart look healthy. Limit queried time and log groups to control scan volume. Do not place user IDs, request IDs, or arbitrary URLs in metric dimensions.
+This counts only events containing duration. Compare against expected request volume; missing telemetry can make a chart look healthy. Limit queried time and log groups to control scan volume. Do not place user IDs, request IDs, or arbitrary URLs[^url] in metric dimensions.
 
 ## Alarm and retention decisions
 
@@ -51,3 +51,10 @@ Alert on user-visible symptoms and sustained saturation, with an owner and respo
 - [CloudTrail event history coverage and limits](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/view-cloudtrail-events.html)
 - [CloudWatch Logs Insights QL](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html)
 - [CloudWatch missing-data alarm behavior](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html)
+
+[^aws]: Amazon Web Services.
+[^ql]: Query Language, as in CloudWatch Logs Insights Query Language.
+[^api]: Application Programming Interface — the contract through which software components interact.
+[^cli]: Command-Line Interface.
+[^id]: Identifier (or identity in a product name such as Microsoft Entra ID).
+[^url]: Uniform Resource Locator.

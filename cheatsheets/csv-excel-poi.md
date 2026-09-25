@@ -1,4 +1,4 @@
-# CSV and Excel processing with Apache POI cheat sheet
+# CSV[^csv] and Excel processing with Apache POI[^poi] cheat sheet
 
 > Baseline: Java 21, Apache POI 5.4.x, and Apache Commons CSV 1.14.x. Examples target `.xlsx`. Reviewed: 2026-09-24.
 
@@ -8,15 +8,15 @@ Related: [batch imports](batch-processing.md), [Java time](java-time.md), [data 
 
 ## Choose the reader/writer
 
-| Format/API | Good fit | Constraint |
+| Format/API[^api] | Good fit | Constraint |
 |------------|----------|------------|
 | Commons CSV | Delimited text with quoting/escaping | No native type, style, or formula model |
 | POI `XSSFWorkbook` | Random access to `.xlsx` workbooks | Retains substantial workbook state in memory |
-| POI XSSF SAX/event reader | Large sequential `.xlsx` imports | More explicit handling of cell types/shared strings |
+| POI XSSF[^xssf] SAX[^sax]/event reader | Large sequential `.xlsx` imports | More explicit handling of cell types/shared strings |
 | POI `SXSSFWorkbook` | Large sequential `.xlsx` exports | Flushed rows cannot be freely revisited; temporary disk required |
 | POI `HSSFWorkbook` | Legacy `.xls` compatibility | Different format limits; not an `.xlsx` reader |
 
-Do not parse CSV with `split(",")`: quoted fields may contain commas, quotes, and newlines. Specify dialect and charset; handle a BOM deliberately. Distinguish empty fields from absent values according to the contract, not parser defaults.
+Do not parse CSV with `split(",")`: quoted fields may contain commas, quotes, and newlines. Specify dialect and charset; handle a BOM[^bom] deliberately. Distinguish empty fields from absent values according to the contract, not parser defaults.
 
 ## Preserve types
 
@@ -53,7 +53,7 @@ For production replacement, write to a sibling temporary file, finish/close it, 
 
 Bound input size, decompression, rows, columns, and error collection. Do not disable POI's ZIP-bomb protections to make an unexplained failure disappear. Streaming reduces row retention, not every source of memory use: styles, merged regions, comments, and shared strings can still grow.
 
-Reuse styles. Close workbooks, streams, and readers; ensure SXSSF temporary files are cleaned up using the lifecycle API for the deployed POI release. Record source row/sheet and reason for rejected records, then reconcile accepted/rejected totals. Test round trips with leading zeros, Unicode, quoted newlines, blanks, formulas, and both date systems.
+Reuse styles. Close workbooks, streams, and readers; ensure SXSSF[^sxssf] temporary files are cleaned up using the lifecycle API for the deployed POI release. Record source row/sheet and reason for rejected records, then reconcile accepted/rejected totals. Test round trips with leading zeros, Unicode, quoted newlines, blanks, formulas, and both date systems.
 
 ## References
 
@@ -61,3 +61,11 @@ Reuse styles. Close workbooks, streams, and readers; ensure SXSSF temporary file
 - [SXSSFWorkbook lifecycle and streaming limits](https://poi.apache.org/apidocs/dev/org/apache/poi/xssf/streaming/SXSSFWorkbook.html)
 - [Commons CSV API](https://commons.apache.org/proper/commons-csv/apidocs/index.html)
 - [POI DateUtil](https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/DateUtil.html)
+
+[^csv]: Comma-Separated Values.
+[^poi]: Poor Obfuscation Implementation — the historical expansion of the Apache POI document-processing library's name.
+[^api]: Application Programming Interface — the contract through which software components interact.
+[^xssf]: XML Spreadsheet Format — Apache POI's implementation for modern Excel workbooks; XML means Extensible Markup Language.
+[^sax]: Simple API for XML; API means Application Programming Interface and XML means Extensible Markup Language.
+[^bom]: Byte Order Mark — a leading Unicode marker that can identify a text encoding.
+[^sxssf]: Streaming XSSF — the streaming extension of Apache POI's XML Spreadsheet Format implementation; XML means Extensible Markup Language.

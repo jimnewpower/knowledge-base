@@ -1,10 +1,10 @@
 # JavaScript cheat sheet
 
-> Baseline: modern ECMAScript modules and browser Fetch APIs; server runtimes require their own compatibility checks. Reviewed: 2026-09-25.
+> Baseline: modern ECMAScript modules and browser Fetch APIs[^api]; server runtimes require their own compatibility checks. Reviewed: 2026-09-25.
 
 Understand runtime values and asynchronous completion even when TypeScript supplies static types.
 
-Related: [HTML, CSS, and browsers](html-css-browser.md), [TypeScript](typescript.md), [React](react.md), [Angular](angular.md), [localization](localization.md), [HTTP clients](http-clients-webhooks.md).
+Related: [HTML, CSS, and browsers](html-css-browser.md)[^html][^css], [TypeScript](typescript.md), [React](react.md), [Angular](angular.md), [localization](localization.md), [HTTP clients](http-clients-webhooks.md)[^http].
 
 ## Everyday semantics
 
@@ -17,8 +17,8 @@ Related: [HTML, CSS, and browsers](html-css-browser.md), [TypeScript](typescript
 | `{ ...obj }` | Shallow copy; nested objects remain shared |
 | `array.sort()` | Mutates and defaults to string ordering; numeric ascending uses `(a, b) => a - b` |
 | `Map` / `Set` | Arbitrary keys / distinct values; objects compare by identity |
-| `Number` | IEEE 754 double; integers beyond the safe range lose precision |
-| `BigInt` | Exact integers; ordinary JSON serialization needs an explicit representation policy |
+| `Number` | IEEE[^ieee] 754 double; integers beyond the safe range lose precision |
+| `BigInt` | Exact integers; ordinary JSON[^json] serialization needs an explicit representation policy |
 
 An arrow function captures lexical `this`; a regular function's `this` depends on invocation. Preserve or bind a method receiver when passing callbacks.
 
@@ -56,6 +56,14 @@ Use `textContent` for untrusted text. Treat `innerHTML` as an HTML injection bou
 
 ## References
 
-- [MDN JavaScript guide](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide)
+- [MDN JavaScript guide](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide)[^mdn]
 - [MDN promise composition](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises)
 - [MDN Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)
+
+[^api]: Application Programming Interface — the contract through which software components interact.
+[^html]: Hypertext Markup Language.
+[^css]: Cascading Style Sheets.
+[^http]: Hypertext Transfer Protocol.
+[^ieee]: Institute of Electrical and Electronics Engineers.
+[^json]: JavaScript Object Notation.
+[^mdn]: Originally Mozilla Developer Network; now MDN Web Docs.

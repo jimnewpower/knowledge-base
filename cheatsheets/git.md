@@ -26,7 +26,7 @@ git config --global pull.rebase false    # or true, but pick one and stick to it
 git config --global core.editor "vim"
 ```
 
-Repo-local config omits `--global`. Prefer SSH remotes for push.
+Repo-local config omits `--global`. Prefer SSH[^ssh] remotes for push.
 
 ## Daily loop
 
@@ -110,7 +110,7 @@ git stash pop
 git stash drop
 ```
 
-Stash is sticky tape. Prefer a WIP commit on a branch if the work might last.
+Stash is sticky tape. Prefer a WIP[^wip] commit on a branch if the work might last.
 
 ## Remotes and collaboration
 
@@ -122,7 +122,7 @@ git merge origin/main
 git cherry-pick COMMIT
 ```
 
-Pull requests: push a feature branch, open PR into `main`, delete the branch after merge.
+Pull requests: push a feature branch, open PR[^pr] into `main`, delete the branch after merge.
 
 ## `.gitignore`
 
@@ -151,9 +151,14 @@ Annotated tags are the release pins Maven and deployment notes should cite.
 - `git pull` without a policy can create surprise merge commits. Prefer `fetch` + explicit merge/rebase, or `pull --ff-only`.
 - Line endings: `core.autocrlf` fights between Windows and Linux. In mixed teams, use `.gitattributes`.
 - Submodules are easy to get wrong; avoid unless the dependency really is another repo you pin by commit.
-- Large binaries do not belong in Git history. Use Git LFS or an artifact store.
+- Large binaries do not belong in Git history. Use Git LFS[^lfs] or an artifact store.
 
 ## References
 
 - [Git — pull and integration behavior](https://git-scm.com/docs/git-pull)
 - [Git — reset modes](https://git-scm.com/docs/git-reset)
+
+[^ssh]: Secure Shell.
+[^wip]: Work In Progress.
+[^pr]: Pull Request.
+[^lfs]: Large File Storage, as in Git Large File Storage.

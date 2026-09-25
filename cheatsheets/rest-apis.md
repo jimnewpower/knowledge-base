@@ -1,8 +1,8 @@
-# REST API cheat sheet
+# REST[^rest] API[^api] cheat sheet
 
-> Baseline: HTTP resource APIs using RFC 9110 semantics; examples are HTTP/1.1 fragments. Reviewed: 2026-09-24.
+> Baseline: HTTP[^http] resource APIs using RFC[^rfc] 9110 semantics; examples are HTTP/1.1 fragments. Reviewed: 2026-09-24.
 
-REST here means **HTTP APIs organized around resources**, not “JSON over POST.” Roy Fielding’s constraints matter where they reduce coupling: uniform interface, stateless requests, cacheability, explicit representations.
+REST here means **HTTP APIs organized around resources**, not “JSON[^json] over POST.” Roy Fielding’s constraints matter where they reduce coupling: uniform interface, stateless requests, cacheability, explicit representations.
 
 Companion notes: [authentication.md](authentication.md), [authorization.md](authorization.md), [API Gateway](api-gateway.md).
 
@@ -15,7 +15,7 @@ Companion notes: [authentication.md](authentication.md), [authorization.md](auth
 | Nouns, plural collections | Verbs in the path (`/createOrder`) |
 | Stable identifiers | Encoding workflow state only in the path when a field will do |
 
-One resource, many representations: `Accept: application/json` vs `application/xml`. Prefer JSON unless a client already owns XML.
+One resource, many representations: `Accept: application/json` vs `application/xml`. Prefer JSON unless a client already owns XML[^xml].
 
 ## Methods and semantics
 
@@ -24,7 +24,7 @@ One resource, many representations: `Accept: application/json` vs `application/x
 | `GET` | yes | yes | Read |
 | `HEAD` | yes | yes | Metadata only |
 | `POST` | no | no | Create, or non-idempotent action |
-| `PUT` | no | yes | Replace the resource at this URI |
+| `PUT` | no | yes | Replace the resource at this URI[^uri] |
 | `PATCH` | no | not necessarily | Partial update |
 | `DELETE` | no | yes | Remove |
 
@@ -60,6 +60,8 @@ Accept: application/json
 Authorization: Bearer <token>
 If-None-Match: "c9f0"
 ```
+
+Example abbreviations: USD[^usd].
 
 ```http
 HTTP/1.1 200 OK
@@ -117,7 +119,7 @@ For APIs that implement an idempotency contract, clients send `Idempotency-Key` 
 
 ## Hypermedia vs practical REST
 
-Full HATEOAS is rare in enterprise APIs. Minimum bar that still counts as disciplined HTTP:
+Full HATEOAS[^hateoas] is rare in enterprise APIs. Minimum bar that still counts as disciplined HTTP:
 
 - Resources and uniform methods
 - Explicit status codes
@@ -126,8 +128,8 @@ Full HATEOAS is rare in enterprise APIs. Minimum bar that still counts as discip
 
 ## OpenAPI and contracts
 
-- The OpenAPI document is part of the architecture. Treat changes like ADRs.
-- Generated clients drift; generate from the published spec in CI, or test the spec against the running app (contract tests).
+- The OpenAPI document is part of the architecture. Treat changes like ADRs[^adr].
+- Generated clients drift; generate from the published spec in CI[^ci], or test the spec against the running app (contract tests).
 - Do not hand-wave `object` for every payload. Name the schemas.
 
 ## Gotchas
@@ -141,3 +143,15 @@ Full HATEOAS is rare in enterprise APIs. Minimum bar that still counts as discip
 
 - [RFC 9110 — HTTP semantics](https://www.rfc-editor.org/rfc/rfc9110.html)
 - [OpenAPI 3.0.3 specification](https://spec.openapis.org/oas/v3.0.3)
+
+[^rest]: Representational State Transfer.
+[^api]: Application Programming Interface — the contract through which software components interact.
+[^http]: Hypertext Transfer Protocol.
+[^rfc]: Request for Comments — a document in the Internet technical specification series.
+[^json]: JavaScript Object Notation.
+[^xml]: Extensible Markup Language.
+[^uri]: Uniform Resource Identifier.
+[^hateoas]: Hypermedia As The Engine Of Application State.
+[^adr]: Architecture Decision Record.
+[^ci]: Continuous Integration.
+[^usd]: United States Dollar — the currency code.

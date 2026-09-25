@@ -29,7 +29,7 @@ Related: [Enterprise Integration Patterns](enterprise-integration-patterns.md), 
 
 Configure bounded queues/executors and explicit send/reply time budgets. A blocked sender is part of the load model. See [channel implementations](https://docs.spring.io/spring-integration/reference/6.5/channel/implementations.html).
 
-## Small Java DSL flow
+## Small Java DSL[^dsl] flow
 
 Complete configuration class except imports; requires `spring-integration-core` and a Spring application context. Imports: Spring `Bean`, `Configuration`, Integration `EnableIntegration`, `IntegrationFlow`, `DirectChannel`, `QueueChannel`, and `java.util.Locale`.
 
@@ -63,12 +63,16 @@ This deliberately exposes a pollable output for the caller to drain. It has no e
 
 Synchronous exceptions normally propagate to the caller. Asynchronous infrastructure can publish an `ErrorMessage` to a message-specific or global error channel; configure and test its handler. An error channel is not automatically a durable dead-letter store.
 
-Place transaction advice on the actual poller/endpoint boundary. A database rollback does not undo an HTTP request, and dequeuing from an ordinary in-memory queue does not make the message recoverable. For durable delivery, choose a persistent store or broker and define acknowledgment, retry exhaustion, quarantine, and replay behavior.
+Place transaction advice on the actual poller/endpoint boundary. A database rollback does not undo an HTTP[^http] request, and dequeuing from an ordinary in-memory queue does not make the message recoverable. For durable delivery, choose a persistent store or broker and define acknowledgment, retry exhaustion, quarantine, and replay behavior.
 
-Test duplicate input, downstream failure, queue saturation, and process restart. Use the existing EIP sheets to choose patterns before expressing them as DSL steps.
+Test duplicate input, downstream failure, queue saturation, and process restart. Use the existing EIP[^eip] sheets to choose patterns before expressing them as DSL steps.
 
 ## References
 
 - [Java DSL](https://docs.spring.io/spring-integration/reference/6.5/dsl.html)
 - [Error handling](https://docs.spring.io/spring-integration/reference/6.5/error-handling.html)
 - [Transaction support](https://docs.spring.io/spring-integration/reference/6.5/transactions.html)
+
+[^dsl]: Domain-Specific Language.
+[^http]: Hypertext Transfer Protocol.
+[^eip]: Enterprise Integration Patterns.

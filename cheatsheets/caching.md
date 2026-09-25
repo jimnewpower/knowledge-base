@@ -4,7 +4,7 @@
 
 A cache trades freshness and operational complexity for reduced latency or load. State the **maximum acceptable staleness and authoritative source** before choosing an eviction policy.
 
-Related: [data structures](data-structures.md), [API Gateway](api-gateway.md), [distributed systems](distributed-systems.md), [observability](observability.md).
+Related: [data structures](data-structures.md), [API Gateway](api-gateway.md)[^api], [distributed systems](distributed-systems.md), [observability](observability.md).
 
 ## Choose the scope and write policy
 
@@ -21,6 +21,8 @@ These are selection heuristics. Do not let a disposable cache quietly become the
 ## Bounded local example
 
 Java method-body fragment requiring Caffeine 3.x; place imports at class level. The value is illustrative, not a pricing rule.
+
+Example abbreviations: USD[^usd].
 
 ```java
 import com.github.benmanes.caffeine.cache.Cache;
@@ -67,7 +69,7 @@ Even invalidating after commit can race with an in-flight load. Suggested remedi
 
 - Include tenant and all representation dimensions in keys; never share results across unauthorized users.
 - Use short-lived negative entries only for meaningful absence. Do not turn a database outage into cached “not found.”
-- Coalesce loads, cap concurrency, and consider TTL jitter to avoid synchronized refreshes. Local coalescing still permits one load per replica.
+- Coalesce loads, cap concurrency, and consider TTL[^ttl] jitter to avoid synchronized refreshes. Local coalescing still permits one load per replica.
 - Decide whether cache outage permits source fallback, stale reads, or failure; fallback must not overwhelm the source.
 - Test with a controllable clock/ticker rather than sleeps. Monitor hit rate alongside load latency, errors, eviction, memory, and source traffic.
 
@@ -76,3 +78,7 @@ Even invalidating after commit can race with an in-flight load. Suggested remedi
 - [Caffeine — population](https://github.com/ben-manes/caffeine/wiki/Population)
 - [Caffeine — eviction](https://github.com/ben-manes/caffeine/wiki/Eviction)
 - [Caffeine — refresh](https://github.com/ben-manes/caffeine/wiki/Refresh)
+
+[^api]: Application Programming Interface — the contract through which software components interact.
+[^ttl]: Time To Live.
+[^usd]: United States Dollar — the currency code.

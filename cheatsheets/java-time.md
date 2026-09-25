@@ -1,6 +1,6 @@
 # Java date, time, and scheduling cheat sheet
 
-> Baseline: Java 21 `java.time`; time-zone rules come from the deployed runtime's TZDB. Reviewed: 2026-09-24.
+> Baseline: Java 21 `java.time`; time-zone rules come from the deployed runtime's TZDB[^tzdb]. Reviewed: 2026-09-24.
 
 Separate a point on the timeline from a person's calendar intention. Persist enough information to reconstruct the intended behavior after a daylight-saving or time-zone rule change.
 
@@ -14,7 +14,7 @@ Related: [Java](java.md), [unit testing](junit-mockito-assertj.md), [batch proce
 | `LocalDate` | Calendar date without time/zone | Survey date |
 | `LocalTime` | Clock time without date/zone | Recurring opening time |
 | `LocalDateTime` | Local date and clock time | A proposed appointment requiring a zone/policy |
-| `OffsetDateTime` | Date/time with a numeric offset | An API timestamp preserving its supplied offset |
+| `OffsetDateTime` | Date/time with a numeric offset | An API[^api] timestamp preserving its supplied offset |
 | `ZonedDateTime` | Date/time resolved with regional zone rules | Appointment in `America/Denver` |
 | `Duration` | Seconds/nanoseconds on a time-based scale | Timeout or elapsed interval |
 | `Period` | Date-based years/months/days | Calendar recurrence step |
@@ -41,14 +41,14 @@ Ordinary `atZone` resolution has defaults: gaps move forward and overlaps genera
 ## Calendar schedules versus elapsed delays
 
 - “Every day at 08:00 Denver time” requires a local recurrence, zone, and gap/overlap policy. Recompute the next occurrence; adding 24 hours to the last instant can shift the local time.
-- `plusDays(1)` on a zoned date/time follows the calendar; `plusHours(24)` follows elapsed hours. Across a DST change they can differ.
-- Use `System.nanoTime()` differences for elapsed measurements within one JVM; wall clocks can jump. Its value is not a persistable timestamp.
+- `plusDays(1)` on a zoned date/time follows the calendar; `plusHours(24)` follows elapsed hours. Across a DST[^dst] change they can differ.
+- Use `System.nanoTime()` differences for elapsed measurements within one JVM[^jvm]; wall clocks can jump. Its value is not a persistable timestamp.
 - A scheduler firing is not proof a job completed. Persist job identity, deduplicate overlapping/retried runs, and define missed-run behavior after downtime.
 - A process-local scheduled executor does not coordinate replicas or survive restart. Its fixed-rate and fixed-delay modes have different cadence semantics.
 
 ## Storage and tests
 
-Store event instants in a documented UTC representation. For future civil-time commitments, retain the original local time, zone, and resolution policy as well as any resolved instant. Preserve precision intentionally across JDBC/JSON boundaries.
+Store event instants in a documented UTC[^utc] representation. For future civil-time commitments, retain the original local time, zone, and resolution policy as well as any resolved instant. Preserve precision intentionally across JDBC[^jdbc]/JSON[^json] boundaries.
 
 Test just-before/at/after deadlines with `Clock.fixed`; include a gap, an overlap, a month end, and a zone different from the developer machine. Do not assume every calendar day has 24 hours or every month has the same length.
 
@@ -57,3 +57,11 @@ Test just-before/at/after deadlines with `Clock.fixed`; include a gap, an overla
 - [Clock](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/time/Clock.html)
 - [Duration](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/time/Duration.html)
 - [ScheduledExecutorService](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/ScheduledExecutorService.html)
+
+[^tzdb]: Time Zone Database.
+[^api]: Application Programming Interface — the contract through which software components interact.
+[^dst]: Daylight Saving Time.
+[^jvm]: Java Virtual Machine.
+[^utc]: Coordinated Universal Time.
+[^jdbc]: Java Database Connectivity.
+[^json]: JavaScript Object Notation.

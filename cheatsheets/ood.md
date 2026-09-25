@@ -2,7 +2,7 @@
 
 > Baseline: Object-oriented domain modeling; Java examples omit application-specific constructors and collaborators. Reviewed: 2026-09-24.
 
-OOD is designing around **types that encapsulate state and protect invariants**, collaborating through messages (method calls). It is one tool. Data pipelines and functional cores are others. Use objects where there is behavior + invariant, not around every record.
+OOD[^ood] is designing around **types that encapsulate state and protect invariants**, collaborating through messages (method calls). It is one tool. Data pipelines and functional cores are others. Use objects where there is behavior + invariant, not around every record.
 
 See [clean-code-and-solid.md](clean-code-and-solid.md) and [uml.md](uml.md).
 
@@ -26,7 +26,7 @@ See [clean-code-and-solid.md](clean-code-and-solid.md) and [uml.md](uml.md).
 
 Ask “who knows this, who decides this, who does this?” before drawing a class box.
 
-CRC-style card:
+CRC[^crc]-style card:
 
 ```text
 Class: Order
@@ -68,25 +68,25 @@ Prefer:  OrderService has an OrderRepository
 Over:    OrderService extends JdbcSupport
 ```
 
-Use inheritance when you truly have a subtype that *is* the parent for all callers (LSP). Use interfaces for roles.
+Use inheritance when you truly have a subtype that *is* the parent for all callers (LSP[^lsp]). Use interfaces for roles.
 
 ## Coupling knobs
 
 | Knob | Effect |
 |------|--------|
 | Depend on interfaces | Lower coupling |
-| Depend on concrete JDBC types | Higher coupling |
+| Depend on concrete JDBC[^jdbc] types | Higher coupling |
 | Public fields | Highest coupling |
 | Events / callbacks | Temporal decoupling, harder traces |
 | Shared mutable statics | Hidden coupling; avoid |
 
 Draw the dependency arrow toward stability: domain does not import adapters.
 
-## GRASP (useful subset)
+## GRASP[^grasp] (useful subset)
 
 - **Information expert** — the object with the data does the work.
 - **Creator** — the object that uses / contains / has the data to build X creates X.
-- **Controller** — a use-case application type receives the UI/API request; domain types stay UI-free.
+- **Controller** — a use-case application type receives the UI[^ui]/API[^api] request; domain types stay UI-free.
 - **Low coupling / high cohesion** — score every extra dependency.
 - **Polymorphism** — replace type switches that grow with every variant.
 - **Pure fabrication** — a class invented for cohesion (a `MailGateway`) is allowed.
@@ -102,7 +102,7 @@ Draw the dependency arrow toward stability: domain does not import adapters.
 
 ## Gotchas
 
-- Anemic domain model: objects are structs, all logic lives in `*Service`. Sometimes fine (simple CRUD). Often a missed invariant.
+- Anemic domain model: objects are structs, all logic lives in `*Service`. Sometimes fine (simple CRUD[^crud]). Often a missed invariant.
 - Inheritance for code reuse of utilities. That is a `final` helper or composition.
 - Bidirectional object graphs that nobody can persist or test.
 - “Manager” / “Util” as a substitute for a name.
@@ -111,3 +111,12 @@ Draw the dependency arrow toward stability: domain does not import adapters.
 
 - [Martin Fowler — value objects](https://martinfowler.com/bliki/ValueObject.html)
 - [Fowler — enterprise application pattern catalog](https://martinfowler.com/eaaCatalog/)
+
+[^ood]: Object-Oriented Design.
+[^crc]: Class, Responsibilities, Collaborators — cards used to explore object design.
+[^lsp]: Liskov Substitution Principle.
+[^jdbc]: Java Database Connectivity.
+[^grasp]: General Responsibility Assignment Software Patterns.
+[^ui]: User Interface.
+[^api]: Application Programming Interface — the contract through which software components interact.
+[^crud]: Create, Read, Update, Delete.

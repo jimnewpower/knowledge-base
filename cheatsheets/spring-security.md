@@ -14,8 +14,8 @@ Related: [authentication](authentication.md), [authorization](authorization.md),
 | `requestMatchers` | Authorize requests within the selected chain | Broad rule hiding a later narrow rule |
 | `@EnableMethodSecurity` | Enable service-method authorization | Assuming annotations activate themselves |
 | `@PreAuthorize` | Check an invocation through a Spring proxy | Self-invocation bypassing the proxy |
-| CORS | Browser cross-origin access policy | Treating it as authentication |
-| CSRF protection | Resist forged requests using ambient credentials | Disabling it because an endpoint returns JSON |
+| CORS[^cors] | Browser cross-origin access policy | Treating it as authentication |
+| CSRF[^csrf] protection | Resist forged requests using ambient credentials | Disabling it because an endpoint returns JSON[^json] |
 
 The first matching chain handles the request; chains do not accumulate. Within a chain, authorization rules are evaluated in order. Use a final catch-all chain when defining specialized chains. See [request authorization](https://docs.spring.io/spring-security/reference/6.5/servlet/authorization/authorize-http-requests.html).
 
@@ -41,13 +41,13 @@ class SecurityConfiguration {
 }
 ```
 
-This keeps CSRF protection enabled. Forms and AJAX writes must send the token; account for session expiry and token refresh after login/logout. `hasRole("ADMIN")` checks the `ROLE_ADMIN` authority. The public health endpoint should expose only the intended health summary.
+This keeps CSRF protection enabled. Forms and AJAX[^ajax] writes must send the token; account for session expiry and token refresh after login/logout. `hasRole("ADMIN")` checks the `ROLE_ADMIN` authority. The public health endpoint should expose only the intended health summary.
 
-## Bearer-token APIs
+## Bearer-token APIs[^api]
 
-- Use resource-server support to validate issuer, signature, expiry, and the audience required by your API. Merely decoding a JWT establishes no trust.
+- Use resource-server support to validate issuer, signature, expiry, and the audience required by your API. Merely decoding a JWT[^jwt] establishes no trust.
 - Scope authorities commonly map to `SCOPE_name`; role claims need an explicit converter when the provider uses a different model.
-- Stateless session policy does not itself justify disabling CSRF. Evaluate whether cookies, HTTP Basic, or another automatically attached credential can authenticate requests.
+- Stateless session policy does not itself justify disabling CSRF. Evaluate whether cookies, HTTP[^http] Basic, or another automatically attached credential can authenticate requests.
 - Configure CORS for the real frontend origins and credential policy. Allowing preflight must not make the underlying operation public.
 
 ## Prove the policy
@@ -62,3 +62,11 @@ Use `spring-security-test` with the real filter chain: anonymous access, ordinar
 - [CSRF protection](https://docs.spring.io/spring-security/reference/6.5/servlet/exploits/csrf.html)
 - [JWT resource servers](https://docs.spring.io/spring-security/reference/6.5/servlet/oauth2/resource-server/jwt.html)
 - [MockMvc security testing](https://docs.spring.io/spring-security/reference/6.5/servlet/test/mockmvc/index.html)
+
+[^cors]: Cross-Origin Resource Sharing.
+[^csrf]: Cross-Site Request Forgery.
+[^json]: JavaScript Object Notation.
+[^ajax]: Asynchronous JavaScript and Extensible Markup Language — browser requests that update part of a page without a full reload; payloads need not use that markup format.
+[^api]: Application Programming Interface — the contract through which software components interact.
+[^jwt]: JSON Web Token; JSON means JavaScript Object Notation.
+[^http]: Hypertext Transfer Protocol.

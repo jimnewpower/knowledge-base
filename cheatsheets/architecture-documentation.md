@@ -1,10 +1,10 @@
 # Architecture documentation with arc42 cheat sheet
 
-> Baseline: arc42's 12-section structure, combined with C4 views and ADRs; suggested document placement is local guidance. Reviewed: 2026-09-24.
+> Baseline: arc42's 12-section structure, combined with C4[^c4] views and ADRs[^adr]; suggested document placement is local guidance. Reviewed: 2026-09-24.
 
 Architecture documentation should answer **what exists, why it exists, and what must remain true**. arc42 provides places for those answers; C4 supplies diagram vocabulary; ADRs retain decision rationale.
 
-Related: [C4 diagrams](c4-diagrams.md), [Structurizr DSL](structurizr-dsl.md), [ADRs](architecture-decisions.md), [quality attributes](quality-attributes.md).
+Related: [C4 diagrams](c4-diagrams.md), [Structurizr DSL](structurizr-dsl.md)[^dsl], [ADRs](architecture-decisions.md), [quality attributes](quality-attributes.md).
 
 ## arc42 section map
 
@@ -33,7 +33,7 @@ Use the sections that carry information. A small system can have one short docum
 |-------------------|-----------------|-------------------|
 | What is inside our responsibility? | C4 system context plus ownership notes | Context and scope |
 | What are the major applications and stores? | C4 container view | Building block view |
-| How does a difficult use case work? | Dynamic or UML sequence diagram | Runtime view |
+| How does a difficult use case work? | Dynamic or UML[^uml] sequence diagram | Runtime view |
 | Where does this run in production? | C4 deployment view | Deployment view |
 | Why was a worker extracted? | ADR plus measured constraints | Architectural decisions |
 | How will we know the choice worked? | Quality scenario and evidence | Quality requirements |
@@ -56,7 +56,7 @@ Add a component view when an internal boundary is hard to understand or easy to 
 
 | Fact | Preferred source | Documentation's role |
 |------|------------------|----------------------|
-| HTTP contract | Versioned OpenAPI and contract checks | Explain ownership and important semantics |
+| HTTP[^http] contract | Versioned OpenAPI and contract checks | Explain ownership and important semantics |
 | Schema evolution | Migrations | Explain data authority and rollout constraints |
 | Actual deployment settings | Deployment/configuration repository | Explain topology and intended failure boundaries |
 | Dependency restrictions | Build or architecture verification rules | Explain why the restriction exists |
@@ -80,3 +80,9 @@ Update the relevant documents when a change affects system boundaries, data auth
 - [arc42 — documentation guidance](https://docs.arc42.org/)
 - [C4 — diagram types](https://c4model.com/diagrams)
 - [Michael Nygard — documenting architecture decisions](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions)
+
+[^c4]: Context, Containers, Components, and Code — the four levels of the C4 architecture model.
+[^adr]: Architecture Decision Record.
+[^dsl]: Domain-Specific Language.
+[^uml]: Unified Modeling Language.
+[^http]: Hypertext Transfer Protocol.

@@ -1,10 +1,10 @@
-# C4 architecture diagrams cheat sheet
+# C4[^c4] architecture diagrams cheat sheet
 
 > Baseline: C4 model terminology and notation-independent diagram guidance. Reviewed: 2026-09-24.
 
 C4 gives architecture conversations **consistent levels of zoom**: context, containers, components, and code. Start with the audience and question; most teams can begin with context and container views and add detail where it resolves uncertainty. See the [C4 diagram guide](https://c4model.com/diagrams).
 
-Related: [Structurizr DSL](structurizr-dsl.md), [UML](uml.md), [architecture styles](architecture-styles.md), [arc42 documentation](architecture-documentation.md), [ADRs](architecture-decisions.md).
+Related: [Structurizr DSL](structurizr-dsl.md)[^dsl], [UML](uml.md)[^uml], [architecture styles](architecture-styles.md), [arc42 documentation](architecture-documentation.md), [ADRs](architecture-decisions.md)[^adr].
 
 ## Choose the view
 
@@ -26,9 +26,9 @@ Landscape, dynamic, and deployment diagrams are supporting views, not additional
 |---------|---------|---------|
 | Person | A role interacting with software | Analyst, support operator |
 | Software system | A system whose responsibilities and boundary are being described | Field Analysis |
-| Container | An application or data store | JavaFX desktop, Spring API, project database, raster file store |
+| Container | An application or data store | JavaFX desktop, Spring API[^api], project database, raster file store |
 | Component | Related functionality behind a defined interface within a container | Import coordinator, scoring engine, catalog adapter |
-| Deployment node | An environment that hosts instances | Analyst workstation, JVM, VM, database server |
+| Deployment node | An environment that hosts instances | Analyst workstation, JVM[^jvm], VM[^vm], database server |
 
 A **C4 container is not a Docker container**. A JavaFX application qualifies without Docker. Components run within their containing application; a Maven module or Java package is not automatically a C4 component. See [container definitions](https://c4model.com/diagrams/container).
 
@@ -54,6 +54,8 @@ The catalog owns published source metadata. Field Analysis owns local project co
 
 Title: **Field Analysis — containers**. Scope: Field Analysis. Key: the outer box is the software-system boundary; labeled inner boxes are applications/data stores. The catalog remains an external software system. Relationship arrows describe use, not every return message.
 
+Example abbreviations: JDBC[^jdbc].
+
 ```text
 (Analyst)
     | prepares projects and reviews scores using
@@ -68,11 +70,13 @@ Title: **Field Analysis — containers**. Scope: Field Analysis. Key: the outer 
 +---------------------------------------------------------+
 ```
 
-The horizontal arrow means “Desktop discovers source datasets through Dataset Catalog via HTTPS / JSON.” SQLite and the raster store are logical data containers even though they are local files. The SQLite engine can be embedded in the desktop process; this diagram does not imply a database server.
+The horizontal arrow means “Desktop discovers source datasets through Dataset Catalog via HTTPS[^https] / JSON[^json].” SQLite and the raster store are logical data containers even though they are local files. The SQLite engine can be embedded in the desktop process; this diagram does not imply a database server.
 
 ## Zoom selectively to components
 
-Title: **Desktop application — import components**. Scope: the desktop container. This sketch shows runtime collaboration; arrows labeled “calls” are in-process calls, and external I/O is labeled separately.
+Title: **Desktop application — import components**. Scope: the desktop container. This sketch shows runtime collaboration; arrows labeled “calls” are in-process calls, and external I/O[^i-o] is labeled separately.
+
+Example abbreviations: UI[^ui].
 
 ```text
 Inside Desktop application:
@@ -124,3 +128,16 @@ The official [review checklist](https://c4model.com/diagrams/checklist) checks w
 - [C4 — container diagram](https://c4model.com/diagrams/container)
 - [C4 — deployment diagram](https://c4model.com/diagrams/deployment)
 - [C4 — diagram review checklist](https://c4model.com/diagrams/checklist)
+
+[^c4]: Context, Containers, Components, and Code — the four levels of the C4 architecture model.
+[^dsl]: Domain-Specific Language.
+[^uml]: Unified Modeling Language.
+[^adr]: Architecture Decision Record.
+[^api]: Application Programming Interface — the contract through which software components interact.
+[^jvm]: Java Virtual Machine.
+[^vm]: Virtual Machine.
+[^https]: Hypertext Transfer Protocol Secure — web communication over an encrypted, authenticated connection.
+[^json]: JavaScript Object Notation.
+[^i-o]: Input/Output.
+[^jdbc]: Java Database Connectivity.
+[^ui]: User Interface.

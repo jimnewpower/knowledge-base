@@ -1,10 +1,10 @@
-# HTML, CSS, and browser fundamentals cheat sheet
+# HTML[^html], CSS[^css], and browser fundamentals cheat sheet
 
-> Baseline: semantic HTML, CSS Grid/Flexbox, and evergreen browser APIs; check support in your target browsers. Reviewed: 2026-09-25.
+> Baseline: semantic HTML, CSS Grid/Flexbox, and evergreen browser APIs[^api]; check support in your target browsers. Reviewed: 2026-09-25.
 
 Use this when building a page or diagnosing layout and browser behavior independently of a framework.
 
-Related: [accessibility](accessibility.md), [JavaScript](javascript.md), [React](react.md), [HTTP and TLS](http-and-tls.md).
+Related: [accessibility](accessibility.md), [JavaScript](javascript.md), [React](react.md), [HTTP and TLS](http-and-tls.md)[^http][^tls].
 
 ## Choose the element first
 
@@ -26,7 +26,7 @@ HTML fragment; the endpoint must implement server-side validation and request ha
 </form>
 ```
 
-Client validation provides feedback; enforce rules on the server too. Controls need a `name` to contribute a value to ordinary form submission. See [MDN's HTML guide](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content).
+Client validation provides feedback; enforce rules on the server too. Controls need a `name` to contribute a value to ordinary form submission. See [MDN's HTML guide](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content)[^mdn].
 
 ## Diagnose CSS in order
 
@@ -48,10 +48,20 @@ Check narrow widths, enlarged text, and long content. Avoid fixed heights for te
 
 ## Browser boundaries
 
-DOM changes, network completion, and painting are different events. Inspect requests and responses before assuming rendering failed. Avoid long synchronous work in input handlers.
+DOM[^dom] changes, network completion, and painting are different events. Inspect requests and responses before assuming rendering failed. Avoid long synchronous work in input handlers.
 
-An origin combines scheme, host, and port. Same-origin restrictions constrain script access across origins; CORS permits selected cross-origin reads. CORS is not authorization or a substitute for CSRF protection. See [same-origin policy](https://developer.mozilla.org/en-US/docs/Web/Security/Defenses/Same-origin_policy).
+An origin combines scheme, host, and port. Same-origin restrictions constrain script access across origins; CORS[^cors] permits selected cross-origin reads. CORS is not authorization or a substitute for CSRF[^csrf] protection. See [same-origin policy](https://developer.mozilla.org/en-US/docs/Web/Security/Defenses/Same-origin_policy).
 
 ## Verification
 
 Exercise keyboard submission, invalid values, narrow layouts, failed requests, and browser Back. Inspect semantic structure as well as appearance.
+
+[^html]: Hypertext Markup Language.
+[^css]: Cascading Style Sheets.
+[^api]: Application Programming Interface — the contract through which software components interact.
+[^http]: Hypertext Transfer Protocol.
+[^tls]: Transport Layer Security — encrypts traffic and authenticates the connection's peer.
+[^mdn]: Originally Mozilla Developer Network; now MDN Web Docs.
+[^dom]: Document Object Model.
+[^cors]: Cross-Origin Resource Sharing.
+[^csrf]: Cross-Site Request Forgery.

@@ -45,6 +45,35 @@ async function click(selector: string) {
 }
 
 describe("category browsing", () => {
+  it.each(["original", "enhanced"])("supports acronym footnotes and return links in the %s view", async (view) => {
+    vi.mocked(fetch).mockResolvedValue({
+      ok: true,
+      text: async () => "# HTTP and TLS[^tls]\n\n## TLS[^tls] connections\n\nUse TLS[^tls].\n\n[^tls]: Transport Layer Security.\n",
+    } as Response);
+    history.replaceState(null, "", `/?doc=cheatsheets%2Fc4-diagrams.md&view=${view}`);
+    await act(async () => root.render(createElement(App)));
+
+    expect(container.querySelector(".prose h1")?.id).toBe("http-and-tls");
+    expect(container.querySelector(".prose h2")?.id).toBe("tls-connections");
+    expect(container.querySelector(".outline a")?.textContent).toBe("TLS connections");
+    expect(container.querySelectorAll(".outline a")).toHaveLength(1);
+    const reference = container.querySelector<HTMLAnchorElement>("a[data-footnote-ref]")!;
+    expect(reference.id).toBe("user-content-fnref-tls");
+    expect(document.getElementById(reference.getAttribute("aria-describedby")!)).not.toBeNull();
+    const definitionId = reference.hash.slice(1);
+    expect(document.getElementById(definitionId)?.textContent).toContain("Transport Layer Security.");
+
+    await click("a[data-footnote-ref]");
+    expect(window.location.hash).toBe(`#${definitionId}`);
+    expect(vi.mocked(HTMLElement.prototype.scrollIntoView).mock.instances.at(-1)).toBe(document.getElementById(definitionId));
+    await click("a[data-footnote-backref]");
+    expect(window.location.hash).toBe(`#${reference.id}`);
+    expect(vi.mocked(HTMLElement.prototype.scrollIntoView).mock.instances.at(-1)).toBe(document.getElementById(reference.id));
+    for (const backref of container.querySelectorAll<HTMLAnchorElement>("a[data-footnote-backref]")) {
+      expect(document.getElementById(backref.hash.slice(1))).not.toBeNull();
+    }
+  });
+
   it("keeps search scope on result navigation and restores it through history", async () => {
     history.replaceState(null, "", "/?q=security");
     await act(async () => root.render(createElement(App)));

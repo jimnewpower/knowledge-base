@@ -1,6 +1,6 @@
 # Design patterns cheat sheet
 
-> Baseline: GoF and enterprise pattern vocabulary; Java examples are structural sketches. Reviewed: 2026-09-24.
+> Baseline: GoF[^gof] and enterprise pattern vocabulary; Java examples are structural sketches. Reviewed: 2026-09-24.
 
 Named patterns are **vocabulary for recurring structure**. Use them when the name shortens a design talk. Do not sprinkle Factory into every class.
 
@@ -24,6 +24,8 @@ If nothing is changing, a function is enough.
 | Singleton | One instance | Almost never in app code; the container already owns lifecycle |
 | Prototype | Clone a template | Rare in Java; copy constructors are clearer |
 
+Example abbreviations: USD[^usd].
+
 ```java
 public final class Money {
   public static Money usd(String amount) {
@@ -38,15 +40,17 @@ A static factory is often all you need.
 
 | Pattern | Idea | Use when |
 |---------|------|----------|
-| Adapter | Wrap a foreign type behind *your* interface | Vendor SDK, legacy API |
+| Adapter | Wrap a foreign type behind *your* interface | Vendor SDK[^sdk], legacy API[^api] |
 | Facade | One simple front for a cluster of types | Start-up of a subsystem |
 | Decorator | Add behavior around the same interface | Logging, metrics, auth around a port |
 | Proxy | Stand-in that controls access | Lazy load, remote stub, Spring proxy |
-| Composite | Tree of same-interface nodes | UI, spec trees |
+| Composite | Tree of same-interface nodes | UI[^ui], spec trees |
 | Bridge | Split abstraction from implementation | Two independent axes of variation |
 | Flyweight | Share immutable common state | Lots of similar objects |
 
 Hexagonal / ports and adapters is Adapter applied at the application boundary:
+
+Example abbreviations: HTTP[^http], JDBC[^jdbc].
 
 ```text
 domain  <--- port interface --- adapter (HTTP, JDBC, mail)
@@ -82,12 +86,12 @@ That is Strategy. A `switch` over two stable variants is also fine.
 | Pattern | Idea |
 |---------|------|
 | Repository | Collection-like port over persistence |
-| Unit of work | Track changes, flush once (JPA `EntityManager`) |
+| Unit of work | Track changes, flush once (JPA[^jpa] `EntityManager`) |
 | Gateway | Thin client over an external system |
 | Domain event | Something that happened in the domain |
 | Anti-corruption layer | Adapter that prevents a foreign model from leaking in |
 | Strangler fig | New path beside old; cut over incrementally |
-| CQRS | Separate write model from a read model — only when reads cannot share the write schema |
+| CQRS[^cqrs] | Separate write model from a read model — only when reads cannot share the write schema |
 
 ## When not to
 
@@ -105,3 +109,13 @@ That is Strategy. A `switch` over two stable variants is also fine.
 
 - [Fowler — enterprise application pattern catalog](https://martinfowler.com/eaaCatalog/)
 - [Gamma, Helm, Johnson, Vlissides — Design Patterns (publisher)](https://www.informit.com/store/design-patterns-elements-of-reusable-object-oriented-9780201633610)
+
+[^gof]: Gang of Four — the four authors of the classic Design Patterns book.
+[^sdk]: Software Development Kit.
+[^api]: Application Programming Interface — the contract through which software components interact.
+[^ui]: User Interface.
+[^jpa]: Java Persistence API (Application Programming Interface), now standardized as Jakarta Persistence.
+[^cqrs]: Command Query Responsibility Segregation.
+[^usd]: United States Dollar — the currency code.
+[^http]: Hypertext Transfer Protocol.
+[^jdbc]: Java Database Connectivity.

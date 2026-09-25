@@ -4,7 +4,7 @@
 
 Keep entitlement decisions, usage measurement, and operational diagnostics distinct. Each has different integrity, availability, and retention requirements.
 
-Related: [authorization](authorization.md), [secrets management](secrets-management.md), [HTTP clients and webhooks](http-clients-webhooks.md), [licensing and IP compliance](licensing-ip-compliance.md).
+Related: [authorization](authorization.md), [secrets management](secrets-management.md), [HTTP clients and webhooks](http-clients-webhooks.md)[^http], [licensing and IP compliance](licensing-ip-compliance.md)[^ip].
 
 ## Define the product contract
 
@@ -27,7 +27,7 @@ Local enforcement runs on a user-controlled machine. Treat clock rollback, copie
 
 ## Usage event contract
 
-Suggested fields: event ID, schema version, event type, occurrence time, pseudonymous installation/tenant identifier where required, product version, and the minimal usage quantity. Exclude access tokens, license secrets, document contents, precise locations, and personal identifiers unless specifically needed and approved for the stated purpose.
+Suggested fields: event ID[^id], schema version, event type, occurrence time, pseudonymous installation/tenant identifier where required, product version, and the minimal usage quantity. Exclude access tokens, license secrets, document contents, precise locations, and personal identifiers unless specifically needed and approved for the stated purpose.
 
 | Failure | Design response |
 |---------|-----------------|
@@ -41,6 +41,13 @@ Telemetry produced by an untrusted client is a claim. For billing or security de
 
 ## References
 
-- [RFC 7515: JSON Web Signature](https://www.rfc-editor.org/rfc/rfc7515.html)
-- [OWASP logging data exclusions](https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html)
+- [RFC 7515: JSON Web Signature](https://www.rfc-editor.org/rfc/rfc7515.html)[^rfc][^json]
+- [OWASP logging data exclusions](https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html)[^owasp]
 - [OpenTelemetry handling sensitive data](https://opentelemetry.io/docs/security/handling-sensitive-data/)
+
+[^http]: Hypertext Transfer Protocol.
+[^ip]: Intellectual Property — rights associated with software, documentation, and other creative work.
+[^id]: Identifier (or identity in a product name such as Microsoft Entra ID).
+[^rfc]: Request for Comments — a document in the Internet technical specification series.
+[^json]: JavaScript Object Notation.
+[^owasp]: Open Worldwide Application Security Project.

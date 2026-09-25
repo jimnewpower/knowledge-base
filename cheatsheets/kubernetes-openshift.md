@@ -14,12 +14,12 @@ Related: [docker.md](docker.md), [devops.md](devops.md), [observability.md](obse
 | Pod | Smallest deployable; ephemeral |
 | Deployment / DeploymentConfig | Desired replica set + rolling update |
 | ReplicaSet | Pod copies (owned by Deployment) |
-| Service | Stable DNS + cluster IP in front of pods |
-| Route (OpenShift) / Ingress | Public HTTP(S) into a Service |
+| Service | Stable DNS[^dns] + cluster IP[^ip] in front of pods |
+| Route (OpenShift) / Ingress | Public HTTP[^http](S) into a Service |
 | ConfigMap | Non-secret config |
 | Secret | Credential material — still base64, not magic safety |
-| PVC | Durable disk |
-| ServiceAccount | Identity the pod uses to talk to the API |
+| PVC[^pvc] | Durable disk |
+| ServiceAccount | Identity the pod uses to talk to the API[^api] |
 | NetworkPolicy | Who may speak to whom |
 
 ```text
@@ -28,7 +28,7 @@ Route / Ingress → Service → Pod(s) → container process
 
 ## Mental model
 
-- Desired state lives in YAML (or Helm). The control plane converges reality toward it.
+- Desired state lives in YAML[^yaml] (or Helm). The control plane converges reality toward it.
 - Pods die. Disk in the container dies with them unless it is a volume.
 - A Service selects pods by labels, not by name.
 
@@ -101,7 +101,7 @@ envFrom:
 
 Or mount files. Do not bake env-specific config into the image. Same digest in every environment; see [devops.md](devops.md).
 
-OpenShift often runs containers as an arbitrary non-root UID. Images that require UID 0 or a writable `/` fail. Use group-writable paths and a non-root `USER`.
+OpenShift often runs containers as an arbitrary non-root UID[^uid]. Images that require UID 0 or a writable `/` fail. Use group-writable paths and a non-root `USER`.
 
 ## Rolling updates and health
 
@@ -110,8 +110,8 @@ A Deployment rolls out new pods, waits for readiness, then drops old ones. If re
 ## Resource reality
 
 - Requests: scheduler and noisy-neighbor planning.
-- Limits: kill (memory) or throttle (CPU).
-- JVM: set heap from cgroup (`-XX:MaxRAMPercentage=75`), not a laptop-sized `-Xmx`.
+- Limits: kill (memory) or throttle (CPU[^cpu]).
+- JVM[^jvm]: set heap from cgroup (`-XX:MaxRAMPercentage=75`), not a laptop-sized `-Xmx`.
 
 ## Gotchas
 
@@ -119,9 +119,20 @@ A Deployment rolls out new pods, waits for readiness, then drops old ones. If re
 - Image pull errors: wrong tag, missing pull secret, private registry.
 - Service exists but Route points at the wrong port.
 - `latest` tag + `imagePullPolicy: Always` is not a release process. Pin digest.
-- One replica + a liveness probe that fails during GC = self-DDoS.
+- One replica + a liveness probe that fails during GC[^gc] = self-DDoS.
 
 ## References
 
 - [Kubernetes — liveness, readiness, and startup probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)
 - [OpenShift 4.18 — creating images and arbitrary UIDs](https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/images/creating-images)
+
+[^dns]: Domain Name System.
+[^ip]: Internet Protocol.
+[^http]: Hypertext Transfer Protocol.
+[^pvc]: Persistent Volume Claim.
+[^api]: Application Programming Interface — the contract through which software components interact.
+[^yaml]: YAML Ain't Markup Language — a recursive acronym naming a data-serialization format.
+[^uid]: User Identifier — the numeric operating-system identity used by a container process here.
+[^cpu]: Central Processing Unit.
+[^jvm]: Java Virtual Machine.
+[^gc]: Garbage Collection (or Garbage Collector, depending on context).

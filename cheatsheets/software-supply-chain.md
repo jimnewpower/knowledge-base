@@ -1,6 +1,6 @@
 # Dependency and software supply-chain security cheat sheet
 
-> Baseline: Maven/Java delivery, CycloneDX SBOMs, SLSA 1.1 terminology, and digest-based artifact identity. Reviewed: 2026-09-24.
+> Baseline: Maven/Java delivery, CycloneDX SBOMs[^sbom], SLSA[^slsa] 1.1 terminology, and digest-based artifact identity. Reviewed: 2026-09-24.
 
 Know what ships, where it came from, and what evidence is required before promotion. A passing scanner is one input to that decision.
 
@@ -19,14 +19,14 @@ Related: [Maven](maven.md), [GitHub Actions](github-actions-maven.md), [applicat
 
 ## Maven inventory
 
-Run in the application project with its committed wrapper. These read the effective build/dependency configuration; Maven may still resolve plugins and dependencies from repositories. Treat an untrusted POM as executable build input.
+Run in the application project with its committed wrapper. These read the effective build/dependency configuration; Maven may still resolve plugins and dependencies from repositories. Treat an untrusted POM[^pom] as executable build input.
 
 ```bash
 ./mvnw --batch-mode dependency:tree
 ./mvnw --batch-mode help:effective-pom
 ```
 
-Pin plugin versions in the build; the short goals above resolve using that configuration. Inspect transitive dependencies, activated profiles, repositories, plugins, and BOM overrides. Record the JDK/runtime and native libraries too. A shaded JAR, container, or desktop installer can contain components absent from a simple dependency listing.
+Pin plugin versions in the build; the short goals above resolve using that configuration. Inspect transitive dependencies, activated profiles, repositories, plugins, and BOM[^bom] overrides. Record the JDK[^jdk]/runtime and native libraries too. A shaded JAR[^jar], container, or desktop installer can contain components absent from a simple dependency listing.
 
 Bind an approved version of the CycloneDX Maven plugin to the release build and choose aggregate versus per-module output deliberately. Associate the SBOM with the **produced artifact digest**, retain it with the release, and validate required metadata/scopes. Do not hand-edit generated component versions to make a report pass. See [CycloneDX Maven plugin](https://github.com/CycloneDX/cyclonedx-maven-plugin).
 
@@ -42,7 +42,7 @@ Bind an approved version of the CycloneDX Maven plugin to the release build and 
 
 Verification policy should bind artifact digest, expected signer identity/issuer, trusted builder, source repository/ref, and relevant build parameters. A cryptographically valid attestation from an unexpected identity is insufficient. Verify the downloaded bytes against that policy rather than trusting a tag, filename, or the presence of an SBOM.
 
-Protect release credentials, pin CI actions, constrain repositories, and review dependency/plugin updates. Keep updates small enough to attribute failures. Preserve a documented emergency patch path and a way to locate every deployment of an affected digest.
+Protect release credentials, pin CI[^ci] actions, constrain repositories, and review dependency/plugin updates. Keep updates small enough to attribute failures. Preserve a documented emergency patch path and a way to locate every deployment of an affected digest.
 
 ## References
 
@@ -50,3 +50,11 @@ Protect release credentials, pin CI actions, constrain repositories, and review 
 - [SLSA artifact verification](https://slsa.dev/spec/v1.1/verifying-artifacts)
 - [Sigstore signature verification](https://docs.sigstore.dev/cosign/verifying/verify/)
 - [Maven dependency mechanism](https://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html)
+
+[^sbom]: Software Bill of Materials.
+[^slsa]: Supply-chain Levels for Software Artifacts.
+[^pom]: Project Object Model — Maven's project configuration.
+[^bom]: Bill of Materials — a dependency-version catalog in Maven.
+[^jdk]: Java Development Kit.
+[^jar]: Java Archive.
+[^ci]: Continuous Integration.

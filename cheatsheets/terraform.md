@@ -1,10 +1,10 @@
 # Terraform cheat sheet
 
-> Baseline: Terraform 1.x; pin exact CLI/provider versions and verify backend features for the selected release. Reviewed: 2026-09-25.
+> Baseline: Terraform 1.x; pin exact CLI[^cli]/provider versions and verify backend features for the selected release. Reviewed: 2026-09-25.
 
 Configuration describes desired infrastructure. State connects resource addresses to remote objects; both the state and the plan require controlled access.
 
-Related: [AWS](aws.md), [Azure](azure.md), [secrets management](secrets-management.md), [CI/CD](devops.md).
+Related: [AWS](aws.md)[^aws], [Azure](azure.md), [secrets management](secrets-management.md), [CI/CD](devops.md)[^ci][^cd].
 
 ## Review-to-apply workflow
 
@@ -18,7 +18,7 @@ terraform plan -out=tfplan
 terraform show tfplan
 ```
 
-`init` installs providers/modules and configures the backend. A plan may contact provider APIs and read remote state. Only after reviewing the exact saved plan, apply with `terraform apply tfplan`; this changes infrastructure. Regenerate/review if the inputs or state change. Saved plans can contain secrets and must not be published as ordinary CI artifacts.
+`init` installs providers/modules and configures the backend. A plan may contact provider APIs[^api] and read remote state. Only after reviewing the exact saved plan, apply with `terraform apply tfplan`; this changes infrastructure. Regenerate/review if the inputs or state change. Saved plans can contain secrets and must not be published as ordinary CI artifacts.
 
 ## Files and responsibilities
 
@@ -49,3 +49,9 @@ Avoid routine `-target` use as a deployment strategy. It can leave the wider con
 - [Terraform sensitive data](https://developer.hashicorp.com/terraform/language/manage-sensitive-data)
 - [Terraform dependency lock file](https://developer.hashicorp.com/terraform/language/files/dependency-lock)
 - [Terraform resource refactoring](https://developer.hashicorp.com/terraform/language/modules/develop/refactoring)
+
+[^cli]: Command-Line Interface.
+[^aws]: Amazon Web Services.
+[^ci]: Continuous Integration.
+[^cd]: Continuous Delivery or Continuous Deployment; delivery keeps changes releasable, while deployment automatically releases them to production.
+[^api]: Application Programming Interface — the contract through which software components interact.

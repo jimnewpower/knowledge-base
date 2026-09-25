@@ -1,4 +1,4 @@
-# Clean code and SOLID cheat sheet
+# Clean code and SOLID[^solid] cheat sheet
 
 > Baseline: Design heuristics for Java-style object-oriented code; these are contextual recommendations. Reviewed: 2026-09-24.
 
@@ -10,7 +10,7 @@ See also [ood.md](ood.md) and [tdd.md](tdd.md).
 
 1. **Names are documentation.** `invoiceTotal` beats `t`. `approve()` beats `doIt()`.
 2. **Keep functions cohesive and at a clear level of abstraction.** Split independently meaningful responsibilities; a short use-case orchestrator may legitimately perform several steps.
-3. **Small diffs to invariants.** A method that validates, writes SQL, and sends email is three modules wearing a trench coat.
+3. **Small diffs to invariants.** A method that validates, writes SQL[^sql], and sends email is three modules wearing a trench coat.
 4. **Delete dead code.** Version control remembers.
 5. **Comments explain why, not what.** If the comment restates the line, fix the name.
 6. **Errors are part of the interface.** Do not return `null` to mean three different things.
@@ -25,7 +25,7 @@ See also [ood.md](ood.md) and [tdd.md](tdd.md).
 | Feature envy | Move the method to the data it envies |
 | Shotgun surgery | One change fans out across many files — missing module |
 | Data clump | The same three fields travel together — they are a type |
-| Primitive obsession | `String` used as money, id, email, JSON |
+| Primitive obsession | `String` used as money, id, email, JSON[^json] |
 | God class | Split along responsibilities, not along “utils” |
 
 ## SOLID
@@ -46,7 +46,7 @@ class OrderService {
 
 Split persistence from notification. Orchestrate them in an application service if the *use case* is “close and notify.”
 
-SRP is not “one method per class.” It is “one axis of change per module.”
+SRP[^srp] is not “one method per class.” It is “one axis of change per module.”
 
 ### O — Open/Closed
 
@@ -78,7 +78,7 @@ Small, role-specific interfaces. In Java this is also how you keep mocks honest.
 
 ### D — Dependency Inversion
 
-High-level policy should depend on abstractions, not on SQL or HTTP clients.
+High-level policy should depend on abstractions, not on SQL or HTTP[^http] clients.
 
 ```java
 interface OrderRepository { Optional<Order> find(OrderId id); void save(Order order); }
@@ -90,6 +90,8 @@ class CloseOrder { CloseOrder(OrderRepository repo) { ... } }
 The application module defines the interface. Adapters implement it. Wiring (Spring, main) is the only place that knows both.
 
 ## How the five work together
+
+Example abbreviations: LSP[^lsp].
 
 ```text
 DIP puts policy above adapters
@@ -111,3 +113,10 @@ Principles are for *change you have evidence will happen*, not for ceremony.
 
 - [Robert C. Martin — SOLID relevance](https://blog.cleancoder.com/uncle-bob/2020/10/18/Solid-Relevance.html)
 - [Martin Fowler — Beck design rules](https://martinfowler.com/bliki/BeckDesignRules.html)
+
+[^solid]: Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, and Dependency Inversion — five object-oriented design principles.
+[^sql]: Structured Query Language.
+[^json]: JavaScript Object Notation.
+[^srp]: Single Responsibility Principle.
+[^http]: Hypertext Transfer Protocol.
+[^lsp]: Liskov Substitution Principle.

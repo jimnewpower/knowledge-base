@@ -1,14 +1,14 @@
-# SQL query tuning and PostgreSQL diagnostics cheat sheet
+# SQL[^sql] query tuning and PostgreSQL diagnostics cheat sheet
 
 > Baseline: PostgreSQL 16 SQL and diagnostics. Recheck plans on the actual database version, statistics, and workload. Reviewed: 2026-09-24.
 
 Tune a measured query with representative parameters and data. A plan that looks elegant is useful only if it reduces the workload's cost without changing results.
 
-Related: [SQL](sql.md), [JDBC and HikariCP](jdbc-hikaricp.md), [transactions](transactions-and-isolation.md), [database migrations](database-migrations.md).
+Related: [SQL](sql.md), [JDBC and HikariCP](jdbc-hikaricp.md)[^jdbc][^hikaricp], [transactions](transactions-and-isolation.md), [database migrations](database-migrations.md).
 
 ## Read the plan
 
-Assumes `orders(id, customer_id, created_at)` and representative customer ID 42. `EXPLAIN ANALYZE` executes the statement; use an appropriate environment and time budget. Running writes inside a rollback is not a guarantee against all side effects.
+Assumes `orders(id, customer_id, created_at)` and representative customer ID[^id] 42. `EXPLAIN ANALYZE` executes the statement; use an appropriate environment and time budget. Running writes inside a rollback is not a guarantee against all side effects.
 
 ```sql
 EXPLAIN (ANALYZE, BUFFERS)
@@ -34,7 +34,7 @@ Plan costs are estimates, not milliseconds. Node timing includes child work; do 
 
 A candidate for that query is `(customer_id, created_at DESC, id DESC)`. Compare plans and timings before retaining it; each index consumes storage and adds write/maintenance work. `INCLUDE` can cover projected columns, but an index-only scan still depends on visibility information. Column order, expression matching, collation, and partial-index predicates affect usability.
 
-For deep pagination, seek after the last `(created_at, id)` pair instead of repeatedly discarding a large `OFFSET`. Require non-null ordering keys and a unique tie-breaker. Concurrent inserts/updates can still change pages; define snapshot or cursor semantics for the API.
+For deep pagination, seek after the last `(created_at, id)` pair instead of repeatedly discarding a large `OFFSET`. Require non-null ordering keys and a unique tie-breaker. Concurrent inserts/updates can still change pages; define snapshot or cursor semantics for the API[^api].
 
 ## Find blocked work
 
@@ -62,3 +62,9 @@ Check result equivalence, common and skewed parameters, warm/cold behavior, conc
 - [Statistics and activity views](https://www.postgresql.org/docs/16/monitoring-stats.html)
 - [Statistics used by the planner](https://www.postgresql.org/docs/16/planner-stats.html)
 - [pg_stat_statements](https://www.postgresql.org/docs/16/pgstatstatements.html)
+
+[^sql]: Structured Query Language.
+[^jdbc]: Java Database Connectivity.
+[^hikaricp]: Hikari Connection Pool — a Java database connection pool.
+[^id]: Identifier (or identity in a product name such as Microsoft Entra ID).
+[^api]: Application Programming Interface — the contract through which software components interact.

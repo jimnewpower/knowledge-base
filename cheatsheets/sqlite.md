@@ -1,10 +1,10 @@
 # SQLite in desktop applications cheat sheet
 
-> Baseline: SQLite 3.x on a local filesystem; production WAL deployments must include the WAL-reset fix (3.51.3+, or a documented fixed backport). JDBC settings depend on the driver. Reviewed: 2026-09-24.
+> Baseline: SQLite 3.x on a local filesystem; production WAL[^wal] deployments must include the WAL-reset fix (3.51.3+, or a documented fixed backport). JDBC[^jdbc] settings depend on the driver. Reviewed: 2026-09-24.
 
 SQLite is an embedded database engine, not a miniature database server. Treat **connection policy, write serialization, and the database file lifecycle** as application responsibilities.
 
-Related: [SQL](sql.md), [transactions](transactions-and-isolation.md), [database migrations](database-migrations.md), [JavaFX](javafx.md).
+Related: [SQL](sql.md)[^sql], [transactions](transactions-and-isolation.md), [database migrations](database-migrations.md), [JavaFX](javafx.md).
 
 ## Startup and connection settings
 
@@ -26,7 +26,7 @@ PRAGMA foreign_keys;
 | `busy_timeout=5000` | Wait policy in milliseconds for certain lock conflicts; not a query deadline or guarantee of success |
 | `synchronous=FULL` | Stronger commit durability policy; depends on the storage honoring synchronization |
 
-HikariCP pools physical connections; pool size does not create additional SQLite writers. Set initialization through the JDBC driver/pool and check actual connections, rather than assuming one startup SQL call covers the pool. Sources: [PRAGMAs](https://www.sqlite.org/pragma.html), [foreign keys](https://www.sqlite.org/foreignkeys.html).
+HikariCP[^hikaricp] pools physical connections; pool size does not create additional SQLite writers. Set initialization through the JDBC driver/pool and check actual connections, rather than assuming one startup SQL call covers the pool. Sources: [PRAGMAs](https://www.sqlite.org/pragma.html), [foreign keys](https://www.sqlite.org/foreignkeys.html).
 
 ## WAL and concurrency
 
@@ -51,9 +51,9 @@ See [SQLite WAL documentation](https://www.sqlite.org/wal.html). Application ver
 
 ## Backups and schema upgrades
 
-Use SQLite's online backup API or another documented consistent snapshot method. Copying only the main file while WAL is active can omit committed data. Do not manually delete the `-wal` or `-shm` files of an open database. Verify restoration by opening the backup and checking schema and representative records. See the [backup API](https://www.sqlite.org/backup.html).
+Use SQLite's online backup API[^api] or another documented consistent snapshot method. Copying only the main file while WAL is active can omit committed data. Do not manually delete the `-wal` or `-shm` files of an open database. Verify restoration by opening the backup and checking schema and representative records. See the [backup API](https://www.sqlite.org/backup.html).
 
-Suggested desktop upgrade sequence: acquire exclusive application-level migration ownership, take a consistent backup, apply a tested migration, validate it, then open normal UI access. Record schema version and reject unsupported newer schemas. A database migration may prevent reopening the file with an older application.
+Suggested desktop upgrade sequence: acquire exclusive application-level migration ownership, take a consistent backup, apply a tested migration, validate it, then open normal UI[^ui] access. Record schema version and reject unsupported newer schemas. A database migration may prevent reopening the file with an older application.
 
 ## Diagnostics and tests
 
@@ -74,3 +74,10 @@ Inspect returned rows: integrity and foreign-key checks are separate; a passive 
 - [SQLite — foreign keys](https://www.sqlite.org/foreignkeys.html)
 - [SQLite — transactions](https://www.sqlite.org/lang_transaction.html)
 - [SQLite — backup API](https://www.sqlite.org/backup.html)
+
+[^wal]: Write-Ahead Logging.
+[^jdbc]: Java Database Connectivity.
+[^sql]: Structured Query Language.
+[^hikaricp]: Hikari Connection Pool — a Java database connection pool.
+[^api]: Application Programming Interface — the contract through which software components interact.
+[^ui]: User Interface.

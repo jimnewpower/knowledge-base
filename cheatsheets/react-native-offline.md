@@ -8,6 +8,8 @@ Related: [TypeScript](typescript.md), [SQLite](sqlite.md), [messaging](messaging
 
 ## Data flow
 
+Example abbreviations: UI[^ui].
+
 ```text
 User edit -> local transaction [entity change + outbox operation]
                            -> UI reads local state
@@ -22,14 +24,14 @@ Do not keep the only copy of an edit in component state or an in-memory retry qu
 
 | Field or rule | Purpose |
 |---------------|---------|
-| Stable operation ID | Deduplicate retries after timeouts or process death |
+| Stable operation ID[^id] | Deduplicate retries after timeouts or process death |
 | Entity ID and account scope | Prevent collisions and cross-account application |
 | Base revision | Detect conflicting changes against the server's current version |
 | Server-assigned result/revision | Record the authoritative outcome |
 | Delta cursor | Resume a server-defined ordered change feed |
 | Tombstone/retention policy | Propagate deletions and recognize clients needing a full resync |
 
-Example outbox payload; names and semantics belong to your API, not a React Native standard. Keep the operation ID unchanged across retries and retain credentials outside this record.
+Example outbox payload; names and semantics belong to your API[^api], not a React Native standard. Keep the operation ID unchanged across retries and retain credentials outside this record.
 
 ```json validate
 {
@@ -65,3 +67,7 @@ Scope local data and workers to the signed-in account. On account switching, pre
 - [React Native AppState](https://reactnative.dev/docs/appstate)
 - [Android background location](https://developer.android.com/develop/sensors-and-location/location/background)
 - [Apple background location updates](https://developer.apple.com/documentation/corelocation/handling-location-updates-in-the-background)
+
+[^id]: Identifier (or identity in a product name such as Microsoft Entra ID).
+[^api]: Application Programming Interface — the contract through which software components interact.
+[^ui]: User Interface.

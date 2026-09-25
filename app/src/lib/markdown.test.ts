@@ -2,6 +2,10 @@ import { describe, expect, it } from "vitest";
 import { allHeadings, titleOf } from "./markdown";
 
 describe("titleOf", () => {
+  it("keeps acronym footnotes out of navigation titles", () => {
+    expect(titleOf("# HTTP[^http] and TLS[^tls] cheat sheet", "fallback")).toBe("HTTP and TLS cheat sheet");
+  });
+
   it("uses the first heading outside a code fence", () => {
     const markdown = ["```bash", "# Always quote paths", "```", "", "# Bash cheat sheet", ""].join("\n");
     expect(titleOf(markdown, "bash")).toBe("Bash cheat sheet");

@@ -1,8 +1,8 @@
 # DynamoDB cheat sheet
 
-> Baseline: DynamoDB API and AWS CLI v2; examples use a fictional table and explicit Region/profile. Reviewed: 2026-09-25.
+> Baseline: DynamoDB API[^api] and AWS[^aws] CLI[^cli] v2; examples use a fictional table and explicit Region/profile. Reviewed: 2026-09-25.
 
-Design keys from access patterns. DynamoDB is not a relational schema with SQL joins removed.
+Design keys from access patterns. DynamoDB is not a relational schema with SQL[^sql] joins removed.
 
 Related: [AWS](aws.md), [distributed systems](distributed-systems.md), [caching](caching.md), [resilience](resilience.md).
 
@@ -12,16 +12,16 @@ Related: [AWS](aws.md), [distributed systems](distributed-systems.md), [caching]
 |---------|----------|
 | Partition key | Spread traffic while keeping a useful query boundary |
 | Sort key | Encode ordering/range access within a partition |
-| GSI | Alternate query path; budget index writes/storage and eventual consistency |
+| GSI[^gsi] | Alternate query path; budget index writes/storage and eventual consistency |
 | Conditional write | Enforce create-if-absent or expected-version updates atomically |
 | Transaction | Coordinate bounded multi-item work when the invariant requires it |
-| TTL | Eventual cleanup; expired items can remain visible until deletion |
+| TTL[^ttl] | Eventual cleanup; expired items can remain visible until deletion |
 
 Write down each operation's partition key, sort range, expected item count/size, consistency need, and peak traffic. A single heavily used tenant/key can become hot even when the table's total capacity looks sufficient.
 
 ## Query example
 
-Assumes a table `ModelRuns` with string partition key `projectId` and sort key `runId`. Bash quoting; other shells may require file-based JSON arguments.
+Assumes a table `ModelRuns` with string partition key `projectId` and sort key `runId`. Bash quoting; other shells may require file-based JSON[^json] arguments.
 
 ```bash
 aws dynamodb query --table-name ModelRuns \
@@ -31,7 +31,7 @@ aws dynamodb query --table-name ModelRuns \
   --profile engineering-dev --region us-west-2
 ```
 
-A `Query` requires partition-key equality and can constrain the sort key. Filters apply after reading; they do not reduce read capacity consumed. API pages can stop at 1 MB, and a filtered page can be empty while still returning `LastEvaluatedKey`. SDK callers continue using that key until absent. The CLI normally handles pagination unless its pagination controls change that behavior.
+A `Query` requires partition-key equality and can constrain the sort key. Filters apply after reading; they do not reduce read capacity consumed. API pages can stop at 1 MB[^mb], and a filtered page can be empty while still returning `LastEvaluatedKey`. SDK[^sdk] callers continue using that key until absent. The CLI normally handles pagination unless its pagination controls change that behavior.
 
 ## Correctness under concurrency
 
@@ -51,3 +51,13 @@ Monitor throttling, latency, consumed capacity, errors, and hot-key symptoms. Re
 - [DynamoDB query limits, capacity and consistency](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Query.Other.html)
 - [DynamoDB conditional expressions](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.ConditionExpressions.html)
 - [DynamoDB TTL](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TTL.html)
+
+[^api]: Application Programming Interface — the contract through which software components interact.
+[^aws]: Amazon Web Services.
+[^cli]: Command-Line Interface.
+[^sql]: Structured Query Language.
+[^gsi]: Global Secondary Index.
+[^ttl]: Time To Live.
+[^json]: JavaScript Object Notation.
+[^mb]: Megabyte.
+[^sdk]: Software Development Kit.

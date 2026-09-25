@@ -1,10 +1,10 @@
 # Enterprise Integration Patterns cheat sheet
 
-> Baseline: Hohpe/Woolf EIP vocabulary; broker-neutral design guidance, not transport guarantees. Reviewed: 2026-09-24.
+> Baseline: Hohpe/Woolf EIP[^eip] vocabulary; broker-neutral design guidance, not transport guarantees. Reviewed: 2026-09-24.
 
 Use **Enterprise Integration Patterns (EIP)** to name how independent applications exchange data and coordinate work. Start with the business boundary, delivery requirements, and failure behavior before selecting a broker or framework.
 
-Related: [routing and coordination](integration-routing-and-coordination.md), [message transformation](integration-transformation.md), [messaging and events](messaging-and-events.md), [resilience](resilience.md), [Enterprise Service Bus](enterprise-service-bus.md), [API Gateway](api-gateway.md), [Spring Integration in practice](spring-integration.md).
+Related: [routing and coordination](integration-routing-and-coordination.md), [message transformation](integration-transformation.md), [messaging and events](messaging-and-events.md), [resilience](resilience.md), [Enterprise Service Bus](enterprise-service-bus.md), [API Gateway](api-gateway.md)[^api], [Spring Integration in practice](spring-integration.md).
 
 ## Choose an integration style
 
@@ -60,7 +60,7 @@ Define a deadline, duplicate-reply handling, and a policy for replies after time
 
 ## Reliability and operations
 
-- **Idempotent Receiver:** make repeat delivery safe through operation semantics or durable deduplication. Scope keys to the logical consumer and operation; do not deduplicate every event sharing an order ID. See the [pattern](https://www.enterpriseintegrationpatterns.com/patterns/messaging/IdempotentReceiver.html) and the [atomic inbox/outbox guidance](messaging-and-events.md).
+- **Idempotent Receiver:** make repeat delivery safe through operation semantics or durable deduplication. Scope keys to the logical consumer and operation; do not deduplicate every event sharing an order ID[^id]. See the [pattern](https://www.enterpriseintegrationpatterns.com/patterns/messaging/IdempotentReceiver.html) and the [atomic inbox/outbox guidance](messaging-and-events.md).
 - **Wire Tap:** copy traffic for diagnostics; bound its capacity and redact payloads. Decide whether tap failure can affect business delivery.
 - **Message History / Message Store:** retain route metadata or message records for investigation under an explicit retention policy. Diagnostic history alone is not a replay mechanism.
 - **Control Bus:** manage routes and endpoints through an authenticated administrative path; audit pause, purge, and replay operations.
@@ -71,10 +71,16 @@ Monitor queue age, failures, retries, duplicates, and incomplete aggregation gro
 
 The [DZone article](https://dzone.com/articles/the-timeless-architecture-enterprise-integration-p) groups enduring concerns into transformation, asynchronous messaging, idempotency, orchestration/choreography, and security propagation. Treat this as a perspective on integration, not the complete EIP taxonomy.
 
-Security propagation needs an explicit trust boundary: authenticate producers, restrict channel access, and authorize the requested operation at the consumer. A `userId` in a payload is not proof of identity. Distinguish the initiating user from the executing service, including for delayed work and replay. Where delegated OAuth access is required, [RFC 8693 token exchange](https://www.rfc-editor.org/rfc/rfc8693.html) defines audience/resource and scope parameters; policy determines what is issued. Do not indiscriminately forward bearer tokens. See [authentication](authentication.md) and [authorization](authorization.md).
+Security propagation needs an explicit trust boundary: authenticate producers, restrict channel access, and authorize the requested operation at the consumer. A `userId` in a payload is not proof of identity. Distinguish the initiating user from the executing service, including for delayed work and replay. Where delegated OAuth[^oauth] access is required, [RFC 8693 token exchange](https://www.rfc-editor.org/rfc/rfc8693.html)[^rfc] defines audience/resource and scope parameters; policy determines what is issued. Do not indiscriminately forward bearer tokens. See [authentication](authentication.md) and [authorization](authorization.md).
 
 ## References
 
 - [Hohpe and Woolf — Enterprise Integration Patterns catalog](https://www.enterpriseintegrationpatterns.com/patterns/messaging/)
 - [Wairagade — The Timeless Architecture: Enterprise Integration Patterns That Exceed Technology Trends (DZone, January 13, 2026)](https://dzone.com/articles/the-timeless-architecture-enterprise-integration-p) — contextual reading; pattern definitions above use primary sources.
 - [Spring Integration — framework overview](https://docs.spring.io/spring-integration/reference/overview.html) — Java implementation entry point; match documentation to the version deployed.
+
+[^eip]: Enterprise Integration Patterns.
+[^api]: Application Programming Interface — the contract through which software components interact.
+[^id]: Identifier (or identity in a product name such as Microsoft Entra ID).
+[^oauth]: Open Authorization — a framework for delegated access.
+[^rfc]: Request for Comments — a document in the Internet technical specification series.

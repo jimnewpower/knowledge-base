@@ -1,10 +1,10 @@
 # Enterprise Service Bus cheat sheet
 
-> Baseline: ESB architectural responsibilities and Hohpe/Woolf integration patterns; capabilities and guarantees vary by product. Reviewed: 2026-09-24.
+> Baseline: ESB[^esb] architectural responsibilities and Hohpe/Woolf integration patterns; capabilities and guarantees vary by product. Reviewed: 2026-09-24.
 
 An **Enterprise Service Bus (ESB)** provides a shared integration layer for connecting applications with different interfaces, protocols, and data models. Typical responsibilities include adapters, routing, transformation, and protocol mediation. Central coordination need not mean one physical runtime; deployment and ownership boundaries determine the actual failure scope.
 
-Related: [Enterprise Integration Patterns](enterprise-integration-patterns.md), [API Gateway](api-gateway.md), [routing and coordination](integration-routing-and-coordination.md), [transformation](integration-transformation.md).
+Related: [Enterprise Integration Patterns](enterprise-integration-patterns.md), [API Gateway](api-gateway.md)[^api], [routing and coordination](integration-routing-and-coordination.md), [transformation](integration-transformation.md).
 
 ## Distinguish the responsibilities
 
@@ -15,13 +15,13 @@ Related: [Enterprise Integration Patterns](enterprise-integration-patterns.md), 
 | Message broker | Transport, retain, and deliver messages according to configuration | Business mappings or application-level exactly-once effects |
 | Service mesh | Manage service communication, traffic policy, and transport security | Enterprise data-model translation or API product governance |
 
-Products can combine these roles. Select capabilities and operational boundaries, not labels. ESB responsibilities are described in [IBM's overview](https://www.ibm.com/think/topics/esb); gateway and mesh roles are covered by [Microsoft](https://learn.microsoft.com/en-us/azure/architecture/microservices/design/gateway) and [Istio](https://istio.io/latest/about/service-mesh/).
+Products can combine these roles. Select capabilities and operational boundaries, not labels. ESB responsibilities are described in [IBM's overview](https://www.ibm.com/think/topics/esb)[^ibm]; gateway and mesh roles are covered by [Microsoft](https://learn.microsoft.com/en-us/azure/architecture/microservices/design/gateway) and [Istio](https://istio.io/latest/about/service-mesh/).
 
-## Recognize the EIP building blocks
+## Recognize the EIP[^eip] building blocks
 
 | Integration need | Pattern | Design decision |
 |------------------|---------|-----------------|
-| Connect a legacy file or SOAP interface | Channel Adapter / Service Activator | Checkpointing, credentials, timeout, and error mapping |
+| Connect a legacy file or SOAP[^soap] interface | Channel Adapter / Service Activator | Checkpointing, credentials, timeout, and error mapping |
 | Translate partner records | Message Translator / Normalizer | Versioned mapping and ownership of meaning |
 | Select the receiving system | Content-Based Router / Recipient List | No-match behavior, route version, allowed destinations |
 | Process parts and combine results | Splitter / Aggregator | Correlation, completion, duplicate and late-message handling |
@@ -34,6 +34,8 @@ The [Message Bus pattern](https://www.enterpriseintegrationpatterns.com/patterns
 
 Conceptual deployment; the broker and integration workers can scale separately.
 
+Example abbreviations: DB[^db].
+
 ```text
 API client --> API gateway --> order service --> order DB + outbox
                                                    |
@@ -43,7 +45,7 @@ legacy ERP <-- SOAP adapter <-- translator <-- message broker
                 integration runtime / ESB
 ```
 
-The order service owns order acceptance. The integration route owns delivery and translation to the ERP. A gateway response must distinguish accepted work from completed ERP processing. SOAP over HTTP remains a remote call with an uncertain outcome after timeout.
+The order service owns order acceptance. The integration route owns delivery and translation to the ERP[^erp]. A gateway response must distinguish accepted work from completed ERP processing. SOAP over HTTP[^http] remains a remote call with an uncertain outcome after timeout.
 
 For implementation, define a stable operation key, bounded retries, and reconciliation with the ERP. A database transaction inside the ESB cannot roll back an ERP call. If the ERP lacks idempotency support, reconcile ambiguous outcomes before replaying side effects. See [resilience](resilience.md) and [inbox/outbox boundaries](messaging-and-events.md).
 
@@ -79,3 +81,12 @@ Replacing the runtime alone does not remove coupling in a shared schema or relea
 - [Hohpe and Woolf — Message Bus](https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessageBus.html)
 - [Hohpe and Woolf — Messaging Gateway](https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessagingGateway.html)
 - [Hohpe and Woolf — Process Manager](https://www.enterpriseintegrationpatterns.com/patterns/messaging/ProcessManager.html)
+
+[^esb]: Enterprise Service Bus.
+[^api]: Application Programming Interface — the contract through which software components interact.
+[^ibm]: International Business Machines.
+[^eip]: Enterprise Integration Patterns.
+[^soap]: Originally Simple Object Access Protocol; SOAP is now the protocol's name.
+[^erp]: Enterprise Resource Planning.
+[^http]: Hypertext Transfer Protocol.
+[^db]: Database.

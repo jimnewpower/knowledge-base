@@ -2,9 +2,9 @@
 
 > Baseline: Angular 20+ standalone application style; pin a compatible Angular, Node.js, TypeScript, and RxJS combination. Reviewed: 2026-09-25.
 
-Keep components focused on interaction, services focused on use cases and I/O, and API responses subject to runtime validation.
+Keep components focused on interaction, services focused on use cases and I/O[^i-o], and API[^api] responses subject to runtime validation.
 
-Related: [HTML, CSS, and browsers](html-css-browser.md), [accessibility](accessibility.md), [TypeScript](typescript.md), [JavaScript](javascript.md), [application design](application-design.md), [Entra ID and SSO](entra-id.md).
+Related: [HTML, CSS, and browsers](html-css-browser.md)[^html][^css], [accessibility](accessibility.md), [TypeScript](typescript.md), [JavaScript](javascript.md), [application design](application-design.md), [Entra ID and SSO](entra-id.md)[^id][^sso].
 
 ## Building blocks
 
@@ -20,7 +20,7 @@ Related: [HTML, CSS, and browsers](html-css-browser.md), [accessibility](accessi
 
 For existing NgModule applications, migrate one boundary at a time; standalone conversion does not require rewriting business services. Check the official version matrix before changing TypeScript independently.
 
-## HTTP and RxJS decisions
+## HTTP[^http] and RxJS decisions
 
 Configure `HttpClient` with the provider API appropriate to the app. A request observable is cold: multiple subscriptions can send multiple requests. `http.get<Order>()` supplies a compile-time assertion, not runtime checking; read uncertain data as `unknown` and validate it.
 
@@ -38,7 +38,7 @@ Represent loading, empty, ready, and failed states explicitly. Place error recov
 
 Use the project's locked package manager inputs and scripts for build/test. Serve a production build with the correct base path and route fallback. Test direct navigation to a nested route, expired identity, malformed responses, slow requests, form errors, and keyboard interaction.
 
-Treat browser bundles as public artifacts: environment files contain public configuration only. Interceptors should attach access tokens only to an allow-listed API origin; avoid sending credentials to arbitrary request URLs. Server rendering also requires isolating request/user state and guarding browser-only APIs.
+Treat browser bundles as public artifacts: environment files contain public configuration only. Interceptors should attach access tokens only to an allow-listed API origin; avoid sending credentials to arbitrary request URLs[^url]. Server rendering also requires isolating request/user state and guarding browser-only APIs.
 
 ## References
 
@@ -46,3 +46,12 @@ Treat browser bundles as public artifacts: environment files contain public conf
 - [Angular HTTP requests](https://angular.dev/guide/http/making-requests)
 - [Angular version compatibility](https://angular.dev/reference/versions)
 - [RxJS higher-order observables](https://rxjs.dev/guide/higher-order-observables)
+
+[^i-o]: Input/Output.
+[^api]: Application Programming Interface — the contract through which software components interact.
+[^html]: Hypertext Markup Language.
+[^css]: Cascading Style Sheets.
+[^id]: Identifier (or identity in a product name such as Microsoft Entra ID).
+[^sso]: Single Sign-On.
+[^http]: Hypertext Transfer Protocol.
+[^url]: Uniform Resource Locator.

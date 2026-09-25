@@ -35,6 +35,8 @@ On Linux, use `python3 -m venv .venv` and `.venv/bin/python`. Commit dependency 
 
 Independent standard-library fragments; `config.json` and `model.py` are project-owned files in the current directory. The command requires an isolated, trusted model script.
 
+Example abbreviations: JSON[^json].
+
 ```python
 import json
 from pathlib import Path
@@ -59,10 +61,14 @@ Validate required fields after parsing. The process example buffers output in me
 
 ## Failure modes
 
-Do not deserialize untrusted pickle files. Do not assume threads speed up CPU-bound Python work; benchmark the deployed interpreter and native extensions, and consider processes for isolation/parallelism. Async I/O still needs timeouts and bounded concurrency. Use `logging` for application diagnostics and keep secrets out of exception context.
+Do not deserialize untrusted pickle files. Do not assume threads speed up CPU[^cpu]-bound Python work; benchmark the deployed interpreter and native extensions, and consider processes for isolation/parallelism. Async I/O[^i-o] still needs timeouts and bounded concurrency. Use `logging` for application diagnostics and keep secrets out of exception context.
 
 ## References
 
 - [Python virtual environments](https://docs.python.org/3/tutorial/venv.html)
 - [Python subprocess](https://docs.python.org/3/library/subprocess.html)
 - [Python dataclasses](https://docs.python.org/3/library/dataclasses.html)
+
+[^cpu]: Central Processing Unit.
+[^i-o]: Input/Output.
+[^json]: JavaScript Object Notation.

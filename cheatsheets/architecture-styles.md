@@ -4,7 +4,7 @@
 
 Choose architecture around **ownership, invariants, change, and failure**. A style earns its cost when it addresses a concrete constraint better than a simpler alternative.
 
-Related: [C4 diagrams](c4-diagrams.md), [modular monoliths](modular-monoliths.md), [DDD](domain-driven-design.md), [distributed systems](distributed-systems.md), [quality attributes](quality-attributes.md).
+Related: [C4 diagrams](c4-diagrams.md)[^c4], [modular monoliths](modular-monoliths.md), [DDD](domain-driven-design.md)[^ddd], [distributed systems](distributed-systems.md), [quality attributes](quality-attributes.md).
 
 ## Separate the decisions
 
@@ -23,14 +23,14 @@ The following selection guidance is this collection's synthesis. Microsoft's [ar
 
 | Shape | Good fit | Cost or failure mode | Reconsider when |
 |-------|----------|----------------------|-----------------|
-| Layered application | Straightforward CRUD, existing enterprise application | Feature changes span layers; domain behavior leaks into controllers or persistence | Unrelated capabilities repeatedly change together |
+| Layered application | Straightforward CRUD[^crud], existing enterprise application | Feature changes span layers; domain behavior leaks into controllers or persistence | Unrelated capabilities repeatedly change together |
 | Modular monolith | Shared release cadence with distinct business capabilities | Boundaries erode through internal imports and shared table writes | One stable capability needs independent operation |
-| Ports and adapters / hexagonal | Domain rules must survive UI, provider, or storage changes | Excess interfaces and mapping when every class becomes a port | The seam has no meaningful alternative or testing benefit |
+| Ports and adapters / hexagonal | Domain rules must survive UI[^ui], provider, or storage changes | Excess interfaces and mapping when every class becomes a port | The seam has no meaningful alternative or testing benefit |
 | Microservices | Independent capability ownership, release, scaling, or isolation | Network failures, version skew, distributed workflows, operational overhead | Services require coordinated deployments and direct database joins |
 | Event-driven collaboration | Multiple reactions, asynchronous integration, burst absorption | Lag, duplicates, schema evolution, difficult end-to-end diagnosis | Caller needs an immediate authoritative answer |
 | Web/desktop plus background workers | Long imports, reports, scientific calculations | Queue backlog, cancellation, idempotency, work ownership | Queue delay violates the user workflow |
 | Pipes and filters | Staged validation, transformation, raster processing | Intermediate storage, incompatible formats, backpressure | Stages need extensive shared mutable state |
-| Plugin / microkernel | Stable host with genuinely variable extensions | API compatibility, plugin lifecycle, isolation | Every feature needs privileged access to host internals |
+| Plugin / microkernel | Stable host with genuinely variable extensions | API[^api] compatibility, plugin lifecycle, isolation | Every feature needs privileged access to host internals |
 
 Ports and adapters describes the separation between application policy and external mechanisms; it does not mandate a deployment topology. See [Cockburn's original explanation](https://alistair.cockburn.us/hexagonal-architecture).
 
@@ -38,9 +38,9 @@ Ports and adapters describes the separation between application policy and exter
 
 | Constraint | Starting point | Evidence to gather |
 |------------|----------------|--------------------|
-| Single-user offline GIS | Desktop application with local stores and background computation | UI latency, import recovery, file/database consistency, upgrade behavior |
-| Existing JSF application with shared transactions | Retain deployment; introduce capability boundaries around use cases | Dependency cycles, table writers, release coupling |
-| CPU-heavy analysis competes with interactive requests | Isolate work in a bounded executor or worker process | CPU profile, queue age, cancellation, memory limits |
+| Single-user offline GIS[^gis] | Desktop application with local stores and background computation | UI latency, import recovery, file/database consistency, upgrade behavior |
+| Existing JSF[^jsf] application with shared transactions | Retain deployment; introduce capability boundaries around use cases | Dependency cycles, table writers, release coupling |
+| CPU[^cpu]-heavy analysis competes with interactive requests | Isolate work in a bounded executor or worker process | CPU profile, queue age, cancellation, memory limits |
 | Independent teams blocked by shared releases | Clarify APIs and data authority, then consider service extraction | Actual release contention and readiness to operate independently |
 | Several systems need committed business facts | Durable publication and consumer contracts | Outbox behavior, lag tolerance, replay and reconciliation |
 
@@ -75,3 +75,12 @@ This is an incremental migration strategy, not evidence that a remote worker is 
 - [Microsoft — architecture styles](https://learn.microsoft.com/en-us/azure/architecture/guide/architecture-styles/)
 - [Cockburn — hexagonal architecture](https://alistair.cockburn.us/hexagonal-architecture)
 - [Spring Modulith — module fundamentals](https://docs.spring.io/spring-modulith/reference/fundamentals.html)
+
+[^c4]: Context, Containers, Components, and Code — the four levels of the C4 architecture model.
+[^ddd]: Domain-Driven Design.
+[^crud]: Create, Read, Update, Delete.
+[^ui]: User Interface.
+[^api]: Application Programming Interface — the contract through which software components interact.
+[^gis]: Geographic Information System.
+[^jsf]: JavaServer Faces — the predecessor name of Jakarta Faces.
+[^cpu]: Central Processing Unit.

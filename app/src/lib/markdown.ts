@@ -19,6 +19,7 @@ function closesFence(line: string, marker: "```" | "~~~"): boolean {
 /** Drop inline emphasis and link markup so titles stay readable. */
 export function cleanInline(text: string): string {
   return text
+    .replace(/\[\^[^\]]+\]/g, "")
     .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
     .replace(/`([^`]+)`/g, "$1")
     .replace(/\*\*([^*]+)\*\*/g, "$1")
