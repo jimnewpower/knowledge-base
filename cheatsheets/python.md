@@ -4,7 +4,7 @@
 
 Use a project environment, explicit data boundaries, and context managers for resources. Type hints improve checking but do not validate runtime input.
 
-Related: [scientific model integration](scientific-model-integration.md), [reproducible builds](reproducible-builds.md), [Bash](bash.md).
+Related: [Python library reference](python-libraries.md), [scientific model integration](scientific-model-integration.md), [reproducible builds](reproducible-builds.md), [Bash](bash.md).
 
 ## Isolated environment
 

@@ -45,12 +45,16 @@ export const categories: Category[] = [
       ] },
       { title: "Languages & Fundamentals", pages: [
         {"path":"cheatsheets/javascript.md","description":"Runtime semantics, promises, cancellation, Fetch and browser boundaries","tags":[]},
-        {"path":"cheatsheets/python.md","description":"Virtual environments, language idioms, files, subprocesses and runtime boundaries","tags":[]},
+        {"path":"cheatsheets/python.md","description":"Virtual environments, language idioms, files, subprocesses and runtime boundaries","tags":["Python"]},
         {"path":"cheatsheets/c.md","description":"Memory ownership, types, undefined behavior, diagnostics and sanitizers","tags":[]},
         {"path":"cheatsheets/typescript.md","description":"Strict types, unknown values, narrowing, validation and async state","tags":[]},
         {"path":"cheatsheets/data-structures.md","description":"When to use which structure","tags":["Performance"]},
         {"path":"cheatsheets/algorithms.md","description":"Complexity and core algorithms","tags":["Performance"]},
         {"path":"cheatsheets/regex.md","description":"Pattern matching","tags":[]},
+      ] },
+      { title: "Library References", pages: [
+        {"path":"cheatsheets/java-libraries.md","description":"JDK APIs, Maven coordinates, library selection, testing, desktop and GIS","tags":["Java"]},
+        {"path":"cheatsheets/python-libraries.md","description":"Standard library, package/import names, HTTP, scientific computing, GIS and testing","tags":["Python"]},
       ] },
       { title: "Developer Workflow", pages: [
         {"path":"cheatsheets/git.md","description":"Branching, history, undo, collaboration","tags":[]},

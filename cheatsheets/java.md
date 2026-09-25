@@ -4,6 +4,8 @@
 
 Primary language of this knowledge base’s product context: enterprise services, desktops, and scientific/geospatial tools. Pin the deployed JDK. Examples use Java 21 syntax; Java 17 requires alternatives to record patterns and virtual threads.
 
+Related: [Java library reference](java-libraries.md), [Python library reference](python-libraries.md).
+
 ## Types and declarations
 
 ```java
