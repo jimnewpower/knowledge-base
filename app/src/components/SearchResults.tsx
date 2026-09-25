@@ -10,15 +10,28 @@ type Props = {
   active: number;
   selected: string | null;
   onOpen: (path: string) => void;
+  suggestions: string[];
+  onQuery: (query: string) => void;
+  filtered: boolean;
+  onClearFilter: () => void;
+  onBrowse: () => void;
 };
 
-export default function SearchResults({ hits, query, active, selected, onOpen }: Props) {
+export default function SearchResults({ hits, query, active, selected, onOpen, suggestions, onQuery, filtered, onClearFilter, onBrowse }: Props) {
   useEffect(() => {
     document.getElementById(`hit-${active}`)?.scrollIntoView({ block: "nearest" });
   }, [active, hits]);
 
   if (!hits.length) {
-    return <p className="sidebar-empty">No notes match "{query.trim()}".</p>;
+    return <div className="sidebar-empty search-help">
+      <p role="status">No notes match "{query.trim()}"{filtered ? " in this category" : ""}.</p>
+      {suggestions.length > 0 && <><p>Try a related search:</p><ul>{suggestions.map((suggestion) =>
+        <li key={suggestion}><button type="button" onClick={() => onQuery(suggestion)}>{suggestion}</button></li>
+      )}</ul></>}
+      <p>Try fewer words, a full term, or an acronym such as “JPA” or “a11y”.</p>
+      {filtered && <button type="button" onClick={onClearFilter}>Search all categories</button>}
+      <button type="button" onClick={onBrowse}>Browse topics</button>
+    </div>;
   }
 
   return (

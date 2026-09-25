@@ -1,0 +1,20 @@
+name: Content or search correction
+description: Report inaccurate guidance, missing coverage, or an unsuccessful search.
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: Page or unanswered question
+      description: Include the page, passage, or exact search query and expected result.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence and applicable version
+      description: Link primary documentation or describe a minimal reproduction. Omit private data and credentials.
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested improvement
+      description: Explain the reusable clarification, correction, or topic you need.

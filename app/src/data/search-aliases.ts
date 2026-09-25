@@ -1,0 +1,16 @@
+// Discovery terms connect readers to a topic; they do not assert technical equivalence.
+export const searchAliases: Record<string, string[]> = {
+  "cheatsheets/authentication.md": ["auth", "login", "sign in", "identity verification"],
+  "cheatsheets/authorization.md": ["auth", "permissions", "access control"],
+  "cheatsheets/jpa-and-hibernate.md": ["jpa", "hibernate", "orm", "object relational mapping"],
+  "cheatsheets/java-concurrency.md": ["multithreading", "parallelism", "virtual threads"],
+  "cheatsheets/java-jakarta-modernization.md": ["javax", "jakarta", "migration", "upgrade"],
+  "cheatsheets/accessibility.md": ["a11y", "wcag", "screen reader", "keyboard navigation"],
+  "cheatsheets/localization.md": ["i18n", "l10n", "internationalisation", "internationalization", "translation"],
+  "cheatsheets/html-css-browser.md": ["html", "css", "dom", "frontend", "front end", "responsive design"],
+  "cheatsheets/react.md": ["reactjs", "react js", "hooks", "jsx"],
+  "cheatsheets/log4j2.md": ["log4j", "log4j2", "logging configuration", "mdc", "log rotation"],
+  "cheatsheets/software-supply-chain.md": ["sbom", "dependency vulnerabilities"],
+  "cheatsheets/architecture-decisions.md": ["adr", "decision record"],
+  "cheatsheets/resilience.md": ["fault tolerance", "retry", "circuit breaker"],
+};

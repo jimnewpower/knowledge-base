@@ -6,6 +6,7 @@ export type Category = {
   id: string;
   title: string;
   description: string;
+  startHere?: { path: string; kind: "Concepts" | "Implementation"; reason: string }[];
   sections: { title: string; pages: CatalogPage[] }[];
   related: string[];
 };

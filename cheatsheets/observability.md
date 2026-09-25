@@ -4,7 +4,7 @@
 
 Observability is whether you can **explain a live system’s behavior from its outputs**: logs, metrics, traces, and health. Dashboards are views. They are not the signal.
 
-Related: [devops.md](devops.md), [kubernetes-openshift.md](kubernetes-openshift.md), [spring-boot.md](spring-boot.md), [OpenTelemetry and Micrometer implementation](opentelemetry-micrometer.md).
+Related: [devops.md](devops.md), [kubernetes-openshift.md](kubernetes-openshift.md), [spring-boot.md](spring-boot.md), [Log4j 2 configuration](log4j2.md), [OpenTelemetry and Micrometer implementation](opentelemetry-micrometer.md).
 
 ## The three pillars plus health
 
@@ -19,7 +19,7 @@ If you can only afford one correlation field, make it a **request / trace id** o
 
 ## Logs
 
-```json
+```json validate
 {
   "ts": "2026-09-24T19:01:02.123Z",
   "level": "ERROR",

@@ -1,6 +1,6 @@
 # Cheat sheets
 
-Quick-reference notes for software engineering and architecture. These are not ADRs and not domain surveys. Use them at the keyboard; put design rationale in `architecture/` and `decisions/`.
+Public quick-reference notes for software engineering and architecture. Use them at the keyboard or follow a [reading path](../guides/start-here.md). Project decisions and domain doctrine belong in their own repositories. See [contribution guidance](../CONTRIBUTING.md) for corrections and validation.
 
 Each sheet names its baseline, review date, and primary references. A review date records an editorial/technical review, not a claim that every command was executed or every linked document is frozen at that date. Deployment versions take precedence over examples.
 
@@ -10,6 +10,11 @@ When editing a sheet, compile applicable Java fragments in a small harness, pars
 
 | Sheet | Use when |
 |-------|----------|
+| [HTML, CSS, and browsers](html-css-browser.md) | Semantic elements, forms, layout debugging, and browser boundaries |
+| [Web accessibility](accessibility.md) | Keyboard access, labels, focus, status updates, and workflow checks |
+| [React fundamentals](react.md) | State ownership, controlled inputs, events, Effects, and identity |
+| [Internationalization and localization](localization.md) | Locale, translation, formatting, direction, and input policies |
+| [Log4j 2 configuration](log4j2.md) | Rolling files, logging context, duplicate events, and configuration verification |
 | [Git](git.md) | Branching, history, undo, collaboration |
 | [Bash](bash.md) | Shell, pipelines, scripting on Linux |
 | [Java](java.md) | Language, types, concurrency, modern Java |
@@ -112,9 +117,9 @@ When editing a sheet, compile applicable Java fragments in a small harness, pars
 
 Containers and Docker are one sheet. Authentication and authorization are separate on purpose.
 
-## Resume skills coverage
+## Skills coverage
 
-This map connects the résumé skills to their practical references. A skill can span several sheets; existing coverage is reused instead of duplicating a sheet for every résumé phrase. Reviewed: 2026-09-25.
+This map connects engineering skills to practical references. A skill can span several sheets; reuse the linked coverage to find the level of detail you need. Reviewed: 2026-09-25.
 
 ### Software architecture and integration
 

@@ -4,7 +4,7 @@
 
 [TDD](tdd.md) is the design loop for a single unit. This sheet is the rest of the pyramid: what else to run, where, and how expensive it may be.
 
-Related: [spring-boot.md](spring-boot.md), [maven.md](maven.md), [rest-apis.md](rest-apis.md), [JUnit, Mockito, and AssertJ](junit-mockito-assertj.md).
+Related: [spring-boot.md](spring-boot.md), [maven.md](maven.md), [rest-apis.md](rest-apis.md), [JUnit, Mockito, and AssertJ](junit-mockito-assertj.md), [accessibility checks](accessibility.md).
 
 ## Pyramid
 

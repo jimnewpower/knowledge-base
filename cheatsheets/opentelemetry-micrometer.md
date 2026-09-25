@@ -34,7 +34,7 @@ java -javaagent:./opentelemetry-javaagent.jar -jar app.jar
 
 Local-only Collector configuration; the debug exporter writes received traces to Collector logs. A container needs a deliberately configured reachable endpoint instead of assuming its loopback is the host.
 
-```yaml
+```yaml validate
 receivers:
   otlp:
     protocols:

@@ -36,6 +36,7 @@ export function HomePage({ docs, navigate }: Props) {
       <h1>Knowledge, ready to use.</h1>
       <p className="browse-intro">Practical references for designing, building, and operating software. Choose a topic or search for what you need.</p>
       <div className="browse-meta"><span>{categories.length} categories</span><span>{count} pages</span><NavigationLink to={{ ...home, doc: "README.md" }} navigate={navigate}>About this collection</NavigationLink></div>
+      <NavigationLink to={{ ...home, doc: "guides/start-here.md" }} navigate={navigate}>Find a starting point →</NavigationLink>
     </header>
     <nav className="category-grid" aria-label="Browse categories">
       {categories.map((category) => <NavigationLink className="category-card" key={category.id} to={{ ...home, category: category.id }} navigate={navigate}>
@@ -66,6 +67,14 @@ export function CategoryPage({ category, docs, location, navigate }: Props & { c
       <h1>{category.title}</h1>
       <p className="browse-intro">{category.description}</p>
     </header>
+    {category.startHere && location.type === "all" && !location.tag && <section className="start-here" aria-label="Start here">
+      <h2>Start here</h2>
+      <ul>{category.startHere.filter((entry) => byPath.has(entry.path)).map((entry) => <li key={entry.path}>
+        <span className="entry-kind">{entry.kind}</span>
+        <NavigationLink to={{ ...home, doc: entry.path }} navigate={navigate}>{pageTitle(byPath.get(entry.path)!)}</NavigationLink>
+        <p>{entry.reason}</p>
+      </li>)}</ul>
+    </section>}
     <div className="category-filters">
       <label>Content type<select value={location.type} onChange={(event) => navigate({ ...location, type: event.target.value as ContentType | "all" })}>
         <option value="all">All types ({pages.length})</option>
@@ -101,7 +110,7 @@ export function CategoryPage({ category, docs, location, navigate }: Props & { c
 
 function PageItem({ page, doc, navigate, related = false }: { page: CatalogPage; doc: IndexedDoc; navigate: Navigate; related?: boolean }) {
   return <li><NavigationLink className="page-link" to={{ ...home, doc: page.path }} navigate={navigate}>
-    <div><h3>{pageTitle(doc)}</h3><p>{page.description}</p><div className="page-labels"><span>{contentTypes[contentType(page.path)]}</span>{related ? <span>{categoryFor(page.path)?.title}</span> : page.tags.map((tag) => <span key={tag}>{tag}</span>)}</div></div>
+    <div><h3>{pageTitle(doc)}</h3><p><span className="use-when">Use this for: </span>{page.description}</p><div className="page-labels"><span>{contentTypes[contentType(page.path)]}</span>{related ? <span>{categoryFor(page.path)?.title}</span> : page.tags.map((tag) => <span key={tag}>{tag}</span>)}</div></div>
     <span className="page-arrow" aria-hidden="true">→</span>
   </NavigationLink></li>;
 }

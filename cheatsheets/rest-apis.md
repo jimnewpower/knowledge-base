@@ -76,7 +76,7 @@ Cache-Control: private, max-age=0, must-revalidate
 
 Error body — pick one shape and keep it:
 
-```json
+```json validate
 {
   "error": "order_conflict",
   "message": "Order 4821 already submitted",

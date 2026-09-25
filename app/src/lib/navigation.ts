@@ -3,6 +3,7 @@ import { contentTypes } from "./catalog";
 import type { ContentType } from "./catalog";
 import { isCheatSheet } from "./paths";
 import type { View } from "../types";
+import { categories } from "../data/categories";
 
 export type LocationState = {
   q: string;
@@ -12,9 +13,10 @@ export type LocationState = {
   view: View;
   type: ContentType | "all";
   tag: string;
+  searchCategory: string;
 };
 
-export const home: LocationState = { q: "", doc: null, category: null, hash: "", view: "original", type: "all", tag: "" };
+export const home: LocationState = { q: "", doc: null, category: null, hash: "", view: "original", type: "all", tag: "", searchCategory: "" };
 
 export function readLocation(url: URL): LocationState {
   const params = url.searchParams;
@@ -30,12 +32,14 @@ export function readLocation(url: URL): LocationState {
     view: params.get("view") === "enhanced" ? "enhanced" : "original",
     type: Object.hasOwn(contentTypes, type) ? type as ContentType : "all",
     tag: params.get("tag") ?? "",
+    searchCategory: categories.some((category) => category.id === params.get("scope")) ? params.get("scope")! : "",
   };
 }
 
 export function locationHref(location: LocationState): string {
   const params = new URLSearchParams();
   if (location.q.trim()) params.set("q", location.q.trim());
+  if (location.searchCategory) params.set("scope", location.searchCategory);
   if (location.doc) {
     params.set("doc", location.doc);
     if (location.view === "enhanced" && isCheatSheet(location.doc)) params.set("view", "enhanced");

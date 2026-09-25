@@ -10,7 +10,7 @@ Related: [Maven](maven.md), [DevOps](devops.md), [software supply chain](softwar
 
 Example `.github/workflows/verify.yml` for a Maven application, not for this Markdown repository. Commit `mvnw` with LF line endings and its executable bit, plus the wrapper configuration. Replace the runner image only after checking your toolchain requirements.
 
-```yaml
+```yaml validate
 name: Verify
 on:
   push:

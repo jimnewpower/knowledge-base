@@ -1,10 +1,10 @@
 # Knowledge base reader
 
-Local search and Markdown viewer for the notes in this repository.
+Local search and Markdown viewer for the public software engineering reference in this repository. Requires Node.js 22 or newer.
 
 ```powershell
 cd app
-npm install
+npm ci
 npm start
 ```
 
@@ -12,7 +12,7 @@ Opens http://127.0.0.1:5180.
 
 ## Browse by category
 
-The home page presents nine categories with icons, descriptions, and counts of their primary pages. Each category groups its notes into sections with short summaries. Content-type and topic filters narrow the primary list; a separate **Related topics** section holds selected references from other categories.
+The home page presents nine categories with icons, descriptions, and counts of their primary pages, plus a reading-path guide. Each category starts with conceptual and implementation entry points, then groups notes with “Use this for” summaries. Content-type and topic filters narrow the primary list; a separate **Related topics** section holds selected references from other categories.
 
 - Category: http://127.0.0.1:5180/?category=architecture-design
 - Filtered category: http://127.0.0.1:5180/?category=languages-tools&tag=Java
@@ -40,7 +40,17 @@ Press `/` to focus search. The address bar keeps the query (`q`) and the open no
 
 Enter opens the highlighted result. Arrow keys move through results. Escape clears the query.
 
-Search matches titles, headings, paths, and body text. Words combine with AND. A prefix matches (`kube` finds Kubernetes). Marks in the open note follow whole words. Notes rank ahead of index pages (`README.md`) when both mention the query. The open note scrolls to the first match and marks the terms.
+Search matches titles, headings, paths, summaries, body text, and curated aliases in `src/data/search-aliases.ts`. Words combine with AND. Prefixes match (`kube` finds Kubernetes); words of five or more characters tolerate limited spelling errors. Short API names remain more exact. Aliases help discovery (`a11y`, `i18n`, `ORM`, `auth`) without asserting that related concepts are interchangeable.
+
+**Search in** narrows results to a primary category before ranking and the 40-result limit. The `scope` parameter persists independently of browse filters, including when opening a result or using Back/Forward: http://127.0.0.1:5180/?q=auth&scope=security-identity. Unknown scopes fall back to all categories. No-result guidance offers broader spelling suggestions when available, clearing the category filter, or browsing topics.
+
+Marks in the open note follow literal query words; alias and typo matches may have no literal highlight. Notes rank ahead of index pages (`README.md`) when both mention a query. The open note scrolls to the first literal match.
+
+## Content maintenance
+
+Run `npm run check` for tests (including content quality and search relevance) and the build. `npm run check:content` isolates the content gate. It checks local links and heading anchors, unique titles, required metadata, sheet-index coverage, category ownership for every reference/guide, and complete structured examples marked `validate`.
+
+`npm run check:links` checks remote prose references separately; append repository-relative Markdown paths after `--` for a focused check. Network restrictions and rate limits require manual interpretation. See [CONTRIBUTING.md](../CONTRIBUTING.md) for authoring and evidence requirements.
 
 ## What is indexed
 

@@ -3,7 +3,7 @@ import type { KeyboardEvent } from "react";
 import Sidebar from "./components/Sidebar";
 import Viewer from "./components/Viewer";
 import { ancestors, defaultExpanded } from "./lib/paths";
-import { runSearch } from "./lib/search";
+import { runSearch, suggestQueries } from "./lib/search";
 import { categories } from "./data/categories";
 import { categoryFor, pageTitle } from "./lib/catalog";
 import { home, useNavigation } from "./lib/navigation";
@@ -23,9 +23,11 @@ export default function App() {
   const [activeHit, setActiveHit] = useState(0);
 
   const hits = useMemo(
-    () => (mini && query.trim() ? runSearch(mini, docs, query) : []),
-    [mini, docs, query],
+    () => (mini && query.trim() ? runSearch(mini, docs, query, location.searchCategory) : []),
+    [mini, docs, query, location.searchCategory],
   );
+  const suggestions = useMemo(() => mini && query.trim() && !hits.length
+    ? suggestQueries(mini, query, location.searchCategory) : [], [mini, query, hits.length, location.searchCategory]);
   const showResults = Boolean(query.trim()) && !browseLocked;
   const expanded = userExpanded ?? defaultExpanded(tree, selected);
   const selectedDoc = docs.find((doc) => doc.path === selected);
@@ -52,7 +54,7 @@ export default function App() {
 
   useEffect(() => {
     setActiveHit(0);
-  }, [query]);
+  }, [query, location.searchCategory]);
 
   useEffect(() => {
     if (initialQuery.current) inputRef.current?.focus();
@@ -80,14 +82,14 @@ export default function App() {
 
   const openPath = useCallback(
     (path: string, hashId?: string) => {
-      navigate({ ...home, q: query, doc: path, hash: hashId ?? "", view });
+      navigate({ ...home, q: query, searchCategory: location.searchCategory, doc: path, hash: hashId ?? "", view });
       setUserExpanded((prev) => {
         const next = new Set(prev ?? defaultExpanded(tree, path));
         for (const dir of ancestors(path)) next.add(dir);
         return next;
       });
     },
-    [tree, query, view, navigate],
+    [tree, query, view, navigate, location.searchCategory],
   );
 
   const onToggle = useCallback(
@@ -126,7 +128,7 @@ export default function App() {
   }
 
   function openActiveHit() {
-    const hit = hits[activeHit] ?? hits[0];
+    const hit = hits[Math.min(activeHit, hits.length - 1)];
     if (!hit) return;
     setBrowseLocked(false);
     openPath(hit.path);
@@ -148,6 +150,11 @@ export default function App() {
         onSearchKeyDown={onSearchKeyDown}
         inputRef={inputRef}
         hits={hits}
+        suggestions={suggestions}
+        onSearchCategory={(searchCategory) => {
+          navigate({ ...location, searchCategory });
+          setBrowseLocked(false);
+        }}
         activeHit={Math.min(activeHit, Math.max(0, hits.length - 1))}
         showResults={showResults}
         onShowLibrary={() => setBrowseLocked(true)}

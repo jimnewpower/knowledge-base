@@ -20,6 +20,8 @@ type Props = {
   onSearchKeyDown: (event: KeyboardEvent<HTMLInputElement>) => void;
   inputRef: RefObject<HTMLInputElement | null>;
   hits: SearchHit[];
+  suggestions: string[];
+  onSearchCategory: (category: string) => void;
   activeHit: number;
   showResults: boolean;
   onShowLibrary: () => void;
@@ -45,6 +47,8 @@ export default function Sidebar({
   onSearchKeyDown,
   inputRef,
   hits,
+  suggestions,
+  onSearchCategory,
   activeHit,
   showResults,
   onShowLibrary,
@@ -93,6 +97,7 @@ export default function Sidebar({
             <input
               ref={inputRef}
               type="search"
+              role="combobox"
               name="q"
               placeholder="Search notes"
               value={query}
@@ -100,12 +105,18 @@ export default function Sidebar({
               autoCorrect="off"
               spellCheck={false}
               aria-autocomplete="list"
-              aria-controls="search-results"
-              aria-expanded={showResults}
+              aria-controls={showResults && hits.length ? "search-results" : undefined}
+              aria-expanded={showResults && hits.length > 0}
               aria-activedescendant={showResults && hits.length ? `hit-${activeHit}` : undefined}
               onChange={(event) => onQuery(event.target.value)}
               onKeyDown={onSearchKeyDown}
             />
+          </label>
+          <label className="search-scope">Search in
+            <select value={location.searchCategory} onChange={(event) => onSearchCategory(event.target.value)}>
+              <option value="">All categories</option>
+              {categories.map((category) => <option key={category.id} value={category.id}>{category.title}</option>)}
+            </select>
           </label>
         </form>
         {query.trim() && (
@@ -136,6 +147,11 @@ export default function Sidebar({
             active={activeHit}
             selected={selected}
             onOpen={onOpen}
+            suggestions={suggestions}
+            onQuery={onQuery}
+            filtered={Boolean(location.searchCategory)}
+            onClearFilter={() => onSearchCategory("")}
+            onBrowse={() => openLocation(home)}
           />
         )}
         {!error && !loading && !showResults && (

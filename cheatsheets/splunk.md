@@ -47,6 +47,6 @@ An empty result can mean no failures, wrong search scope, broken extraction, or 
 
 ## References
 
-- [Splunk SPL command reference](https://help.splunk.com/en/splunk-enterprise/search/spl-search-reference/9.4/overview/about-the-search-reference)
+- [Splunk SPL command reference](https://help.splunk.com/en/splunk-enterprise/search/spl-search-reference/9.4/introduction/how-to-use-this-manual)
 - [Splunk stats](https://help.splunk.com/en/splunk-enterprise/search/spl-search-reference/9.4/search-commands/stats)
 - [Splunk time modifiers](https://help.splunk.com/en/splunk-enterprise/search/spl-search-reference/9.4/time-format-variables-and-modifiers/time-modifiers)

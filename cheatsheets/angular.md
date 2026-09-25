@@ -4,7 +4,7 @@
 
 Keep components focused on interaction, services focused on use cases and I/O, and API responses subject to runtime validation.
 
-Related: [TypeScript](typescript.md), [JavaScript](javascript.md), [application design](application-design.md), [Entra ID and SSO](entra-id.md).
+Related: [HTML, CSS, and browsers](html-css-browser.md), [accessibility](accessibility.md), [TypeScript](typescript.md), [JavaScript](javascript.md), [application design](application-design.md), [Entra ID and SSO](entra-id.md).
 
 ## Building blocks
 

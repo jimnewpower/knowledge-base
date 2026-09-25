@@ -47,7 +47,7 @@ Kafka-style logs keep history; queues consume and drop. Do not treat them as int
 3. Publish after the source of truth commits — **outbox**, not dual write.
 4. Keys: same aggregate → same partition if you need per-id order.
 
-```json
+```json validate
 {
   "eventId": "7f1d3a0e-2c4a-4b0e-9f1d-3a0e2c4a4b0e",
   "type": "OrderSubmitted",
