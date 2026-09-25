@@ -1,9 +1,19 @@
+import { useState } from "react";
 import type { KeyboardEvent, RefObject } from "react";
-import type { SearchHit, TreeNode } from "../types";
+import type { IndexedDoc, SearchHit, TreeNode } from "../types";
+import { categories } from "../data/categories";
+import { availablePages, categoryFor } from "../lib/catalog";
+import { home } from "../lib/navigation";
+import type { LocationState, Navigate } from "../lib/navigation";
+import CategoryIcon from "./CategoryIcon";
+import NavigationLink from "./NavigationLink";
 import FileTree from "./FileTree";
 import SearchResults from "./SearchResults";
 
 type Props = {
+  location: LocationState;
+  navigate: Navigate;
+  docs: IndexedDoc[];
   query: string;
   onQuery: (value: string) => void;
   onSubmit: () => void;
@@ -26,6 +36,9 @@ type Props = {
 };
 
 export default function Sidebar({
+  location,
+  navigate,
+  docs,
   query,
   onQuery,
   onSubmit,
@@ -46,10 +59,15 @@ export default function Sidebar({
   docCount,
   onRetry,
 }: Props) {
+  const [mobileBrowse, setMobileBrowse] = useState(false);
+  const openLocation: Navigate = (next) => {
+    navigate(next);
+    setMobileBrowse(false);
+  };
   return (
-    <aside className="sidebar">
+    <aside className={`sidebar${mobileBrowse || showResults ? " mobile-open" : ""}`}>
       <div className="sidebar-head">
-        <div className="brand">
+        <NavigationLink className="brand" to={home} navigate={openLocation} aria-label="Knowledge base home">
           <svg viewBox="0 0 32 32" className="brand-mark" aria-hidden="true">
             <rect width="32" height="32" rx="6" fill="#3a2a22" />
             <path d="M8 9h16v2.2H8zm0 5.8h16v2.2H8zm0 5.8h10v2.2H8z" fill="#f6f3ed" />
@@ -58,7 +76,11 @@ export default function Sidebar({
             <div className="brand-kicker">Software engineering</div>
             <div className="brand-title">Knowledge base</div>
           </div>
-        </div>
+        </NavigationLink>
+        <button className="mobile-browse-toggle" type="button" aria-expanded={mobileBrowse || showResults} aria-controls="sidebar-content" onClick={() => {
+          onShowLibrary();
+          setMobileBrowse(showResults ? true : !mobileBrowse);
+        }}>Browse</button>
         <form
           role="search"
           onSubmit={(event) => {
@@ -97,7 +119,7 @@ export default function Sidebar({
           </div>
         )}
       </div>
-      <div className="sidebar-scroll">
+      <div className="sidebar-scroll" id="sidebar-content">
         {error && (
           <div className="sidebar-empty" role="alert">
             <p>Could not load notes. {error}</p>
@@ -117,19 +139,35 @@ export default function Sidebar({
           />
         )}
         {!error && !loading && !showResults && (
-          <nav aria-label="Notes">
-            {tree.length === 0 ? (
-              <p className="sidebar-empty">No markdown notes found.</p>
-            ) : (
-              <FileTree
-                nodes={tree}
-                selected={selected}
-                expanded={expanded}
-                onToggle={onToggle}
-                onOpen={onOpen}
-              />
-            )}
-          </nav>
+          <div>
+            <nav className="category-nav" aria-label="Categories">
+              <NavigationLink to={home} navigate={openLocation} aria-current={!location.doc && !location.category ? "page" : undefined}>Home</NavigationLink>
+              <p className="sidebar-label">Explore topics</p>
+              {categories.map((category) => <NavigationLink key={category.id} to={{ ...home, category: category.id }} navigate={openLocation}
+                aria-current={location.category === category.id ? "page" : categoryFor(selected)?.id === category.id ? "true" : undefined}>
+                <CategoryIcon id={category.id} /><span>{category.title}</span><small>{availablePages(category, docs).length}</small>
+              </NavigationLink>)}
+            </nav>
+            <details className="all-files">
+              <summary>All files</summary>
+              <nav aria-label="All files">
+                {tree.length === 0 ? (
+                  <p className="sidebar-empty">No markdown notes found.</p>
+                ) : (
+                  <FileTree
+                    nodes={tree}
+                    selected={selected}
+                    expanded={expanded}
+                    onToggle={onToggle}
+                    onOpen={(path) => {
+                      onOpen(path);
+                      setMobileBrowse(false);
+                    }}
+                  />
+                )}
+              </nav>
+            </details>
+          </div>
         )}
       </div>
       <div className="sidebar-foot">

@@ -11,6 +11,7 @@ import type { OutlineItem, View } from "../types";
 import Outline from "./Outline";
 
 type Props = {
+  breadcrumbs?: ReactNode;
   path: string | null;
   query: string;
   hash: string;
@@ -31,7 +32,7 @@ function sameOutline(a: OutlineItem[], b: OutlineItem[]): boolean {
   );
 }
 
-export default function Viewer({ path, query, hash, revision, view, onView, onNavigate }: Props) {
+export default function Viewer({ path, query, hash, revision, view, onView, onNavigate, breadcrumbs }: Props) {
   const scrollerRef = useRef<HTMLElement>(null);
   const bodyRef = useRef<HTMLDivElement>(null);
   const scrollKey = useRef("");
@@ -157,7 +158,7 @@ export default function Viewer({ path, query, hash, revision, view, onView, onNa
 
   return (
     <div className={pageOutline.length ? "reading" : "reading solo"}>
-      <article className="viewer" ref={scrollerRef}>
+      <main className="viewer" ref={scrollerRef} id="main-content" tabIndex={-1}>
         <div className="viewer-toolbar">
           <div className="viewer-path" title={path ?? ""}>
             {path ?? "Knowledge base"}
@@ -173,6 +174,7 @@ export default function Viewer({ path, query, hash, revision, view, onView, onNa
             </div>
           )}
         </div>
+        {breadcrumbs}
         {hasViews && <ViewTabs view={view} onView={onView} />}
         {!path && <p className="status">Choose a note from the library, or search and open a result.</p>}
         {path && error && <p className="status error">{error}</p>}
@@ -231,7 +233,7 @@ export default function Viewer({ path, query, hash, revision, view, onView, onNa
             </NoteBoundary>
           </div>
         )}
-      </article>
+      </main>
       <Outline items={pageOutline} activeId={activeId} onSelect={(id) => path && onNavigate(path, id)} />
     </div>
   );
@@ -355,6 +357,7 @@ function NoteLink({
       <a
         href={`#${parsed.id}`}
         onClick={(event) => {
+          if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
           event.preventDefault();
           onNavigate(from, parsed.id);
         }}
@@ -369,6 +372,7 @@ function NoteLink({
       <a
         href={target}
         onClick={(event) => {
+          if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
           event.preventDefault();
           onNavigate(parsed.path, parsed.id);
         }}
