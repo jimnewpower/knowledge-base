@@ -55,6 +55,7 @@ export const categories: Category[] = [
         {"path":"cheatsheets/jvm-performance.md","description":"Heap, allocation, pauses","tags":["Java","Performance"]},
       ] },
       { title: "Languages & Fundamentals", pages: [
+        {"path":"cheatsheets/json.md","description":"Objects, arrays, value types, escaping, and common syntax errors","tags":[]},
         {"path":"cheatsheets/javascript.md","description":"Runtime semantics, promises, cancellation, Fetch and browser boundaries","tags":[]},
         {"path":"cheatsheets/python.md","description":"Virtual environments, language idioms, files, subprocesses and runtime boundaries","tags":["Python"]},
         {"path":"cheatsheets/c.md","description":"Memory ownership, types, undefined behavior, diagnostics and sanitizers","tags":[]},

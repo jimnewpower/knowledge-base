@@ -4,7 +4,7 @@
 
 Treat JSON as a **versioned boundary contract**. Keep persistence entities out of public payloads and test the actual mapper configuration used by the application.
 
-Related: [OpenAPI and JSON Schema](openapi-and-json-schema.md), [REST APIs](rest-apis.md)[^rest][^api], [integration transformation](integration-transformation.md), [modernization](java-jakarta-modernization.md).
+Related: [JSON basics](json.md), [OpenAPI and JSON Schema](openapi-and-json-schema.md), [REST APIs](rest-apis.md)[^rest][^api], [integration transformation](integration-transformation.md), [modernization](java-jakarta-modernization.md).
 
 ## Choose the API
 
