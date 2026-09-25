@@ -8,7 +8,7 @@ Related: [Maven](maven.md), [DevOps](devops.md), [software supply chain](softwar
 
 ## Minimal verification workflow
 
-Example `.github/workflows/verify.yml` for a Maven application, not for this Markdown repository. Commit `mvnw` with LF line endings and its executable bit, plus the wrapper configuration. Replace the runner image only after checking your toolchain requirements.
+Example `.github/workflows/verify.yml` for a Maven application, not for this Markdown repository. Commit `mvnw` with LF[^lf] line endings and its executable bit, plus the wrapper configuration. Replace the runner image only after checking your toolchain requirements.
 
 ```yaml validate
 name: Verify
@@ -43,14 +43,14 @@ jobs:
           retention-days: 7
 ```
 
-These are full commit pins for reviewed v4 revisions, not a claim that v4 is the latest major. Update pins through reviewed dependency changes. Pinning the action does not freeze the runner image, downloaded JDK patch, or external package repositories.
+These are full commit pins for reviewed v4 revisions, not a claim that v4 is the latest major. Update pins through reviewed dependency changes. Pinning the action does not freeze the runner image, downloaded JDK[^jdk] patch, or external package repositories.
 
 ## Trust boundaries
 
 | Event or input | Rule |
 |----------------|------|
 | Pull-request code | Treat scripts, Maven plugins, and tests as executable untrusted input |
-| `pull_request_target` | Do not check out and execute untrusted PR code with privileged credentials |
+| `pull_request_target` | Do not check out and execute untrusted PR[^pr] code with privileged credentials |
 | PR title/body/branch | Pass through an environment variable if needed; do not interpolate into shell source |
 | Cache | An optimization; do not treat a cache hit as artifact verification |
 | Release job | Grant only needed permissions; prefer short-lived credentials where supported |
@@ -62,7 +62,7 @@ Keep test reports useful without publishing credentials, private fixtures, or un
 
 1. Pin wrapper, plugin, and dependency versions; enforce toolchain requirements in Maven.
 2. Make Surefire/Failsafe and any coverage/static-analysis gates part of `verify`; invoking the phase alone does not configure those plugins.
-3. Identify release outputs by commit and immutable digest; retain their test results, SBOM, and provenance.
+3. Identify release outputs by commit and immutable digest; retain their test results, SBOM[^sbom], and provenance.
 4. Promote those exact outputs through environments. Rebuilding from the same source can still change dependencies or tooling.
 5. Apply protected branches/tags and environment gates to publishing jobs. Grant token write permissions only there.
 
@@ -74,3 +74,8 @@ Run a deliberate failing test once when establishing the pipeline to prove that 
 - [Secure use of GitHub Actions](https://docs.github.com/en/actions/security-for-github-actions/security-guides/security-hardening-for-github-actions)
 - [setup-java](https://github.com/actions/setup-java)
 - [Maven lifecycle](https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html)
+
+[^lf]: Line Feed — the newline character used by Unix-style text files.
+[^jdk]: Java Development Kit.
+[^pr]: Pull Request.
+[^sbom]: Software Bill of Materials.

@@ -1,6 +1,6 @@
 # Log4j 2 configuration cheat sheet
 
-> Baseline: Log4j 2.x API/Core, Java 21, and XML configuration; pin compatible maintained versions in the application. Reviewed: 2026-09-25.
+> Baseline: Log4j 2.x API[^api]/Core, Java 21, and XML[^xml] configuration; pin compatible maintained versions in the application. Reviewed: 2026-09-25.
 
 Use this when configuring Java logs, diagnosing duplicate events, or carrying request context. Start with [observability](observability.md) for signal design and alerting.
 
@@ -13,6 +13,8 @@ The application selects the implementation and configuration. Align `log4j-api` 
 ## Rolling files
 
 Complete XML configuration. The process must be allowed to write `logs` relative to its working directory; installed applications should choose an explicit application-data location. Archive count is bounded; a large event can exceed the nominal rollover size.
+
+Example abbreviations: UTF[^utf], MB[^mb].
 
 ```xml validate
 <?xml version="1.0" encoding="UTF-8"?>
@@ -48,3 +50,8 @@ Additivity can deliver an event to both a named logger's appenders and its ances
 Check effective configuration, writable paths, rotation, stack traces, and shutdown in the packaged application. Exercise disk-full/permission failures. Exclude secrets and bound untrusted messages. Use structured output when consumers need reliable fields.
 
 The automated check validates XML well-formedness only. Runtime loading, event routing, and rollover need integration tests in the consuming application.
+
+[^api]: Application Programming Interface — the contract through which software components interact.
+[^xml]: Extensible Markup Language.
+[^utf]: Unicode Transformation Format; UTF-8 encodes text using eight-bit code units.
+[^mb]: Megabyte.

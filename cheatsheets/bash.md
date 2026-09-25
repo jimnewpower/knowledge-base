@@ -1,8 +1,8 @@
 # Bash cheat sheet
 
-> Baseline: Bash 5.x with GNU/Linux utilities; Bash syntax is not portable /bin/sh syntax. Reviewed: 2026-09-24.
+> Baseline: Bash 5.x with GNU[^gnu]/Linux utilities; Bash syntax is not portable /bin/sh syntax. Reviewed: 2026-09-24.
 
-Bash is the default interactive shell on most Linux systems and the language of delivery scripts. Write for `bash`, not for an unspecified `/bin/sh`, unless you need POSIX portability.
+Bash is the default interactive shell on most Linux systems and the language of delivery scripts. Write for `bash`, not for an unspecified `/bin/sh`, unless you need POSIX[^posix] portability.
 
 ```bash
 #!/usr/bin/env bash
@@ -185,6 +185,8 @@ Process substitution: `diff <(sort a) <(sort b)`.
 
 ## Useful one-liners for engineering
 
+Example abbreviations: JSON[^json].
+
 ```bash
 # JSON-ish pretty print if jq is installed
 jq . response.json
@@ -208,3 +210,7 @@ root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 - [GNU Bash reference manual](https://www.gnu.org/s/bash/manual/bash.html)
 - [GNU Coreutils — rm behavior](https://www.gnu.org/s/coreutils/manual/html_node/rm-invocation.html)
+
+[^gnu]: GNU's Not Unix — a recursive acronym naming the free-software project.
+[^posix]: Portable Operating System Interface.
+[^json]: JavaScript Object Notation.

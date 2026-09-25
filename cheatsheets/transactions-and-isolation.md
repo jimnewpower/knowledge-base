@@ -1,17 +1,17 @@
 # Transactions and isolation cheat sheet
 
-> Baseline: SQL-standard isolation vocabulary; PostgreSQL examples and Spring Framework 6.2 proxy transactions. Reviewed: 2026-09-24.
+> Baseline: SQL[^sql]-standard isolation vocabulary; PostgreSQL examples and Spring Framework 6.2 proxy transactions. Reviewed: 2026-09-24.
 
 A transaction is a **bounded unit of work** against a database: all of it becomes visible, or none of it does. Isolation is how much other transactions can interfere while it is open.
 
 Related: [sql.md](sql.md), [resilience.md](resilience.md), [messaging-and-events.md](messaging-and-events.md).
 
-## ACID, operationally
+## ACID[^acid], operationally
 
 | Letter | Promise you actually get |
 |--------|--------------------------|
 | Atomicity | Commit or rollback together (on one database) |
-| Consistency | Constraints you declared are kept (FK, unique, checks) |
+| Consistency | Constraints you declared are kept (FK[^fk], unique, checks) |
 | Isolation | Concurrent transactions do not surprise you *beyond the level you chose* |
 | Durability | After commit, a crash does not lose the row (modulo disk/replication config) |
 
@@ -31,7 +31,7 @@ In Spring proxy mode, default `@Transactional` propagation joins an existing tra
 public void transfer(AccountId from, AccountId to, Money amount) { ... }
 ```
 
-Keep transactions short. Do not hold a transaction open across HTTP calls to someone else.
+Keep transactions short. Do not hold a transaction open across HTTP[^http] calls to someone else.
 
 ## Isolation levels (SQL standard)
 
@@ -39,7 +39,7 @@ Keep transactions short. Do not hold a transaction open across HTTP calls to som
 |-------|------------|----------------|---------|------------------------|
 | Read uncommitted | possible | possible | possible | almost never want |
 | Read committed | no | possible | possible | **PostgreSQL, Oracle, SQL Server default-ish** |
-| Repeatable read | no | no | possible (PG: no, MVCC) | MySQL InnoDB default |
+| Repeatable read | no | no | possible (PG[^pg]: no, MVCC[^mvcc]) | MySQL InnoDB default |
 | Serializable | no | no | no | safest, most retries |
 
 Exact behavior is engine-specific. PostgreSQL `REPEATABLE READ` already prevents phantoms via snapshots. Oracle has no dirty read; its “read committed” is snapshot-per-statement.
@@ -54,7 +54,7 @@ Exact behavior is engine-specific. PostgreSQL `REPEATABLE READ` already prevents
 | Lost update | Two writers; the last commit silently overwrites the first |
 | Write skew | Each transaction’s predicate was true at start; together they violate the invariant |
 
-Lost update under read committed is the one that shows up in “edit the same order” UIs. Fix with optimistic `version` columns or `SELECT … FOR UPDATE`.
+Lost update under read committed is the one that shows up in “edit the same order” UIs[^ui]. Fix with optimistic `version` columns or `SELECT … FOR UPDATE`.
 
 ## Pessimistic vs optimistic
 
@@ -89,7 +89,7 @@ A transaction occupies a connection. Pool exhaustion + long transactions = the s
 
 Close sessions. In Spring, do not inject `EntityManager` into a long-lived worker and leave a transaction open.
 
-## Outbox (one DB, reliable event)
+## Outbox (one DB[^db], reliable event)
 
 ```text
 BEGIN
@@ -112,3 +112,12 @@ The event is committed with the row. Dual-write to DB and Kafka in one request i
 
 - [PostgreSQL 16 — transaction isolation and retries](https://www.postgresql.org/docs/16/transaction-iso.html)
 - [Spring Framework 6.2 — declarative transactions](https://docs.spring.io/spring-framework/reference/6.2/data-access/transaction/declarative/annotations.html)
+
+[^sql]: Structured Query Language.
+[^acid]: Atomicity, Consistency, Isolation, and Durability — transaction properties.
+[^fk]: Foreign Key.
+[^http]: Hypertext Transfer Protocol.
+[^pg]: PostgreSQL — the database abbreviated here.
+[^mvcc]: Multi-Version Concurrency Control.
+[^ui]: User Interface.
+[^db]: Database.

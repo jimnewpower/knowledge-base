@@ -16,7 +16,7 @@ Related: [architecture styles](architecture-styles.md), [quality attributes](qua
 | What is uncertain? | Small experiment with a pass/fail criterion |
 | What will be operated? | Packaging, configuration, upgrade, diagnostics, backup and restore |
 
-Build one vertical slice through UI/API, service, persistence, and delivery. Exercise a real integration and an error path before multiplying modules. Record consequential choices in [ADRs](architecture-decisions.md).
+Build one vertical slice through UI[^ui]/API[^api], service, persistence, and delivery. Exercise a real integration and an error path before multiplying modules. Record consequential choices in [ADRs](architecture-decisions.md)[^adr].
 
 ## Desktop versus web boundaries
 
@@ -25,10 +25,10 @@ Build one vertical slice through UI/API, service, persistence, and delivery. Exe
 | UI lifecycle | Window/controller state; cancellation when views close | Request/session lifetime; multiple concurrent requests |
 | Long operation | Worker task; progress and cancellation on the UI | Background job with status, ownership, and bounded admission |
 | Data | Local files/database; recovery after process exit | Shared store; tenant isolation and concurrent updates |
-| Distribution | OS-specific installer, runtime, signing, user-data migration | Immutable server artifact, rollout, configuration, schema coexistence |
+| Distribution | OS[^os]-specific installer, runtime, signing, user-data migration | Immutable server artifact, rollout, configuration, schema coexistence |
 | Identity | System browser login; public client cannot protect a shared secret | Server session or API identity; explicit browser/server boundary |
 
-Keep business rules independent of JavaFX controllers, Faces beans, Angular components, HTTP transport, and persistence mapping. Put transactions around service use cases. A shared domain library can serve multiple clients; sharing UI state or database entities across public APIs usually couples their release cycles.
+Keep business rules independent of JavaFX controllers, Faces beans, Angular components, HTTP[^http] transport, and persistence mapping. Put transactions around service use cases. A shared domain library can serve multiple clients; sharing UI state or database entities across public APIs usually couples their release cycles.
 
 ## Modernize an existing application
 
@@ -44,3 +44,9 @@ Avoid an uncoordinated dual-write period. Reverting an executable cannot undo ex
 
 - [Azure application architecture fundamentals](https://learn.microsoft.com/en-us/azure/architecture/guide/)
 - [arc42 architecture documentation structure](https://arc42.org/overview)
+
+[^ui]: User Interface.
+[^api]: Application Programming Interface — the contract through which software components interact.
+[^adr]: Architecture Decision Record.
+[^os]: Operating System.
+[^http]: Hypertext Transfer Protocol.

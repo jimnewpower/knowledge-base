@@ -1,10 +1,10 @@
 # Architecture decision records cheat sheet
 
-> Baseline: lightweight ADR practice informed by Nygard and MADR; repository conventions are recommendations. Reviewed: 2026-09-24.
+> Baseline: lightweight ADR[^adr] practice informed by Nygard and MADR[^madr]; repository conventions are recommendations. Reviewed: 2026-09-24.
 
 An ADR preserves **a decision and the constraints that made it reasonable**. It lets a future engineer tell whether to keep the choice or revisit it.
 
-Related: [architecture styles](architecture-styles.md), [quality attributes](quality-attributes.md), [arc42 documentation](architecture-documentation.md), [C4 diagrams](c4-diagrams.md).
+Related: [architecture styles](architecture-styles.md), [quality attributes](quality-attributes.md), [arc42 documentation](architecture-documentation.md), [C4 diagrams](c4-diagrams.md)[^c4].
 
 ## What deserves an ADR
 
@@ -100,3 +100,7 @@ Can a reader identify the action, boundary, decisive constraint, rejected altern
 
 - [Michael Nygard — documenting architecture decisions](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions)
 - [MADR — Markdown Architectural Decision Records](https://adr.github.io/madr/)
+
+[^adr]: Architecture Decision Record.
+[^madr]: Markdown Architectural Decision Records.
+[^c4]: Context, Containers, Components, and Code — the four levels of the C4 architecture model.

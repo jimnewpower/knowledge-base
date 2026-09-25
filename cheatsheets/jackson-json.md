@@ -1,16 +1,16 @@
-# Jackson and JSON serialization cheat sheet
+# Jackson and JSON[^json] serialization cheat sheet
 
-> Baseline: Java 21 and Jackson 2.19.x examples; Jackson 3 differences are explicit. Align patch versions through the application BOM. Reviewed: 2026-09-24.
+> Baseline: Java 21 and Jackson 2.19.x examples; Jackson 3 differences are explicit. Align patch versions through the application BOM[^bom]. Reviewed: 2026-09-24.
 
 Treat JSON as a **versioned boundary contract**. Keep persistence entities out of public payloads and test the actual mapper configuration used by the application.
 
-Related: [OpenAPI and JSON Schema](openapi-and-json-schema.md), [REST APIs](rest-apis.md), [integration transformation](integration-transformation.md), [modernization](java-jakarta-modernization.md).
+Related: [OpenAPI and JSON Schema](openapi-and-json-schema.md), [REST APIs](rest-apis.md)[^rest][^api], [integration transformation](integration-transformation.md), [modernization](java-jakarta-modernization.md).
 
 ## Choose the API
 
 | API | Use when | Cost |
 |-----|----------|------|
-| Databinding to records/DTOs | Shape is known | Constructor and field policy affect compatibility |
+| Databinding to records/DTOs[^dto] | Shape is known | Constructor and field policy affect compatibility |
 | Tree (`JsonNode`) | Inspect selected fields or transform variable shapes | Usually retains the full document in memory |
 | Streaming parser/generator | Large inputs or incremental work | Application must manage tokens and validation |
 
@@ -76,3 +76,9 @@ Use contract fixtures for missing/null fields, unknown properties, decimals, tim
 - [FasterXML — Jackson databind](https://github.com/FasterXML/jackson-databind)
 - [FasterXML — Java 8 datatype modules](https://github.com/FasterXML/jackson-modules-java8)
 - [FasterXML — migration to Jackson 3](https://github.com/FasterXML/jackson/blob/main/jackson3/MIGRATING_TO_JACKSON_3.md)
+
+[^json]: JavaScript Object Notation.
+[^bom]: Bill of Materials — a dependency-version catalog in Maven.
+[^rest]: Representational State Transfer.
+[^api]: Application Programming Interface — the contract through which software components interact.
+[^dto]: Data Transfer Object.

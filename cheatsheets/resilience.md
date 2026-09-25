@@ -1,6 +1,6 @@
 # Resilience and integration failure cheat sheet
 
-> Baseline: HTTP integrations with explicit server idempotency contracts; retry policies are application-specific. Reviewed: 2026-09-24.
+> Baseline: HTTP[^http] integrations with explicit server idempotency contracts; retry policies are application-specific. Reviewed: 2026-09-24.
 
 When you call another process, the answer may be **success, failure, or unknown**. Resilience is how the calling system stays correct and available anyway.
 
@@ -23,12 +23,12 @@ Every remote call needs one. Default infinite timeouts are how a stuck dependenc
 
 | Timeout | Covers |
 |---------|--------|
-| Connect | Connection establishment; DNS/TLS coverage depends on the client |
+| Connect | Connection establishment; DNS[^dns]/TLS[^tls] coverage depends on the client |
 | Read / request | Read inactivity or request duration, depending on the client |
 | Total / deadline | Whole use case, including retries |
 | Queue / pool acquire | Waiting for a connection from the pool |
 
-Set the API’s deadline shorter than the caller’s. Propagate remaining time when you can.
+Set the API[^api]’s deadline shorter than the caller’s. Propagate remaining time when you can.
 
 ## Retries
 
@@ -63,7 +63,7 @@ Idempotency-Key: 7f1d3a0e-…
 3. Same key + same payload returns the saved result after authorization. Reject a different payload with a documented client error (for example `409`); status conventions vary by API.
 4. Define which failures are saved, expiry, and crash recovery. After expiry the same key may create new work; external calls need downstream idempotency or durable reconciliation.
 
-For queue consumers, insert the unique event ID and apply database effects **in one transaction**, commit, then acknowledge. Committing the ID separately can cause retries to skip unfinished work. External effects need an outbox or downstream idempotency; an inbox alone cannot make an HTTP call atomic. See [messaging-and-events.md](messaging-and-events.md).
+For queue consumers, insert the unique event ID[^id] and apply database effects **in one transaction**, commit, then acknowledge. Committing the ID separately can cause retries to skip unfinished work. External effects need an outbox or downstream idempotency; an inbox alone cannot make an HTTP call atomic. See [messaging-and-events.md](messaging-and-events.md).
 
 ## Circuit breaker
 
@@ -112,6 +112,13 @@ Do not `save(order)` and `kafka.send(event)` as two independent commits. Use an 
 
 ## References
 
-- [RFC 9110 — HTTP semantics](https://www.rfc-editor.org/rfc/rfc9110.html)
+- [RFC 9110 — HTTP semantics](https://www.rfc-editor.org/rfc/rfc9110.html)[^rfc]
 - [RFC 6585 — 429 Too Many Requests](https://www.rfc-editor.org/rfc/rfc6585.html#section-4)
 - [RabbitMQ — reliability and acknowledgments](https://www.rabbitmq.com/docs/reliability)
+
+[^http]: Hypertext Transfer Protocol.
+[^dns]: Domain Name System.
+[^tls]: Transport Layer Security — encrypts traffic and authenticates the connection's peer.
+[^api]: Application Programming Interface — the contract through which software components interact.
+[^id]: Identifier (or identity in a product name such as Microsoft Entra ID).
+[^rfc]: Request for Comments — a document in the Internet technical specification series.

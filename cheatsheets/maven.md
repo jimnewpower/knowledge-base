@@ -1,12 +1,12 @@
 # Maven cheat sheet
 
-> Baseline: Maven 3.9.x and Java 21; plugin versions and lifecycle bindings belong in the project/parent POM. Reviewed: 2026-09-24.
+> Baseline: Maven 3.9.x and Java 21; plugin versions and lifecycle bindings belong in the project/parent POM[^pom]. Reviewed: 2026-09-24.
 
 Maven is the default Java build and dependency tool in this collection’s product context. A build is a `pom.xml`, a lifecycle, and a local cache (`~/.m2/repository`).
 
 ## Coordinates
 
-GAV is `groupId:artifactId:version`. Extended string formats are tool-specific; `dependency:get -Dartifact=...` uses:
+GAV[^gav] is `groupId:artifactId:version`. Extended string formats are tool-specific; `dependency:get -Dartifact=...` uses:
 
 ```text
 groupId:artifactId:version[:packaging][:classifier]
@@ -17,6 +17,8 @@ com.example:order-service:1.4.0:jar
 - `packaging`: `jar`, `war`, `pom` (aggregator / parent), `maven-plugin`.
 
 ## Minimal POM
+
+Example abbreviations: UTF[^utf].
 
 ```xml
 <project>
@@ -82,7 +84,7 @@ Parent defines plugin versions and dependency versions. Children inherit.
 </dependencyManagement>
 ```
 
-BOM import in `dependencyManagement` pins versions without adding the artifacts themselves. This POM fragment assumes `spring-boot.version` is set to an approved exact version in the project or parent. Importing the BOM does not supply plugin management; pin build plugins separately or use the appropriate parent.
+BOM[^bom] import in `dependencyManagement` pins versions without adding the artifacts themselves. This POM fragment assumes `spring-boot.version` is set to an approved exact version in the project or parent. Importing the BOM does not supply plugin management; pin build plugins separately or use the appropriate parent.
 
 ## Dependency scopes
 
@@ -94,7 +96,7 @@ BOM import in `dependencyManagement` pins versions without adding the artifacts 
 | `test` | no | yes | no |
 | `import` | BOM only, in `dependencyManagement` | not a classpath dependency | not a classpath dependency |
 
-Scope does not determine physical packaging by itself. An ordinary JAR contains the project's classes/resources, not dependency JARs. WAR, Spring Boot repackage, Shade, and Assembly apply their own packaging rules; check the resulting artifact.
+Scope does not determine physical packaging by itself. An ordinary JAR[^jar] contains the project's classes/resources, not dependency JARs. WAR[^war], Spring Boot repackage, Shade, and Assembly apply their own packaging rules; check the resulting artifact.
 
 Exclusions cut a transitive you cannot use. Prefer fixing the version in `dependencyManagement` over a pile of exclusions.
 
@@ -104,7 +106,7 @@ Exclusions cut a transitive you cannot use. Prefer fixing the version in `depend
 |--------|-----|
 | `maven-compiler-plugin` | javac |
 | `maven-surefire-plugin` | unit tests |
-| `maven-failsafe-plugin` | integration tests (`*IT`) |
+| `maven-failsafe-plugin` | integration tests (`*IT`[^it]) |
 | `maven-jar-plugin` | Project classes/resources; main-class manifest requires configuration |
 | `spring-boot-maven-plugin` | `repackage` builds an executable Boot archive with dependencies |
 | `maven-enforcer-plugin` | Require Java/Maven versions; duplicate-class checks need Extra Enforcer Rules |
@@ -115,9 +117,9 @@ Bind failsafe to `integration-test` + `verify`, not to `test`.
 ## Repositories and settings
 
 - Project repos belong in `pom.xml` only when they are part of the build contract.
-- Credentials belong in `~/.m2/settings.xml` or the CI secret store — never in the POM.
+- Credentials belong in `~/.m2/settings.xml` or the CI[^ci] secret store — never in the POM.
 - `mvn -o` offline, after the cache is warm.
-- Checksums and HTTPS for every repository.
+- Checksums and HTTPS[^https] for every repository.
 
 ## Versioning and releases
 
@@ -138,3 +140,13 @@ Bind failsafe to `integration-test` + `verify`, not to `test`.
 - [Maven — dependency scopes and management](https://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html)
 - [Maven — JAR plugin contents](https://maven.apache.org/plugins/maven-jar-plugin/)
 - [MojoHaus — duplicate-class Enforcer rule](https://www.mojohaus.org/extra-enforcer-rules/banDuplicateClasses.html)
+
+[^pom]: Project Object Model — Maven's project configuration.
+[^gav]: Group, Artifact, Version — Maven artifact coordinates.
+[^bom]: Bill of Materials — a dependency-version catalog in Maven.
+[^jar]: Java Archive.
+[^war]: Web Application Archive.
+[^it]: Integration Test — the Maven test-name suffix used here.
+[^ci]: Continuous Integration.
+[^https]: Hypertext Transfer Protocol Secure — web communication over an encrypted, authenticated connection.
+[^utf]: Unicode Transformation Format; UTF-8 encodes text using eight-bit code units.

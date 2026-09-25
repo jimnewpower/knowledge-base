@@ -1,10 +1,10 @@
 # Integration transformation cheat sheet
 
-> Baseline: Hohpe/Woolf EIP transformation patterns; broker-neutral contracts and conceptual examples. Reviewed: 2026-09-24.
+> Baseline: Hohpe/Woolf EIP[^eip] transformation patterns; broker-neutral contracts and conceptual examples. Reviewed: 2026-09-24.
 
 Transformation reconciles **meaning as well as representation**. Renaming a field does not resolve different units, identity systems, lifecycle states, or definitions of missing data.
 
-Related: [EIP overview](enterprise-integration-patterns.md), [routing and coordination](integration-routing-and-coordination.md), [OpenAPI and JSON Schema](openapi-and-json-schema.md), [application security](application-security.md), [batch imports](batch-processing.md), [geospatial correctness](geospatial-correctness.md).
+Related: [EIP overview](enterprise-integration-patterns.md), [routing and coordination](integration-routing-and-coordination.md), [OpenAPI and JSON Schema](openapi-and-json-schema.md)[^json], [application security](application-security.md), [batch imports](batch-processing.md), [geospatial correctness](geospatial-correctness.md).
 
 ## Choose a transformation
 
@@ -12,7 +12,7 @@ Related: [EIP overview](enterprise-integration-patterns.md), [routing and coordi
 |---------|---------|-------------------|
 | Message Translator | Representation or data model | Partner-to-domain mapping; semantic mismatches need explicit rules |
 | Envelope Wrapper | Adds/removes messaging metadata around a payload | Preserve a legacy body while carrying routing/correlation metadata |
-| Content Enricher | Adds missing information from another source or computation | Customer ID to shipping details; lookups add latency and availability dependencies |
+| Content Enricher | Adds missing information from another source or computation | Customer ID[^id] to shipping details; lookups add latency and availability dependencies |
 | Content Filter | Projects or simplifies payload fields | Send only fulfillment fields to a warehouse; removed information is unavailable downstream |
 | Claim Check | Replaces stored content with a retrieval reference | Large documents or rasters; adds storage, authorization, and retention dependencies |
 | Normalizer | Selects a translator for each input format | Several partners produce one agreed input model |
@@ -21,6 +21,8 @@ Related: [EIP overview](enterprise-integration-patterns.md), [routing and coordi
 The [transformation catalog](https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessageTransformationIntro.html) groups these patterns. Individual references below cover their distinct responsibilities.
 
 ## Normalize at the boundary
+
+Example abbreviations: CSV[^csv], XML[^xml].
 
 ```text
 partner A CSV -- translator A --+
@@ -34,11 +36,11 @@ Example mapping decisions to document:
 
 | Source | Target | Required rule |
 |--------|--------|---------------|
-| `total_cents = 12345`, currency `USD` | Decimal amount `123.45`, currency `USD` | This contract uses two minor-unit digits; do not apply that assumption to all currencies |
-| Local timestamp without offset | UTC instant | Require source zone and a daylight-saving ambiguity policy |
+| `total_cents = 12345`, currency `USD`[^usd] | Decimal amount `123.45`, currency `USD` | This contract uses two minor-unit digits; do not apply that assumption to all currencies |
+| Local timestamp without offset | UTC[^utc] instant | Require source zone and a daylight-saving ambiguity policy |
 | Partner customer number | Internal customer identity | Lookup scope includes partner/tenant; identifiers are not globally interchangeable |
 | Empty string | Absent, null, or empty value | Decide per field; do not globally collapse distinct meanings |
-| Coordinates | Domain geometry | Specify CRS, axis order, and units before conversion |
+| Coordinates | Domain geometry | Specify CRS[^crs], axis order, and units before conversion |
 
 ## Enrichment and replay
 
@@ -81,3 +83,12 @@ Practical recommendation: keep the shared model scoped to an integration domain,
 - [Hohpe and Woolf — Content Filter](https://www.enterpriseintegrationpatterns.com/patterns/messaging/ContentFilter.html)
 - [Hohpe and Woolf — Claim Check](https://www.enterpriseintegrationpatterns.com/patterns/messaging/StoreInLibrary.html)
 - [Hohpe and Woolf — Canonical Data Model](https://www.enterpriseintegrationpatterns.com/patterns/messaging/CanonicalDataModel.html)
+
+[^eip]: Enterprise Integration Patterns.
+[^json]: JavaScript Object Notation.
+[^id]: Identifier (or identity in a product name such as Microsoft Entra ID).
+[^usd]: United States Dollar — the currency code.
+[^utc]: Coordinated Universal Time.
+[^crs]: Coordinate Reference System.
+[^csv]: Comma-Separated Values.
+[^xml]: Extensible Markup Language.

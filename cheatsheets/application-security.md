@@ -8,11 +8,11 @@ Related: [authentication.md](authentication.md), [authorization.md](authorizatio
 
 ## Threats that show up in application code
 
-OWASP-style classes, in builder language:
+OWASP[^owasp]-style classes, in builder language:
 
 | Class | Typical miss |
 |-------|----------------|
-| Injection | SQL/OS/template strings built with user text |
+| Injection | SQL[^sql]/OS[^os]/template strings built with user text |
 | Broken authn | Session fixation, weak reset, tokens in logs |
 | Broken authz | Checked the route, not the object |
 | Insecure design | No threat model; admin debug left on |
@@ -20,8 +20,8 @@ OWASP-style classes, in builder language:
 | Vulnerable components | Unpinned, unpatched dependencies |
 | Integrity failures | Unsigned artifacts, untrusted deserialization |
 | Logging / alerting gaps | No audit of admin actions; secrets in logs |
-| SSRF | Server fetches a user-supplied URL |
-| XSS | Unescaped HTML in a page that reflects input |
+| SSRF[^ssrf] | Server fetches a user-supplied URL[^url] |
+| XSS[^xss] | Unescaped HTML[^html] in a page that reflects input |
 
 ## Input and output
 
@@ -32,10 +32,10 @@ OWASP-style classes, in builder language:
 
 ## Authn and authz (minimum bar)
 
-- TLS for anything with credentials ([http-and-tls.md](http-and-tls.md)).
+- TLS[^tls] for anything with credentials ([http-and-tls.md](http-and-tls.md)).
 - Server-side authorization on every object id the client can guess ([authorization.md](authorization.md)).
 - Short-lived tokens; store refresh material carefully ([authentication.md](authentication.md)).
-- Enable framework CSRF protection for cookie-authenticated mutations. Treat `SameSite` as additional protection; replacing tokens requires a documented alternative and threat model, including sibling subdomains.
+- Enable framework CSRF[^csrf] protection for cookie-authenticated mutations. Treat `SameSite` as additional protection; replacing tokens requires a documented alternative and threat model, including sibling subdomains.
 - Lock out / rate-limit login and reset.
 
 ## Secrets and config
@@ -53,25 +53,25 @@ OWASP-style classes, in builder language:
 ```
 
 - Pin versions. Read changelogs on major bumps.
-- Generate an SBOM in CI ([devops.md](devops.md)).
+- Generate an SBOM[^sbom] in CI[^ci] ([devops.md](devops.md)).
 - Do not run `curl | sudo bash` in a Dockerfile.
-- Java serialization of untrusted bytes is a historic RCE class. Do not.
+- Java serialization of untrusted bytes is a historic RCE[^rce] class. Do not.
 
-## Web and HTTP hardening
+## Web and HTTP[^http] hardening
 
 | Control | Why |
 |---------|-----|
 | `Secure; HttpOnly; SameSite` cookies | Cut theft and CSRF surface |
-| CSP | Limit where scripts load |
-| HSTS | Clients remember HTTPS |
+| CSP[^csp] | Limit where scripts load |
+| HSTS[^hsts] | Clients remember HTTPS[^https] |
 | Disable unused actuator routes | `/env` is a secret dump |
-| CORS allow-list | `*` plus cookies is a mistake |
+| CORS[^cors] allow-list | `*` plus cookies is a mistake |
 
 ## Safe defaults in Java services
 
 - Bean Validation on request bodies.
 - Central error handler that does not leak stack traces to users.
-- Prepared statements / named parameters (JDBC, MyBatis).
+- Prepared statements / named parameters (JDBC[^jdbc], MyBatis).
 - Resolve untrusted paths against an allowed root, normalize, and verify containment. Normalization alone does not reject escapes; account for symlinks and races when attackers can modify the filesystem.
 - Redirects only to allow-listed hosts.
 
@@ -85,7 +85,7 @@ OWASP-style classes, in builder language:
 
 ## Gotchas
 
-- Hiding a button in the UI and calling that authorization.
+- Hiding a button in the UI[^ui] and calling that authorization.
 - Logging request bodies “just in case.”
 - Opening actuator or swagger UI on the public route.
 - `TrustManager` that accepts every certificate “for local.”
@@ -95,3 +95,23 @@ OWASP-style classes, in builder language:
 
 - [OWASP — CSRF prevention](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html)
 - [OWASP — Java security](https://cheatsheetseries.owasp.org/cheatsheets/Java_Security_Cheat_Sheet.html)
+
+[^owasp]: Open Worldwide Application Security Project.
+[^sql]: Structured Query Language.
+[^os]: Operating System.
+[^ssrf]: Server-Side Request Forgery.
+[^url]: Uniform Resource Locator.
+[^xss]: Cross-Site Scripting.
+[^html]: Hypertext Markup Language.
+[^tls]: Transport Layer Security — encrypts traffic and authenticates the connection's peer.
+[^csrf]: Cross-Site Request Forgery.
+[^sbom]: Software Bill of Materials.
+[^ci]: Continuous Integration.
+[^rce]: Remote Code Execution.
+[^http]: Hypertext Transfer Protocol.
+[^csp]: Content Security Policy.
+[^hsts]: HTTP Strict Transport Security; HTTP means Hypertext Transfer Protocol.
+[^https]: Hypertext Transfer Protocol Secure — web communication over an encrypted, authenticated connection.
+[^cors]: Cross-Origin Resource Sharing.
+[^jdbc]: Java Database Connectivity.
+[^ui]: User Interface.

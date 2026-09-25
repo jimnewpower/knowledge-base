@@ -28,11 +28,11 @@ A decision is `allow`, `deny`, or `not applicable` (then a default deny).
 
 ## Models
 
-### Access control lists (ACL)
+### Access control lists (ACL[^acl])
 
 Resource holds the list of principals and verbs. Simple at small scale. Painful to audit across thousands of objects.
 
-### Role-based (RBAC)
+### Role-based (RBAC[^rbac])
 
 Principal has roles; roles have permissions.
 
@@ -43,7 +43,7 @@ release-manager -> [deploy.prod, pipeline.approve]
 
 Works when the organization actually thinks in roles. Explodes when every exception becomes a new role (`engineer-east-readonly-plus-invoices`).
 
-### Attribute-based (ABAC)
+### Attribute-based (ABAC[^abac])
 
 Rules over attributes of subject, resource, and environment.
 
@@ -58,9 +58,9 @@ Expressive. Policy quality and attribute accuracy become the product.
 
 Authorization as a graph: `jnewpower is owner of folder X`, `folder X parent of doc Y`, therefore access flows. Google Zanzibar–style systems. Fits sharing and nested ownership. Operationally heavier.
 
-### Scope-based (OAuth)
+### Scope-based (OAuth[^oauth])
 
-Access token carries scopes (`orders:read`). Scopes are *client grants*, not a complete user permission model. Still combine with user/role checks inside the API.
+Access token carries scopes (`orders:read`). Scopes are *client grants*, not a complete user permission model. Still combine with user/role checks inside the API[^api].
 
 ## Where policy lives
 
@@ -69,12 +69,12 @@ Access token carries scopes (`orders:read`). Scopes are *client grants*, not a c
 | In-method `if (user.isAdmin())` | Prototypes only |
 | Framework annotations | Coarse endpoint guards (`@PreAuthorize`) |
 | Domain service | Invariants that *are* the business (“only the assignee may close”) |
-| Central PDP (policy decision point) | Many apps, one language of policy (OPA, Cedar, vendor IAM) |
+| Central PDP[^pdp] (policy decision point) | Many apps, one language of policy (OPA[^opa], Cedar, vendor IAM[^iam]) |
 | API gateway | Coarse: authenticated, has scope, rate limit — not deep object ACLs |
 
-A PEP (enforcement point) asks a PDP (decision point) and may cache. Do not let every microservice invent a different role vocabulary.
+A PEP[^pep] (enforcement point) asks a PDP (decision point) and may cache. Do not let every microservice invent a different role vocabulary.
 
-## HTTP mapping
+## HTTP[^http] mapping
 
 | Status | Meaning |
 |--------|---------|
@@ -87,7 +87,7 @@ Pick a hide-vs-reveal policy for sensitive objects and apply it everywhere.
 ## Patterns that hold up
 
 1. **Default deny.** Missing policy is not allow.
-2. **Authorize on the server.** UI hiding is not control.
+2. **Authorize on the server.** UI[^ui] hiding is not control.
 3. **Authorize the object, not just the route.** `GET /orders/4821` must check *that* order’s tenant and ACL, not merely `ROLE_USER`.
 4. **Name permissions as `resource.action`.** `invoice.approve` beats `FLAG_7`.
 5. **Keep “admin” rare.** Break-glass roles should be auditable and time-bounded.
@@ -130,4 +130,17 @@ Annotations catch the coarse case. Domain checks catch the object case. You usua
 ## References
 
 - [Spring Security — method authorization and activation](https://docs.spring.io/spring-security/reference/servlet/authorization/method-security.html)
-- [OWASP — authorization](https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html)
+- [OWASP — authorization](https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html)[^owasp]
+
+[^acl]: Access Control List.
+[^rbac]: Role-Based Access Control.
+[^abac]: Attribute-Based Access Control.
+[^oauth]: Open Authorization — a framework for delegated access.
+[^api]: Application Programming Interface — the contract through which software components interact.
+[^pdp]: Policy Decision Point.
+[^opa]: Open Policy Agent.
+[^iam]: Identity and Access Management.
+[^pep]: Policy Enforcement Point.
+[^http]: Hypertext Transfer Protocol.
+[^ui]: User Interface.
+[^owasp]: Open Worldwide Application Security Project.

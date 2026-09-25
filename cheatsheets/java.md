@@ -1,6 +1,6 @@
 # Java cheat sheet
 
-> Baseline: Java 21 language/API examples; JDK 25 lifecycle notes where stated. Imports and surrounding methods are omitted. Reviewed: 2026-09-24.
+> Baseline: Java 21 language/API[^api] examples; JDK[^jdk] 25 lifecycle notes where stated. Imports and surrounding methods are omitted. Reviewed: 2026-09-24.
 
 Primary language of this knowledge base’s product context: enterprise services, desktops, and scientific/geospatial tools. Pin the deployed JDK. Examples use Java 21 syntax; Java 17 requires alternatives to record patterns and virtual threads.
 
@@ -31,7 +31,7 @@ record Rect(double w, double h) implements Shape {}
 record OrderId(String value) {}
 ```
 
-If you override `equals`, provide a consistent `hashCode`. Records generate both from their components. Entities usually equal by stable identity, not every field; generated database IDs and ORM proxies need a deliberate equality policy. Do not let an ID assignment change a key's hash while it is in a map or set.
+If you override `equals`, provide a consistent `hashCode`. Records generate both from their components. Entities usually equal by stable identity, not every field; generated database IDs[^id] and ORM[^orm] proxies need a deliberate equality policy. Do not let an ID assignment change a key's hash while it is in a map or set.
 
 ## Collections (java.util)
 
@@ -61,7 +61,7 @@ Collection copies and records are shallow: mutable elements still need an owners
 ## Exceptions
 
 - Unchecked (`RuntimeException`) for programmer errors and most domain violations in modern APIs.
-- Checked exceptions at library boundaries that the caller *must* confront (I/O). Do not wrap every method in `throws Exception`.
+- Checked exceptions at library boundaries that the caller *must* confront (I/O[^i-o]). Do not wrap every method in `throws Exception`.
 - Never swallow with empty `catch`. Log or translate.
 
 ```java
@@ -106,7 +106,7 @@ org.example.app
   adapter.http
 ```
 
-JPMS (`module-info.java`) is optional. Most enterprise apps still use the classpath. Do not introduce modules unless you need strong encapsulation across artifacts.
+JPMS[^jpms] (`module-info.java`) is optional. Most enterprise apps still use the classpath. Do not introduce modules unless you need strong encapsulation across artifacts.
 
 ## Tooling
 
@@ -117,6 +117,8 @@ JPMS (`module-info.java`) is optional. Most enterprise apps still use the classp
 | JUnit 5 | tests — [tdd.md](tdd.md) |
 | SpotBugs / Error Prone / Checkstyle | static checks |
 | jcmd, jfr, async-profiler | runtime diagnosis |
+
+Example abbreviations: VM[^vm].
 
 ```bash
 java -version
@@ -149,9 +151,18 @@ var label = switch (status) {
 - `Date` and `Calendar` are obsolete. Use `java.time` (`Instant`, `ZonedDateTime`, `Duration`).
 - `String` is immutable; concatenating in a loop needs `StringBuilder` (or just a stream collect).
 - `finalize` remains in JDK 25, deprecated for removal. Use try-with-resources for deterministic resource cleanup.
-- Serializing domain objects with Java serialization is a trap. Prefer JSON/Avro/protobuf at boundaries.
+- Serializing domain objects with Java serialization is a trap. Prefer JSON[^json]/Avro/protobuf at boundaries.
 
 ## References
 
 - [Java 21 — language changes and syntax](https://docs.oracle.com/en/java/javase/21/language/java-language-changes.html)
 - [Java 25 — Object equality and deprecated finalization](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html)
+
+[^api]: Application Programming Interface — the contract through which software components interact.
+[^jdk]: Java Development Kit.
+[^id]: Identifier (or identity in a product name such as Microsoft Entra ID).
+[^orm]: Object-Relational Mapping (or Mapper, depending on context).
+[^i-o]: Input/Output.
+[^jpms]: Java Platform Module System.
+[^json]: JavaScript Object Notation.
+[^vm]: Virtual Machine.

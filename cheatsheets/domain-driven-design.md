@@ -1,6 +1,6 @@
 # Domain-driven design cheat sheet
 
-> Baseline: strategic and tactical DDD vocabulary; no framework or microservice topology is assumed. Reviewed: 2026-09-24.
+> Baseline: strategic and tactical DDD[^ddd] vocabulary; no framework or microservice topology is assumed. Reviewed: 2026-09-24.
 
 DDD aligns software models with **business meaning and rules**. Start with the language people use to make decisions, then define where that language is valid.
 
@@ -75,14 +75,20 @@ Keep aggregates small enough to load and update for their invariants. A process 
 
 ## Domain events versus integration events
 
-A domain event can be internal to one model. An integration event is an external contract with consumers, schema evolution, and delivery guarantees. Map internal facts to stable public messages instead of serializing JPA entities. Use event identifiers and consumer idempotency when delivery can repeat; see [messaging and events](messaging-and-events.md).
+A domain event can be internal to one model. An integration event is an external contract with consumers, schema evolution, and delivery guarantees. Map internal facts to stable public messages instead of serializing JPA[^jpa] entities. Use event identifiers and consumer idempotency when delivery can repeat; see [messaging and events](messaging-and-events.md).
 
 ## When to stop modeling
 
-Simple CRUD may need clear names, ownership, and validation without a rich domain model. Invest further when conflicting meanings, complex state transitions, or costly business mistakes justify it. DDD does not require event sourcing, CQRS, microservices, or a repository abstraction over every data access operation.
+Simple CRUD[^crud] may need clear names, ownership, and validation without a rich domain model. Invest further when conflicting meanings, complex state transitions, or costly business mistakes justify it. DDD does not require event sourcing, CQRS[^cqrs], microservices, or a repository abstraction over every data access operation.
 
 ## References
 
 - [Eric Evans — DDD reference and definitions](https://www.domainlanguage.com/ddd/reference/)
-- [Eric Evans — DDD reference PDF](https://www.domainlanguage.com/wp-content/uploads/2016/05/DDD_Reference_2015-03.pdf)
+- [Eric Evans — DDD reference PDF](https://www.domainlanguage.com/wp-content/uploads/2016/05/DDD_Reference_2015-03.pdf)[^pdf]
 - [Martin Fowler — bounded context](https://martinfowler.com/bliki/BoundedContext.html)
+
+[^ddd]: Domain-Driven Design.
+[^jpa]: Java Persistence API (Application Programming Interface), now standardized as Jakarta Persistence.
+[^crud]: Create, Read, Update, Delete.
+[^cqrs]: Command Query Responsibility Segregation.
+[^pdf]: Portable Document Format.

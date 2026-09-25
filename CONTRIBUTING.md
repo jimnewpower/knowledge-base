@@ -16,6 +16,20 @@ Open an [issue](https://github.com/jimnewpower/knowledge-base/issues) with the p
 6. Add related links from relevant existing sheets. Use category entry points to distinguish concepts from implementation. Add discovery terms to `app/src/data/search-aliases.ts` only when they help readers find relevant content.
 7. Cite official versioned documentation where possible. State assumptions and label recommendations. Do not reproduce licensed manuals or invent measurements.
 
+## Acronyms and memory refreshers
+
+Write for someone returning to a technology after a long absence. Define every acronym and initialism in a Markdown footnote on each cheat sheet that uses it, including familiar terms such as TLS, HTTP, API, and SQL. Expand the term fully and add a short explanation when the expansion alone would not help. Use the meaning appropriate to that page; the same abbreviation can mean different things in different contexts.
+
+Attach a reference at the first use, including in a title, table, or baseline, and keep definitions at the end of the same file. Reuse one definition for singular/plural forms and later references. Place markers outside links and code spans. Keep executable examples, identifiers, and URLs intact; explain acronyms from examples in nearby prose. Do not invent expansions for product names or words written in capitals.
+
+```markdown
+TLS[^tls] protects the connection.
+
+[^tls]: Transport Layer Security — encrypts traffic and authenticates the connection's peer.
+```
+
+An inline expansion or a definition on a linked page does not replace the footnote. Check the rendered reference and return link in both reader views when changing footnote handling.
+
 ## Validate the change
 
 Run from `app/` after `npm ci`:
@@ -43,6 +57,7 @@ When a dependency or specification changes, review affected baselines and cross-
 ## Review checklist
 
 - Can a public reader understand the purpose without project context?
+- Is every acronym defined in a footnote on this page, without requiring prior familiarity?
 - Does the summary explain when this page helps, and how it differs from nearby pages?
 - Do examples declare prerequisites and verification limits?
 - Do links, category navigation, and representative searches reach the page?

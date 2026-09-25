@@ -1,10 +1,10 @@
 # Azure application operations cheat sheet
 
-> Baseline: Azure CLI 2.x, Azure Resource Manager, and Microsoft Entra workload identities. Reviewed: 2026-09-25.
+> Baseline: Azure CLI[^cli] 2.x, Azure Resource Manager, and Microsoft Entra workload identities. Reviewed: 2026-09-25.
 
 Tenant, subscription, resource group, and resource are different scopes. Verify them before debugging role assignments, networking, or deployment.
 
-Related: [Entra ID](entra-id.md), [Terraform](terraform.md), [secrets management](secrets-management.md), [observability](observability.md).
+Related: [Entra ID](entra-id.md)[^id], [Terraform](terraform.md), [secrets management](secrets-management.md), [observability](observability.md).
 
 ## Establish context
 
@@ -18,7 +18,7 @@ az account show --query '{subscription:id,tenant:tenantId,name:name}' --output j
 az group list --output table
 ```
 
-Use managed identity on supported Azure resources, or workload federation for CI/external workloads. A developer login is not the identity of a deployed application. Distinguish an application registration, its service principal, and a managed identity when inspecting access.
+Use managed identity on supported Azure resources, or workload federation for CI[^ci]/external workloads. A developer login is not the identity of a deployed application. Distinguish an application registration, its service principal, and a managed identity when inspecting access.
 
 ## Service decisions
 
@@ -26,15 +26,15 @@ Use managed identity on supported Azure resources, or workload federation for CI
 |------|-----------|--------|
 | Managed web application | App Service | Runtime/container support, scale, private connectivity and slots |
 | Managed container workload | Container Apps | Ingress, jobs, revisions, scaling and execution limits |
-| Kubernetes | AKS | Cluster operation, node upgrades, workload identity and network model |
-| Object storage | Blob Storage | Data-plane RBAC, retention, lifecycle and recovery |
-| Relational storage | Azure SQL / managed PostgreSQL | Engine-specific compatibility, backup and failover behavior |
+| Kubernetes | AKS[^aks] | Cluster operation, node upgrades, workload identity and network model |
+| Object storage | Blob Storage | Data-plane RBAC[^rbac], retention, lifecycle and recovery |
+| Relational storage | Azure SQL[^sql] / managed PostgreSQL | Engine-specific compatibility, backup and failover behavior |
 | Secret/key storage | Key Vault | Access model, network path and rotation behavior |
 | Telemetry | Azure Monitor / Application Insights | Collection, retention, sampling, queries and cost |
 
 ## Access and networking
 
-Azure resource-management permissions do not necessarily grant permission to read the service's data. Check the specific data-plane role and scope, then network access and service configuration. A private endpoint also needs correct DNS resolution and a viable route from the caller.
+Azure resource-management permissions do not necessarily grant permission to read the service's data. Check the specific data-plane role and scope, then network access and service configuration. A private endpoint also needs correct DNS[^dns] resolution and a viable route from the caller.
 
 For an unexpected 403, record the application identity, tenant, resource, requested operation, correlation ID, and time. For a timeout, inspect DNS/routes/firewall rules before changing RBAC. Avoid assigning broad subscription roles to compensate for a narrow configuration error.
 
@@ -49,3 +49,11 @@ Test recovery of data and required configuration into an isolated resource group
 - [Azure CLI authentication](https://learn.microsoft.com/en-us/cli/azure/authenticate-azure-cli)
 - [Azure RBAC overview](https://learn.microsoft.com/en-us/azure/role-based-access-control/overview)
 - [Managed identities overview](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview)
+
+[^cli]: Command-Line Interface.
+[^id]: Identifier (or identity in a product name such as Microsoft Entra ID).
+[^ci]: Continuous Integration.
+[^aks]: Azure Kubernetes Service.
+[^rbac]: Role-Based Access Control.
+[^sql]: Structured Query Language.
+[^dns]: Domain Name System.

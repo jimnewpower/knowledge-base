@@ -4,12 +4,12 @@
 
 Spring Boot is the default way this collection’s Java services are wired: auto-configuration, an embedded server, and a component scan over your code.
 
-Related: [java.md](java.md), [maven.md](maven.md), [rest-apis.md](rest-apis.md), [testing.md](testing.md), [JPA and Hibernate](jpa-and-hibernate.md), [Java/Jakarta modernization](java-jakarta-modernization.md), [Spring Security](spring-security.md), [Spring Integration](spring-integration.md), [JDBC and HikariCP](jdbc-hikaricp.md).
+Related: [java.md](java.md), [maven.md](maven.md), [rest-apis.md](rest-apis.md), [testing.md](testing.md), [JPA and Hibernate](jpa-and-hibernate.md)[^jpa], [Java/Jakarta modernization](java-jakarta-modernization.md), [Spring Security](spring-security.md), [Spring Integration](spring-integration.md), [JDBC and HikariCP](jdbc-hikaricp.md)[^jdbc][^hikaricp].
 
 ## What Boot actually is
 
-- **Spring Framework** — DI, AOP, transactions, MVC.
-- **Spring Boot** — opinions + starter JARs + `SpringApplication` so you do not assemble that by hand.
+- **Spring Framework** — DI[^di], AOP[^aop], transactions, MVC[^mvc].
+- **Spring Boot** — opinions + starter JARs[^jar] + `SpringApplication` so you do not assemble that by hand.
 - **Spring Data / Security / Cloud** — optional modules. Do not add them until you have the problem.
 
 ```java
@@ -74,7 +74,7 @@ java -jar app.jar --spring.profiles.active=prod
 | `@Component` | generic bean |
 | `@Service` | application/domain service |
 | `@Repository` | persistence adapter (also translates exceptions) |
-| `@Controller` / `@RestController` | HTTP |
+| `@Controller` / `@RestController` | HTTP[^http] |
 | `@Configuration` + `@Bean` | explicit wiring |
 
 Constructor injection only. A single constructor does not need `@Autowired`.
@@ -90,7 +90,7 @@ class OrderController {
 
 ## Web
 
-Controller/advice method sketches; domain DTOs and service bodies are omitted:
+Controller/advice method sketches; domain DTOs[^dto] and service bodies are omitted:
 
 ```java
 @GetMapping("/{id}")
@@ -109,7 +109,7 @@ Validation: `spring-boot-starter-validation` + `@Valid`. Return HTTP status from
 
 ## Data
 
-`spring-boot-starter-jdbc` or `data-jpa`. Prefer explicit SQL / MyBatis when the schema is the contract. JPA is fine for simple aggregates; it is not a substitute for knowing the SQL.
+`spring-boot-starter-jdbc` or `data-jpa`. Prefer explicit SQL[^sql] / MyBatis when the schema is the contract. JPA is fine for simple aggregates; it is not a substitute for knowing the SQL.
 
 ```java
 @Transactional
@@ -166,3 +166,14 @@ Details in [testing.md](testing.md).
 
 - [Spring Boot 3.5 — reference documentation](https://docs.spring.io/spring-boot/3.5/reference/)
 - [Spring Framework 6.2 — transactional method visibility and proxies](https://docs.spring.io/spring-framework/reference/6.2/data-access/transaction/declarative/annotations.html)
+
+[^jpa]: Java Persistence API (Application Programming Interface), now standardized as Jakarta Persistence.
+[^jdbc]: Java Database Connectivity.
+[^hikaricp]: Hikari Connection Pool — a Java database connection pool.
+[^di]: Dependency Injection.
+[^aop]: Aspect-Oriented Programming.
+[^mvc]: Model–View–Controller.
+[^jar]: Java Archive.
+[^http]: Hypertext Transfer Protocol.
+[^dto]: Data Transfer Object.
+[^sql]: Structured Query Language.

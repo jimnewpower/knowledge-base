@@ -1,6 +1,6 @@
 # Observability cheat sheet
 
-> Baseline: OpenTelemetry concepts, W3C trace context, and Spring Boot 3.5/Micrometer examples. Reviewed: 2026-09-24.
+> Baseline: OpenTelemetry concepts, W3C[^w3c] trace context, and Spring Boot 3.5/Micrometer examples. Reviewed: 2026-09-24.
 
 Observability is whether you can **explain a live system’s behavior from its outputs**: logs, metrics, traces, and health. Dashboards are views. They are not the signal.
 
@@ -32,15 +32,15 @@ If you can only afford one correlation field, make it a **request / trace id** o
 
 Rules:
 
-- Structured (JSON) in anything that is not a human-facing CLI.
+- Structured (JSON[^json]) in anything that is not a human-facing CLI[^cli].
 - `INFO` for state changes, `WARN` for recovered problems, `ERROR` for failed user/work items.
 - No secrets, tokens, passwords, full card numbers, or session cookies.
 - Log *at the boundary* (accepted, rejected, emitted) rather than every getter.
-- MDC / logging context for `traceId` and tenant. Propagate context across async boundaries and clear it after work; thread-local state does not automatically follow every executor or reactive stage.
+- MDC[^mdc] / logging context for `traceId` and tenant. Propagate context across async boundaries and clear it after work; thread-local state does not automatically follow every executor or reactive stage.
 
 ## Metrics
 
-RED for request-serving services:
+RED[^red] for request-serving services:
 
 | Letter | Metric |
 |--------|--------|
@@ -48,7 +48,7 @@ RED for request-serving services:
 | Errors | failures / second or ratio |
 | Duration | latency histogram (p50 / p95 / p99) |
 
-USE for resources:
+USE[^use] for resources:
 
 | Letter | Metric |
 |--------|--------|
@@ -73,7 +73,7 @@ One request = one trace id. Each hop = a span (`order-api`, `postgres`, `mail`).
 
 Propagate `traceparent` (W3C) or B3 headers on outbound calls. Head sampling decides before the result is known, so it cannot guarantee retaining every error trace. Tail sampling can select errors or slow traces after spans arrive, at the cost of buffering, routing, and decision latency. It cannot recover spans dropped upstream; budget for late or missing spans and collector limits.
 
-A trace without the SQL span will not tell you the query was the 900 ms.
+A trace without the SQL[^sql] span will not tell you the query was the 900 ms.
 
 ## Health probes
 
@@ -82,7 +82,7 @@ A trace without the SQL span will not tell you the query was the 900 ms.
 | Liveness | Process is wedged — restart it |
 | Readiness | Not ready for traffic (warming, dependency gone) |
 
-Readiness may check a cheap DB ping. Liveness generally should not. See [kubernetes-openshift.md](kubernetes-openshift.md).
+Readiness may check a cheap DB[^db] ping. Liveness generally should not. See [kubernetes-openshift.md](kubernetes-openshift.md).
 
 Spring Boot:
 
@@ -93,10 +93,10 @@ Spring Boot:
 
 ## Alerting
 
-Alert on **user-visible failure** and **budget burn**, not on “CPU > 70% for 1 minute.”
+Alert on **user-visible failure** and **budget burn**, not on “CPU[^cpu] > 70% for 1 minute.”
 
-Good: error rate above SLO, p95 above SLO, disk will fill in 4 hours, certificate expires in 14 days.  
-Bad: every WARN log, GC happened, a single 5xx.
+Good: error rate above SLO[^slo], p95 above SLO, disk will fill in 4 hours, certificate expires in 14 days.\
+Bad: every WARN log, GC[^gc] happened, a single 5xx.
 
 Pages should have a runbook link. If nobody knows what to do, it is not an alert yet.
 
@@ -112,3 +112,15 @@ Pages should have a runbook link. If nobody knows what to do, it is not an alert
 
 - [OpenTelemetry — head and tail sampling](https://opentelemetry.io/docs/concepts/sampling/)
 - [W3C — trace context](https://www.w3.org/TR/trace-context/)
+
+[^w3c]: World Wide Web Consortium.
+[^json]: JavaScript Object Notation.
+[^cli]: Command-Line Interface.
+[^mdc]: Mapped Diagnostic Context — logging metadata associated with the current execution context.
+[^red]: Rate, Errors, Duration — a service-observability checklist.
+[^use]: Utilization, Saturation, Errors — a resource-observability checklist.
+[^sql]: Structured Query Language.
+[^db]: Database.
+[^cpu]: Central Processing Unit.
+[^slo]: Service-Level Objective.
+[^gc]: Garbage Collection (or Garbage Collector, depending on context).

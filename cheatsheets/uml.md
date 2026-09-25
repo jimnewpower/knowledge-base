@@ -1,10 +1,10 @@
-# UML cheat sheet
+# UML[^uml] cheat sheet
 
-> Baseline: UML 2.5.1 notation; C4 is a separate architecture vocabulary. Reviewed: 2026-09-24.
+> Baseline: UML 2.5.1 notation; C4[^c4] is a separate architecture vocabulary. Reviewed: 2026-09-24.
 
 UML is a **shared drawing vocabulary**, not a required ceremony. Draw the view that answers a question. Delete the diagram when the code is clearer.
 
-Related: [C4 architecture diagrams](c4-diagrams.md), [Structurizr DSL](structurizr-dsl.md), [architecture documentation](architecture-documentation.md).
+Related: [C4 architecture diagrams](c4-diagrams.md), [Structurizr DSL](structurizr-dsl.md)[^dsl], [architecture documentation](architecture-documentation.md).
 
 ## Which diagram
 
@@ -102,9 +102,9 @@ Package diagrams show layering (`adapter.http` depends on `app`, not the reverse
 
 1. One question per diagram.
 2. Names match the code.
-3. Date the diagram and cite the commit or ADR.
+3. Date the diagram and cite the commit or ADR[^adr].
 4. Prefer a small committed `.md` / `.svg` next to the note over a stale slide.
-5. Do not generate 200-class dumps from the IDE and call it architecture.
+5. Do not generate 200-class dumps from the IDE[^ide] and call it architecture.
 
 ## Gotchas
 
@@ -114,5 +114,12 @@ Package diagrams show layering (`adapter.http` depends on `app`, not the reverse
 
 ## References
 
-- [OMG — UML 2.5.1 specification](https://www.omg.org/spec/UML/2.5.1)
+- [OMG — UML 2.5.1 specification](https://www.omg.org/spec/UML/2.5.1)[^omg]
 - [C4 model — diagram types](https://c4model.com/diagrams)
+
+[^uml]: Unified Modeling Language.
+[^c4]: Context, Containers, Components, and Code — the four levels of the C4 architecture model.
+[^dsl]: Domain-Specific Language.
+[^adr]: Architecture Decision Record.
+[^ide]: Integrated Development Environment.
+[^omg]: Object Management Group.

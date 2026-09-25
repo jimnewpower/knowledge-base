@@ -2,9 +2,9 @@
 
 > Baseline: MyBatis 3; MyBatis-Spring integration must match the deployed Spring/Java versions. Reviewed: 2026-09-25.
 
-MyBatis maps SQL results and parameters. You still own query design, transaction boundaries, schema changes, and database-specific behavior.
+MyBatis maps SQL[^sql] results and parameters. You still own query design, transaction boundaries, schema changes, and database-specific behavior.
 
-Related: [SQL](sql.md), [JDBC and HikariCP](jdbc-hikaricp.md), [transactions](transactions-and-isolation.md), [Oracle](oracle.md).
+Related: [SQL](sql.md), [JDBC and HikariCP](jdbc-hikaricp.md)[^jdbc][^hikaricp], [transactions](transactions-and-isolation.md), [Oracle](oracle.md).
 
 ## Parameters and result mapping
 
@@ -17,7 +17,7 @@ Related: [SQL](sql.md), [JDBC and HikariCP](jdbc-hikaricp.md), [transactions](tr
 | `@Param` | Stable name for a mapper argument | Use when SQL refers to multiple named parameters |
 | `<where>`, `<set>`, `<foreach>` | Dynamic SQL assembly | Test empty collections, optional filters, and tenant predicates |
 
-XML mapper fragment. It assumes mapper namespace `example.SampleMapper`, a `countByProject` method with `@Param("projectId") long projectId`, and a `sample` table.
+XML[^xml] mapper fragment. It assumes mapper namespace `example.SampleMapper`, a `countByProject` method with `@Param("projectId") long projectId`, and a `sample` table.
 
 ```xml
 <mapper namespace="example.SampleMapper">
@@ -29,7 +29,7 @@ XML mapper fragment. It assumes mapper namespace `example.SampleMapper`, a `coun
 </mapper>
 ```
 
-Use MyBatis's standard mapper DTD/header when installing this fragment as a full mapper file. Binding a value cannot bind a table name or sort direction. For dynamic ordering, map an application enum to fixed SQL alternatives.
+Use MyBatis's standard mapper DTD[^dtd]/header when installing this fragment as a full mapper file. Binding a value cannot bind a table name or sort direction. For dynamic ordering, map an application enum to fixed SQL alternatives.
 
 ## Transactions and sessions
 
@@ -51,3 +51,9 @@ Without Spring, a caller owns its `SqlSession`: scope it to a unit of work, expl
 - [MyBatis mapper XML](https://mybatis.org/mybatis-3/sqlmap-xml.html)
 - [MyBatis dynamic SQL](https://mybatis.org/mybatis-3/dynamic-sql.html)
 - [MyBatis-Spring transaction ownership](https://mybatis.org/spring/transactions.html)
+
+[^sql]: Structured Query Language.
+[^jdbc]: Java Database Connectivity.
+[^hikaricp]: Hikari Connection Pool — a Java database connection pool.
+[^xml]: Extensible Markup Language.
+[^dtd]: Document Type Definition.

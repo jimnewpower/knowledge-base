@@ -37,10 +37,10 @@ Selection: nth element — `PriorityQueue` or Quickselect (average O(n)). For �
 | Linear scan | O(n) | nothing |
 | Binary search | O(log n) | sorted random-access |
 | Hash lookup | average O(1) | `hashCode`/`equals` |
-| BFS | O(V + E) | graph, unweighted shortest path |
+| BFS[^bfs] | O(V + E) | graph, unweighted shortest path |
 | Dijkstra | O((V + E) log V) with heap | non-negative weights |
 | A* | like Dijkstra + heuristic | admissible heuristic |
-| DFS / recursion on trees | O(V + E) | watch stack depth |
+| DFS[^dfs] / recursion on trees | O(V + E) | watch stack depth |
 | Binary search on answer | O(log range × check) | monotonic predicate |
 
 ```java
@@ -52,15 +52,15 @@ int i = Arrays.binarySearch(sorted, key); // negative insertion point if absent
 - **Topological sort** — Kahn or DFS; fails if a cycle exists. Build systems and course-prereq problems.
 - **Union-find** — almost O(1) amortized with path compression + union by rank.
 - **Cycle detection** — DFS colors, or union-find on undirected edges.
-- **SCC** — Kosaraju / Tarjan, when “mutually reachable” matters.
+- **SCC[^scc]** — Kosaraju / Tarjan, when “mutually reachable” matters.
 
 ## Strings
 
 | Algorithm | Use |
 |-----------|-----|
-| KMP / Boyer–Moore | Single pattern in a long string (often the library is enough) |
+| KMP[^kmp] / Boyer–Moore | Single pattern in a long string (often the library is enough) |
 | Trie / Aho–Corasick | Many patterns |
-| Edit distance (Levenshtein) | DP, O(nm) |
+| Edit distance (Levenshtein) | DP[^dp], O(nm) |
 | Rolling hash | Similarity / rabin-karp; watch collisions |
 
 Regex is an algorithm family of its own — [regex.md](regex.md). Catastrophic backtracking is O(2ⁿ) in disguise.
@@ -72,7 +72,7 @@ Regex is an algorithm family of its own — [regex.md](regex.md). Catastrophic b
 3. Decide bottom-up table vs memoized recursion.
 4. Recover the solution if you need the choices, not only the cost.
 
-Classic: knapsack, LIS, edit distance, matrix chain, shortest paths (Bellman–Ford).
+Classic: knapsack, LIS[^lis], edit distance, matrix chain, shortest paths (Bellman–Ford).
 
 ## Recursion and divide-and-conquer
 
@@ -110,3 +110,10 @@ Need overlap of subproblems?     DP
 
 - [Sedgewick and Wayne — algorithm complexity reference](https://algs4.cs.princeton.edu/cheatsheet/)
 - [Java 21 — Arrays sorting and search contracts](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Arrays.html)
+
+[^bfs]: Breadth-First Search.
+[^dfs]: Depth-First Search.
+[^scc]: Strongly Connected Component.
+[^kmp]: Knuth–Morris–Pratt — a string-search algorithm named for its authors.
+[^dp]: Dynamic Programming.
+[^lis]: Longest Increasing Subsequence.

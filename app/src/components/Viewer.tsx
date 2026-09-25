@@ -97,9 +97,12 @@ export default function Viewer({ path, query, hash, revision, view, onView, onNa
     const items: OutlineItem[] = [];
     for (const el of body.querySelectorAll("h2, h3")) {
       if (!(el instanceof HTMLElement) || !el.id) continue;
+      if (el.id === "footnote-label") continue;
+      const label = el.cloneNode(true) as HTMLElement;
+      label.querySelectorAll("sup").forEach((reference) => reference.remove());
       items.push({
         depth: Number(el.tagName.slice(1)),
-        text: (el.textContent ?? "").replace(/\s+/g, " ").trim(),
+        text: (label.textContent ?? "").replace(/\s+/g, " ").trim(),
         id: el.id,
       });
     }
@@ -197,9 +200,9 @@ export default function Viewer({ path, query, hash, revision, view, onView, onNa
               ]}
               components={{
                 ...(enhanced && { pre: EnhancedPre }),
-                a({ href, children }) {
+                a({ node: _node, href, children, ...props }) {
                   return (
-                    <NoteLink href={href} from={path} onNavigate={onNavigate}>
+                    <NoteLink {...props} href={href} from={path} onNavigate={onNavigate}>
                       {children}
                     </NoteLink>
                   );
@@ -344,17 +347,19 @@ function NoteLink({
   from,
   onNavigate,
   children,
+  ...props
 }: {
   href?: string;
   from: string;
   onNavigate: (path: string, hashId?: string) => void;
   children?: ReactNode;
-}) {
+} & ComponentProps<"a">) {
   if (!href) return <a>{children}</a>;
   const parsed = parseHref(from, href);
   if (parsed.type === "hash") {
     return (
       <a
+        {...props}
         href={`#${parsed.id}`}
         onClick={(event) => {
           if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;

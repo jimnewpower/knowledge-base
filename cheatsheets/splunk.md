@@ -1,6 +1,6 @@
 # Splunk search and operations cheat sheet
 
-> Baseline: Splunk Enterprise / Splunk Cloud Platform SPL search language; examples use SPL, not SPL2. Reviewed: 2026-09-25.
+> Baseline: Splunk Enterprise / Splunk Cloud Platform SPL[^spl] search language; examples use SPL, not SPL2[^spl2]. Reviewed: 2026-09-25.
 
 Start with a narrow index, source type, and time range. Verify field extraction before using a chart as evidence.
 
@@ -28,12 +28,12 @@ The denominator is log events, not requests. This is only a request error rate i
 | `stats` | Aggregate into rows | Original event fields disappear unless grouped/aggregated |
 | `timechart` | Aggregate over time | Choose a useful span and understand series limits |
 | `eval` | Derive fields | Nulls and type conversion can silently change results |
-| `spath` | Extract structured JSON/XML paths | Prefer reliable ingestion-time/source-type configuration where appropriate |
+| `spath` | Extract structured JSON[^json]/XML[^xml] paths | Prefer reliable ingestion-time/source-type configuration where appropriate |
 | `rex` | Extract with a regex | Fragile when the event format changes |
 | `table` | Select columns for final presentation | Avoid discarding fields needed by later processing |
 | `dedup` | Retain representatives by field | Can hide repeated failures; it is not a count |
 
-Correlate by a stable request/trace/job ID emitted by applications. Avoid broad `join` or `transaction` searches as a first response to every correlation problem; understand their memory, subsearch, and time limits first.
+Correlate by a stable request/trace/job ID[^id] emitted by applications. Avoid broad `join` or `transaction` searches as a first response to every correlation problem; understand their memory, subsearch, and time limits first.
 
 ## Ingestion and alert checks
 
@@ -50,3 +50,9 @@ An empty result can mean no failures, wrong search scope, broken extraction, or 
 - [Splunk SPL command reference](https://help.splunk.com/en/splunk-enterprise/search/spl-search-reference/9.4/introduction/how-to-use-this-manual)
 - [Splunk stats](https://help.splunk.com/en/splunk-enterprise/search/spl-search-reference/9.4/search-commands/stats)
 - [Splunk time modifiers](https://help.splunk.com/en/splunk-enterprise/search/spl-search-reference/9.4/time-format-variables-and-modifiers/time-modifiers)
+
+[^spl]: Search Processing Language — Splunk's search language.
+[^spl2]: Search Processing Language 2 — a distinct generation of Splunk's search language.
+[^json]: JavaScript Object Notation.
+[^xml]: Extensible Markup Language.
+[^id]: Identifier (or identity in a product name such as Microsoft Entra ID).

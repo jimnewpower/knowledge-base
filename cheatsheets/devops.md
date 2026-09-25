@@ -14,7 +14,7 @@ change → build → test → package → deploy → observe → back to change
 
 Every stage should be a command a machine can run. If it only lives on someone’s laptop, it is not the pipeline.
 
-## CI vs CD
+## CI[^ci] vs CD[^cd]
 
 | Term | Meaning |
 |------|---------|
@@ -25,6 +25,8 @@ Every stage should be a command a machine can run. If it only lives on someone�
 Most governed environments want **delivery**, not unsupervised deployment. The pipeline still has to prove the artifact is the same one you tested.
 
 ## Pipeline skeleton (Java)
+
+Example abbreviations: SHA[^sha], SBOM[^sbom].
 
 ```text
 1. checkout (including the Git SHA)
@@ -46,7 +48,7 @@ Do not rebuild for production. Promote the artifact from step 6.
 - Integration tests against a real-enough dependency (Testcontainers, ephemeral schema)
 - Lint / static analysis with a fixed baseline
 - Dependency vulnerability scan with an explicit exception process
-- Contract tests for public APIs
+- Contract tests for public APIs[^api]
 - A smoke test after deploy (`GET /actuator/health`, one authenticated write)
 
 Coverage percentage is a weak gate by itself. Cover the invariants.
@@ -72,12 +74,12 @@ Treat platform modules like libraries: versioned, reviewed, not forked per app w
 
 | Signal | Use |
 |--------|-----|
-| Logs | Discrete events; structured JSON; no secrets |
-| Metrics | RED/USE: rate, errors, duration; saturation |
+| Logs | Discrete events; structured JSON[^json]; no secrets |
+| Metrics | RED[^red]/USE[^use]: rate, errors, duration; saturation |
 | Traces | One request across processes |
 | Health | Liveness vs readiness are different |
 
-Alert on user-visible failure and budget burn, not on every CPU blip.
+Alert on user-visible failure and budget burn, not on every CPU[^cpu] blip.
 
 ## Operations habits
 
@@ -88,13 +90,28 @@ Alert on user-visible failure and budget burn, not on every CPU blip.
 
 ## Gotchas
 
-- “Works on my machine” plus a different JDK in CI. Use the wrapper and a pinned image.
+- “Works on my machine” plus a different JDK[^jdk] in CI. Use the wrapper and a pinned image.
 - Deploying SNAPSHOT jars to shared environments. Pin versions.
-- Snowflake prod that drifted from IaC. The console change will win until it is imported or destroyed.
+- Snowflake prod that drifted from IaC[^iac]. The console change will win until it is imported or destroyed.
 - Health checks that hit the database on every kube probe and then take the app down.
-- Treating OpenShift/K8s YAML as an implementation detail nobody reviews.
+- Treating OpenShift/K8s[^k8s] YAML[^yaml] as an implementation detail nobody reviews.
 
 ## References
 
-- [DORA — continuous delivery capability](https://dora.dev/capabilities/continuous-delivery/)
+- [DORA — continuous delivery capability](https://dora.dev/capabilities/continuous-delivery/)[^dora]
 - [Docker — image digests](https://docs.docker.com/dhi/core-concepts/digests/)
+
+[^ci]: Continuous Integration.
+[^cd]: Continuous Delivery or Continuous Deployment; delivery keeps changes releasable, while deployment automatically releases them to production.
+[^api]: Application Programming Interface — the contract through which software components interact.
+[^json]: JavaScript Object Notation.
+[^red]: Rate, Errors, Duration — a service-observability checklist.
+[^use]: Utilization, Saturation, Errors — a resource-observability checklist.
+[^cpu]: Central Processing Unit.
+[^jdk]: Java Development Kit.
+[^iac]: Infrastructure as Code.
+[^k8s]: Kubernetes — a numeronym replacing the eight letters between K and s.
+[^yaml]: YAML Ain't Markup Language — a recursive acronym naming a data-serialization format.
+[^dora]: DevOps Research and Assessment.
+[^sha]: Secure Hash Algorithm.
+[^sbom]: Software Bill of Materials.

@@ -1,14 +1,16 @@
-# Structurizr DSL cheat sheet
+# Structurizr DSL[^dsl] cheat sheet
 
 > Baseline: Structurizr DSL; command examples target the 2026.09.19 Java distribution, requiring Java 21. Reviewed: 2026-09-24.
 
-Structurizr defines **one architecture model and multiple views of it**. Reuse elements and relationships instead of maintaining unrelated drawings. C4 supplies the vocabulary; the DSL supplies an authoring format.
+Structurizr defines **one architecture model and multiple views of it**. Reuse elements and relationships instead of maintaining unrelated drawings. C4[^c4] supplies the vocabulary; the DSL supplies an authoring format.
 
-Related: [C4 diagrams](c4-diagrams.md), [architecture documentation](architecture-documentation.md), [ADRs](architecture-decisions.md).
+Related: [C4 diagrams](c4-diagrams.md), [architecture documentation](architecture-documentation.md), [ADRs](architecture-decisions.md)[^adr].
 
 ## Complete starter workspace
 
 Save this original example as `workspace.dsl`. It models the same illustrative desktop system as the C4 sheet. No external includes, themes, plugins, or credentials are needed.
+
+Example abbreviations: HTTPS[^https], JSON[^json], JDBC[^jdbc].
 
 ```text
 workspace "Field Analysis" "Desktop analysis architecture" {
@@ -108,9 +110,9 @@ The [validate command](https://docs.structurizr.com/validate) checks the workspa
 - Give views explicit stable keys so links and layout identity survive edits.
 - Add relationships in `model`; specialize their descriptions for a scenario in `dynamic`.
 - Keep a small model before adding components, tags, or filters. A valid graph can still be unreadable.
-- Pin renderer/tool versions in CI. Inspect the rendered result after export because formats differ in supported shapes and features.
+- Pin renderer/tool versions in CI[^ci]. Inspect the rendered result after export because formats differ in supported shapes and features.
 - Review model source and generated views together. Do not hand-edit generated Mermaid and expect the DSL to pick it up.
-- Keep operational secrets out of model properties and URLs. Diagram labels need system roles, not credentials.
+- Keep operational secrets out of model properties and URLs[^url]. Diagram labels need system roles, not credentials.
 
 ## References
 
@@ -121,3 +123,12 @@ The [validate command](https://docs.structurizr.com/validate) checks the workspa
 - [Structurizr — binaries](https://docs.structurizr.com/binaries)
 - [Structurizr — validate](https://docs.structurizr.com/validate)
 - [Structurizr — export](https://docs.structurizr.com/export)
+
+[^dsl]: Domain-Specific Language.
+[^c4]: Context, Containers, Components, and Code — the four levels of the C4 architecture model.
+[^adr]: Architecture Decision Record.
+[^ci]: Continuous Integration.
+[^url]: Uniform Resource Locator.
+[^https]: Hypertext Transfer Protocol Secure — web communication over an encrypted, authenticated connection.
+[^json]: JavaScript Object Notation.
+[^jdbc]: Java Database Connectivity.

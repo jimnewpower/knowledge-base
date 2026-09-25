@@ -4,7 +4,7 @@
 
 Translate “fast,” “reliable,” and “maintainable” into **scenarios with measurable outcomes**. A quality goal becomes useful when it can change a design choice and be checked.
 
-Related: [ADRs](architecture-decisions.md), [architecture styles](architecture-styles.md), [observability](observability.md), [resilience](resilience.md), [testing](testing.md).
+Related: [ADRs](architecture-decisions.md)[^adr], [architecture styles](architecture-styles.md), [observability](observability.md), [resilience](resilience.md), [testing](testing.md).
 
 ## Write a quality scenario
 
@@ -29,10 +29,10 @@ All numbers below are teaching examples. Agree real thresholds with stakeholders
 | Recoverability | After losing the primary store, restore service within 30 minutes with at most 5 minutes of acknowledged data lost | Timed restore drill and record reconciliation |
 | Resilience | A 10-minute catalog outage still permits opening and editing existing local projects | Fault injection and user-visible failure checks |
 | Modifiability | A second catalog provider can be added within two engineer-days without changing scoring policy | Actual change exercise, diff, regression results |
-| Security | A tenant-A identity cannot retrieve or alter tenant-B data through any supported API route | Authorization matrix and negative integration tests |
+| Security | A tenant-A identity cannot retrieve or alter tenant-B data through any supported API[^api] route | Authorization matrix and negative integration tests |
 | Operability | An operator can identify which import failed and restart it without duplicate committed results | Runbook exercise, durable job states, deduplication checks |
 
-RTO is the recovery-time objective; RPO is the acceptable recovery-point gap. Neither is established by merely configuring backups. Verify the restored data and time the complete recovery path.
+RTO[^rto] is the recovery-time objective; RPO[^rpo] is the acceptable recovery-point gap. Neither is established by merely configuring backups. Verify the restored data and time the complete recovery path.
 
 ## Compare tactics and their costs
 
@@ -53,11 +53,11 @@ Compare alternatives against the same scenarios. A tactic that helps one attribu
 
 1. State the decision under review and hard constraints. Include what cannot change in the current system.
 2. Select a few high-priority usage, failure, and change scenarios with stakeholders.
-3. Walk those scenarios through the [C4 views](c4-diagrams.md), contracts, data ownership, and deployment assumptions.
+3. Walk those scenarios through the [C4 views](c4-diagrams.md)[^c4], contracts, data ownership, and deployment assumptions.
 4. Identify uncertainty and propose the smallest useful evidence: prototype, load test, restore drill, dependency rule, or contract test.
 5. Record the decision, accepted risk, owner, and revisit trigger. Track unresolved questions separately from established facts.
 
-This is a lightweight review procedure for this collection, not a claim to have performed a formal ATAM assessment.
+This is a lightweight review procedure for this collection, not a claim to have performed a formal ATAM[^atam] assessment.
 
 ## Make fitness checks executable
 
@@ -82,3 +82,10 @@ Choose checks for costly regressions. Avoid turning unstable benchmarks into noi
 
 - [arc42 — quality requirements and scenarios](https://docs.arc42.org/section-10/)
 - [arc42 — quality model and example requirements](https://quality.arc42.org/)
+
+[^adr]: Architecture Decision Record.
+[^api]: Application Programming Interface — the contract through which software components interact.
+[^rto]: Recovery Time Objective — the target time to restore service.
+[^rpo]: Recovery Point Objective — the acceptable amount of lost data, measured in time.
+[^c4]: Context, Containers, Components, and Code — the four levels of the C4 architecture model.
+[^atam]: Architecture Tradeoff Analysis Method.

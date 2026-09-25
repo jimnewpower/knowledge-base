@@ -1,8 +1,8 @@
-# JVM performance and GC cheat sheet
+# JVM[^jvm] performance and GC[^gc] cheat sheet
 
-> Baseline: HotSpot on JDK 21/25; collector availability and defaults depend on the JDK distribution and platform. Reviewed: 2026-09-24.
+> Baseline: HotSpot on JDK[^jdk] 21/25; collector availability and defaults depend on the JDK distribution and platform. Reviewed: 2026-09-24.
 
-The JVM is a process: heap, stacks, metaspace, compiler, and garbage collector. Most “Java is slow” bugs are allocation rate, I/O wait, or a bad query — not the collector’s brand name.
+The JVM is a process: heap, stacks, metaspace, compiler, and garbage collector. Most “Java is slow” bugs are allocation rate, I/O[^i-o] wait, or a bad query — not the collector’s brand name.
 
 Related: [java.md](java.md), [java-concurrency.md](java-concurrency.md), [observability.md](observability.md), [docker.md](docker.md).
 
@@ -10,12 +10,14 @@ Related: [java.md](java.md), [java-concurrency.md](java-concurrency.md), [observ
 
 | Symptom | Look at |
 |---------|---------|
-| High latency, CPU idle | I/O, locks, DNS, downstream timeouts |
+| High latency, CPU[^cpu] idle | I/O, locks, DNS[^dns], downstream timeouts |
 | High latency, CPU busy | Hot methods, allocation, GC pauses |
 | Throughput cliff | GC thrash, thread pool saturation |
 | Memory grows until kill | Leak (a cache, a listener, a thread-local) |
 
-Tools: JFR + JDK Mission Control, `async-profiler`, `jstat -gc`, `jcmd`, actuator metrics. Measure in the environment that hurts (container limits ≠ laptop).
+Tools: JFR[^jfr] + JDK Mission Control, `async-profiler`, `jstat -gc`, `jcmd`, actuator metrics. Measure in the environment that hurts (container limits ≠ laptop).
+
+Example abbreviations: VM[^vm].
 
 ```bash
 jcmd <pid> VM.flags
@@ -40,14 +42,14 @@ Container: respect cgroup.
 -XX:+UseG1GC
 ```
 
-Do not set `-Xmx` to the container limit. Leave room for metaspace, stacks, and direct memory or the kernel OOM-kills you “for no reason.”
+Do not set `-Xmx` to the container limit. Leave room for metaspace, stacks, and direct memory or the kernel OOM[^oom]-kills you “for no reason.”
 
 ## Collectors (practical)
 
 | Collector | Shape |
 |-----------|--------|
-| G1 (common default) | Good general purpose |
-| ZGC | Very low pause, more RAM, modern LTS |
+| G1[^g1] (common default) | Good general purpose |
+| ZGC[^zgc] | Very low pause, more RAM[^ram], modern LTS[^lts] |
 | Parallel | Throughput-oriented batch |
 | Serial | Tiny heaps / tools |
 
@@ -64,7 +66,7 @@ Young GC frequency ≈ allocation rate / young size.
 
 JFR “Allocation” events beat guessing.
 
-## JIT
+## JIT[^jit]
 
 Hot methods get compiled. First minutes can be slower (warm-up). Do not benchmark a 2-second `main`.
 
@@ -82,8 +84,8 @@ Heap dump: `jcmd <pid> GC.heap_dump /tmp/app.hprof`. Look for a dominator that s
 
 ## Latency vs throughput
 
-- User-facing API: cap pause, cap pool, fail fast ([resilience.md](resilience.md)).
-- Batch job: larger heap, parallel GC, fewer pauses-for-UX constraints.
+- User-facing API[^api]: cap pause, cap pool, fail fast ([resilience.md](resilience.md)).
+- Batch job: larger heap, parallel GC, fewer pauses-for-UX[^ux] constraints.
 
 p99 is where GC pauses and slow queries show. Averages lie.
 
@@ -99,3 +101,20 @@ p99 is where GC pauses and slow queries show. Averages lie.
 
 - [Oracle Java 25 — HotSpot optimizations and escape analysis](https://docs.oracle.com/en/java/javase/25/vm/java-hotspot-virtual-machine-performance-enhancements.html)
 - [Oracle Java 21 — GC tuning guide](https://docs.oracle.com/en/java/javase/21/gctuning/)
+
+[^jvm]: Java Virtual Machine.
+[^gc]: Garbage Collection (or Garbage Collector, depending on context).
+[^jdk]: Java Development Kit.
+[^i-o]: Input/Output.
+[^cpu]: Central Processing Unit.
+[^dns]: Domain Name System.
+[^jfr]: Java Flight Recorder.
+[^oom]: Out Of Memory.
+[^g1]: Garbage-First — a Java garbage collector.
+[^zgc]: Z Garbage Collector — a Java garbage collector designed for low pauses.
+[^ram]: Random-Access Memory.
+[^lts]: Long-Term Support.
+[^jit]: Just-In-Time compilation.
+[^api]: Application Programming Interface — the contract through which software components interact.
+[^ux]: User Experience.
+[^vm]: Virtual Machine.

@@ -1,6 +1,6 @@
 # Regular expressions cheat sheet
 
-> Baseline: Java 21 Pattern syntax unless labelled grep/POSIX; shell and Java string escaping are separate layers. Reviewed: 2026-09-24.
+> Baseline: Java 21 Pattern syntax unless labelled grep/POSIX[^posix]; shell and Java string escaping are separate layers. Reviewed: 2026-09-24.
 
 A regular expression is a **pattern that matches text**. In Java it is `java.util.regex`; in Bash it is whatever `grep -E` / `[[ =~ ]]` implements. They are not the same dialect. When it matters, say which engine.
 
@@ -106,9 +106,9 @@ Compile once if reused. `String.matches(regex)` recompiles every call and means 
 
 ## When not to use regex
 
-- HTML / XML / JSON structure — use a parser.
+- HTML[^html] / XML[^xml] / JSON[^json] structure — use a parser.
 - Nested constructs (“balanced parentheses” of arbitrary depth) — regex is the wrong machine.
-- Validating email to RFC completeness — you will get it wrong; do a practical check and send a confirmation.
+- Validating email to RFC[^rfc] completeness — you will get it wrong; do a practical check and send a confirmation.
 - Secret scanning of binary files.
 
 ## Catastrophic backtracking
@@ -129,4 +129,11 @@ The engine tries enormous partitions. Tighten the pattern, use possessive quanti
 ## References
 
 - [Java 21 — Pattern syntax and flags](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/regex/Pattern.html)
-- [GNU grep — regular expressions](https://www.gnu.org/software/grep/manual/grep.html)
+- [GNU grep — regular expressions](https://www.gnu.org/software/grep/manual/grep.html)[^gnu]
+
+[^posix]: Portable Operating System Interface.
+[^html]: Hypertext Markup Language.
+[^xml]: Extensible Markup Language.
+[^json]: JavaScript Object Notation.
+[^rfc]: Request for Comments — a document in the Internet technical specification series.
+[^gnu]: GNU's Not Unix — a recursive acronym naming the free-software project.

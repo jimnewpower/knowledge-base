@@ -11,6 +11,7 @@ type HastNode = {
 };
 
 function textOf(node: HastNode): string {
+  if (node.tagName === "sup") return "";
   if (node.type === "text") return node.value ?? "";
   return (node.children ?? []).map(textOf).join("");
 }
@@ -26,6 +27,7 @@ export function rehypeHeadingIds() {
   return (tree: HastNode) => {
     walk(tree, (node) => {
       if (node.type !== "element" || !node.tagName || !/^h[1-6]$/.test(node.tagName)) return;
+      if (node.properties?.id) return;
       const text = textOf(node).replace(/\s+/g, " ").trim();
       node.properties = { ...node.properties, id: slugger.slug(text) || "section" };
     });

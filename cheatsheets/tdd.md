@@ -1,4 +1,4 @@
-# TDD cheat sheet
+# TDD[^tdd] cheat sheet
 
 > Baseline: Test-driven development with Java 21, JUnit Jupiter 5.x, and Maven Surefire/Failsafe. Reviewed: 2026-09-24.
 
@@ -50,9 +50,9 @@ class OrderTest {
 | JUnit 5 | test runner |
 | AssertJ | fluent assertions when built-in `assert*` gets noisy |
 | Mockito | replace a neighbor you do not want to boot |
-| Testcontainers | real DB/broker when the behavior *is* the integration |
+| Testcontainers | real DB[^db]/broker when the behavior *is* the integration |
 
-Maven: Surefire runs `*Test`; Failsafe runs `*IT`. Keep unit tests off the network.
+Maven: Surefire runs `*Test`; Failsafe runs `*IT`[^it]. Keep unit tests off the network.
 
 ## Test doubles
 
@@ -71,7 +71,7 @@ Prefer fakes for repositories. Mocks shine at interaction-heavy boundaries (a ma
 | Worth a test | Usually not |
 |--------------|-------------|
 | Invariants and domain rules | Getters with no logic |
-| Parsing and mapping at boundaries | Framework wiring you cannot break without CI failing anyway |
+| Parsing and mapping at boundaries | Framework wiring you cannot break without CI[^ci] failing anyway |
 | Error paths you claim to handle | Generated code |
 | Regression for a production bug | Private methods directly — test them through the contract |
 
@@ -80,7 +80,7 @@ A regression test that reproduces a bug before the fix gives evidence that the f
 ## Outside-in vs inside-out
 
 - **Inside-out:** start at a domain object, grow outward. Natural for rich invariants.
-- **Outside-in:** start at the HTTP handler with a failing API test, invent collaborators as you go. Natural for API work.
+- **Outside-in:** start at the HTTP[^http] handler with a failing API[^api] test, invent collaborators as you go. Natural for API work.
 
 Both are TDD. Pick based on where the uncertainty is.
 
@@ -100,10 +100,18 @@ Coverage tells you what never ran. It does not tell you it was right. Gate on te
 - Tests that depend on wall-clock `now` without a clock port.
 - Tests that share a mutable static or a leftover DB row.
 - `@SpringBootTest` for every class. That is an integration suite; keep a fast unit layer.
-- Asserting on full JSON strings when you care about one field.
+- Asserting on full JSON[^json] strings when you care about one field.
 - TDD theater: writing the code, then a test that mirrors it line for line, then claiming the loop.
 
 ## References
 
 - [Martin Fowler — test-driven development](https://martinfowler.com/bliki/TestDrivenDevelopment.html)
 - [JUnit 5 — user guide](https://docs.junit.org/5.11.4/user-guide/)
+
+[^tdd]: Test-Driven Development.
+[^db]: Database.
+[^it]: Integration Test — the Maven test-name suffix used here.
+[^ci]: Continuous Integration.
+[^http]: Hypertext Transfer Protocol.
+[^api]: Application Programming Interface — the contract through which software components interact.
+[^json]: JavaScript Object Notation.

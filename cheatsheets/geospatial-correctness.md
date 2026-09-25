@@ -1,10 +1,10 @@
-# Geospatial correctness with GeoTools and JTS cheat sheet
+# Geospatial correctness with GeoTools and JTS[^jts] cheat sheet
 
-> Baseline: GeoTools 35.x API names, JTS 1.20, Java 21; CRS operations require appropriate authority data and transformation resources. Reviewed: 2026-09-24.
+> Baseline: GeoTools 35.x API[^api] names, JTS 1.20, Java 21; CRS[^crs] operations require appropriate authority data and transformation resources. Reviewed: 2026-09-24.
 
 Geometry is coordinates **plus a spatial reference and interpretation**. Plausible-looking output can still have wrong axis order, units, topology, or measurement semantics.
 
-Related: [integration transformation](integration-transformation.md), [data structures](data-structures.md), [JavaFX](javafx.md), [testing](testing.md), [raster GIS and GeoTIFF](raster-gis.md).
+Related: [integration transformation](integration-transformation.md), [data structures](data-structures.md), [JavaFX](javafx.md), [testing](testing.md), [raster GIS and GeoTIFF](raster-gis.md)[^gis][^geotiff].
 
 ## Keep these operations distinct
 
@@ -12,10 +12,10 @@ Related: [integration transformation](integration-transformation.md), [data stru
 |-----------|----------------------------|---------|
 | Assign/declare a CRS | No | Describe the coordinates already present |
 | Reproject/transform | Yes, as required by the operation | Convert between source and target reference systems |
-| Set JTS SRID | No | Set an integer identifier; it does not perform transformation |
+| Set JTS SRID[^srid] | No | Set an integer identifier; it does not perform transformation |
 | Swap X/Y | Yes | Repair a known axis-order mismatch, not a general CRS conversion |
 
-Validate the source CRS instead of guessing from numeric ranges. EPSG authority axis order and common GIS longitude/latitude conventions can differ. `CRS.decode(code, true)` requests longitude-first ordering where applicable; it is an explicit convention, not a repair for unknown input. Sources: [CRS utilities](https://docs.geotools.org/stable/userguide/library/referencing/crs.html), [axis order](https://docs.geotools.org/stable/userguide/library/referencing/order.html).
+Validate the source CRS instead of guessing from numeric ranges. EPSG[^epsg] authority axis order and common GIS longitude/latitude conventions can differ. `CRS.decode(code, true)` requests longitude-first ordering where applicable; it is an explicit convention, not a repair for unknown input. Sources: [CRS utilities](https://docs.geotools.org/stable/userguide/library/referencing/crs.html), [axis order](https://docs.geotools.org/stable/userguide/library/referencing/order.html).
 
 ## Example: project a Colorado point
 
@@ -35,7 +35,7 @@ var projected = JTS.transform(point, transform);
 projected.setSRID(32613);
 ```
 
-The input convention is X=longitude, Y=latitude in degrees. UTM zone 13N fits this example's location; choose a CRS appropriate to the actual region and accuracy needs. `setSRID` labels the transformed result. Strict lookup avoids silently allowing missing datum-shift information; it does not certify survey accuracy. See [GeoTools JTS utilities](https://docs.geotools.org/stable/userguide/library/jts/jts.html).
+The input convention is X=longitude, Y=latitude in degrees. UTM[^utm] zone 13N fits this example's location; choose a CRS appropriate to the actual region and accuracy needs. `setSRID` labels the transformed result. Strict lookup avoids silently allowing missing datum-shift information; it does not certify survey accuracy. See [GeoTools JTS utilities](https://docs.geotools.org/stable/userguide/library/jts/jts.html).
 
 ## Measure and validate deliberately
 
@@ -71,3 +71,12 @@ Close feature iterators with try-with-resources and dispose a `DataStore` when i
 - [GeoTools — JTS utilities](https://docs.geotools.org/stable/userguide/library/jts/jts.html)
 - [JTS 1.20 — Geometry](https://locationtech.github.io/jts/javadoc/org/locationtech/jts/geom/Geometry.html)
 - [GeoTools — FeatureCollection](https://docs.geotools.org/stable/userguide/library/main/collection.html)
+
+[^jts]: JTS Topology Suite, originally Java Topology Suite.
+[^api]: Application Programming Interface — the contract through which software components interact.
+[^crs]: Coordinate Reference System.
+[^gis]: Geographic Information System.
+[^geotiff]: Geographic Tagged Image File Format — a tagged raster image format with georeferencing metadata.
+[^srid]: Spatial Reference Identifier.
+[^epsg]: European Petroleum Survey Group — the historical organization whose name identifies the coordinate-reference registry and its codes.
+[^utm]: Universal Transverse Mercator.

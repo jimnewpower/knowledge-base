@@ -1,10 +1,10 @@
-# SQL and relational modeling cheat sheet
+# SQL[^sql] and relational modeling cheat sheet
 
 > Baseline: PostgreSQL 16-compatible examples; PostgreSQL 18 skip scans and Oracle differences are labelled. Reviewed: 2026-09-24.
 
 SQL is the language of the system of record for most applications in this collection. Model data first; tune queries second.
 
-Related: [transactions-and-isolation.md](transactions-and-isolation.md), [data-structures.md](data-structures.md), [database migrations](database-migrations.md), [SQLite](sqlite.md), [JPA and Hibernate](jpa-and-hibernate.md).
+Related: [transactions-and-isolation.md](transactions-and-isolation.md), [data-structures.md](data-structures.md), [database migrations](database-migrations.md), [SQLite](sqlite.md), [JPA and Hibernate](jpa-and-hibernate.md)[^jpa].
 
 ## Relational basics
 
@@ -13,13 +13,13 @@ Related: [transactions-and-isolation.md](transactions-and-isolation.md), [data-s
 | Relation / table | Set of rows with named columns |
 | Primary key | Stable identifier for a row |
 | Foreign key | Reference to another table’s key |
-| Candidate key | Any column set that could be the PK |
+| Candidate key | Any column set that could be the PK[^pk] |
 | NULL | Unknown / missing — not a value. `NULL = NULL` is unknown |
 | Index | Extra structure that speeds lookup and can enforce uniqueness |
 
 Normalize until update anomalies go away; denormalize only with a measured read path and an owner for the copy.
 
-## DDL worth knowing
+## DDL[^ddl] worth knowing
 
 PostgreSQL example; assumes `customers(id)` already exists with a compatible key. Later query fragments also assume `customers.name` and `line_items.order_id`:
 
@@ -79,7 +79,7 @@ WHERE name LIKE '%power'         -- leading wildcard usually cannot
 
 These are independent predicate fragments. In PostgreSQL, plain `TIMESTAMP` means without time zone and ignores an offset in its literal. `TIMESTAMPTZ` represents an instant; it does not preserve the original named timezone.
 
-## Subqueries and CTEs
+## Subqueries and CTEs[^cte]
 
 ```sql
 WITH open_orders AS (
@@ -149,3 +149,9 @@ The `version` predicate is optimistic concurrency. Zero rows updated means a con
 - [PostgreSQL 16 — date/time literals](https://www.postgresql.org/docs/16/datatype-datetime.html)
 - [PostgreSQL 18 — multicolumn indexes and skip scans](https://www.postgresql.org/docs/18/indexes-multicolumn.html)
 - [PostgreSQL 16 — subquery and NULL semantics](https://www.postgresql.org/docs/16/functions-subquery.html)
+
+[^sql]: Structured Query Language.
+[^jpa]: Java Persistence API (Application Programming Interface), now standardized as Jakarta Persistence.
+[^pk]: Primary Key.
+[^ddl]: Data Definition Language — statements that change database structures.
+[^cte]: Common Table Expression.

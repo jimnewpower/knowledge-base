@@ -88,6 +88,8 @@ export function highlightElement(root: HTMLElement, query: string): HTMLElement 
 
 export function plainText(text: string): string {
   return text
+    .replace(/^\[\^[^\]]+\]:\s*/gm, "")
+    .replace(/\[\^[^\]]+\]/g, "")
     .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
     .replace(/```[\w-]*/g, " ")
     .replace(/`([^`]*)`/g, "$1")

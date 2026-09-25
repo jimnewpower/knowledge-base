@@ -3,6 +3,11 @@ import { describe, expect, it } from "vitest";
 import { highlightElement, snippetAround } from "./marks";
 
 describe("snippetAround", () => {
+  it("keeps acronym expansions searchable without exposing footnote markup", () => {
+    const text = "TLS[^tls] protects traffic.\n\n[^tls]: Transport Layer Security.";
+    expect(snippetAround(text, "transport", 100)).toBe("TLS protects traffic. Transport Layer Security.");
+  });
+
   it("flattens table cells", () => {
     const text = "| Virtual threads (21+) | Lots of blocking I/O |";
     const snippet = snippetAround(text, "virtual threads", 40);

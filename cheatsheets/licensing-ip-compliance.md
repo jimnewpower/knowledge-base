@@ -1,10 +1,10 @@
-# Software licensing and IP compliance cheat sheet
+# Software licensing and IP[^ip] compliance cheat sheet
 
 > Baseline: engineering evidence for third-party software, source, data and assets; actual obligations depend on license terms, agreements and distribution context. Reviewed: 2026-09-25.
 
 Maintain a traceable inventory of what ships and why the project has permission to use and distribute it. A vulnerability scan and a license review answer different questions.
 
-Related: [software supply chain and SBOM generation](software-supply-chain.md), [reproducible builds](reproducible-builds.md), [application licensing telemetry](licensing-telemetry.md).
+Related: [software supply chain and SBOM generation](software-supply-chain.md)[^sbom], [reproducible builds](reproducible-builds.md), [application licensing telemetry](licensing-telemetry.md).
 
 ## Evidence per component
 
@@ -12,17 +12,17 @@ Related: [software supply chain and SBOM generation](software-supply-chain.md), 
 |--------|----------------|
 | Name, version, source and digest | Identify the exact imported or packaged material |
 | Declared license and file-level notices | Root metadata can miss bundled or differently licensed files |
-| SPDX expression, where established | Unambiguous machine-readable license identity/combination |
+| SPDX[^spdx] expression, where established | Unambiguous machine-readable license identity/combination |
 | Modifications and integration method | Review what was changed and how it is shipped/used |
 | Distribution/deployment context | Internal use, customer installer, container, service or source delivery |
 | Required notices/source/materials | Concrete deliverables tied to the approved interpretation |
 | Decision, evidence, owner and date | Explain unresolved findings, exceptions and release approval |
 
-Include fonts, icons, sample data, scientific models, native DLLs/shared libraries, Java runtimes, copied snippets, and generated assets where applicable. A Maven dependency tree alone cannot find them all.
+Include fonts, icons, sample data, scientific models, native DLLs[^dll]/shared libraries, Java runtimes, copied snippets, and generated assets where applicable. A Maven dependency tree alone cannot find them all.
 
 ## License notation
 
-SPDX expressions distinguish `MIT OR Apache-2.0` (a choice), `MIT AND Apache-2.0` (both), and a license `WITH` a listed exception. Preserve upstream copyright notices. An identifier communicates terms; adding it does not create permission or prove compatibility.
+SPDX expressions distinguish `MIT OR Apache-2.0`[^mit] (a choice), `MIT AND Apache-2.0` (both), and a license `WITH` a listed exception. Preserve upstream copyright notices. An identifier communicates terms; adding it does not create permission or prove compatibility.
 
 Use `LicenseRef-...` only with a documented corresponding custom/extracted license, not as a way to hide an unresolved finding. Distinguish declared metadata, scanner detection, and the reviewed conclusion. Unknown provenance needs investigation before release.
 
@@ -45,3 +45,9 @@ Record origin and modification history for imported code/data. Follow project co
 - [SPDX identifiers and expressions](https://spdx.dev/learn/handling-license-info/)
 - [REUSE file-level licensing tutorial](https://reuse.software/tutorial/)
 - [CycloneDX SBOM capabilities](https://cyclonedx.org/capabilities/sbom/)
+
+[^ip]: Intellectual Property — rights associated with software, documentation, and other creative work.
+[^sbom]: Software Bill of Materials.
+[^spdx]: System Package Data Exchange, formerly Software Package Data Exchange — a standard for component and licensing metadata. See the [specification's naming history](https://spdx.github.io/spdx-spec/v3.0.1/front/introduction/).
+[^dll]: Dynamic-Link Library.
+[^mit]: Massachusetts Institute of Technology — the institution whose name identifies the MIT license.

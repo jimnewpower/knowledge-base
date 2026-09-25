@@ -1,6 +1,6 @@
 # Integration routing and coordination cheat sheet
 
-> Baseline: Hohpe/Woolf EIP routing patterns; conceptual flows with implementation policies called out separately. Reviewed: 2026-09-24.
+> Baseline: Hohpe/Woolf EIP[^eip] routing patterns; conceptual flows with implementation policies called out separately. Reviewed: 2026-09-24.
 
 Choose routing by **destination, cardinality, and retained state**. Every stateful pattern needs an owner, a completion rule, and a recovery policy.
 
@@ -42,7 +42,7 @@ order result <-- Aggregator <-- line outcomes (success or failure)
 
 Suggested contract and recovery rules for this flow:
 
-1. Group by `(orderId, fulfillmentAttempt)`; use `lineId` as the contribution key. Persist the expected set of line IDs before dispatch.
+1. Group by `(orderId, fulfillmentAttempt)`; use `lineId` as the contribution key. Persist the expected set of line IDs[^id] before dispatch.
 2. Give split outputs stable identities across redelivery. Two copies of one line must not count as two completed lines.
 3. Record each unique outcome and evaluate completion atomically. Concurrent arrivals must not publish two final results.
 4. Commit completed state and an outgoing result in one database transaction using an outbox; the result consumer still handles duplicates.
@@ -83,3 +83,6 @@ These are suggested acceptance checks, not guarantees supplied by a pattern name
 - [Hohpe and Woolf — Aggregator](https://www.enterpriseintegrationpatterns.com/patterns/messaging/Aggregator.html)
 - [Hohpe and Woolf — Composed Message Processor](https://www.enterpriseintegrationpatterns.com/patterns/messaging/DistributionAggregate.html)
 - [Hohpe and Woolf — Process Manager](https://www.enterpriseintegrationpatterns.com/patterns/messaging/ProcessManager.html)
+
+[^eip]: Enterprise Integration Patterns.
+[^id]: Identifier (or identity in a product name such as Microsoft Entra ID).

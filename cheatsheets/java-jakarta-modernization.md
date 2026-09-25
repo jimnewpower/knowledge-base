@@ -1,8 +1,8 @@
 # Java and Jakarta modernization cheat sheet
 
-> Baseline: migration planning for legacy Spring/JSF applications toward Java 21+, Spring Boot 4.0 / Framework 7, and Jakarta APIs. This is a compatibility checklist, not a certified stack. Reviewed: 2026-09-24.
+> Baseline: migration planning for legacy Spring/JSF[^jsf] applications toward Java 21+, Spring Boot 4.0 / Framework 7, and Jakarta APIs[^api]. This is a compatibility checklist, not a certified stack. Reviewed: 2026-09-24.
 
-Upgrade a **verified combination of runtime, libraries, and deployment container**. Compilation alone does not prove that authentication, persistence, or rendered UI behavior survived.
+Upgrade a **verified combination of runtime, libraries, and deployment container**. Compilation alone does not prove that authentication, persistence, or rendered UI[^ui] behavior survived.
 
 Related: [Maven](maven.md), [Spring Boot](spring-boot.md), [Jackson](jackson-json.md), [database migrations](database-migrations.md), [testing](testing.md).
 
@@ -10,16 +10,16 @@ Related: [Maven](maven.md), [Spring Boot](spring-boot.md), [Jackson](jackson-jso
 
 | Layer | Record and verify |
 |-------|-------------------|
-| JDK | Build/runtime versions, compiler release, agents, native libraries |
+| JDK[^jdk] | Build/runtime versions, compiler release, agents, native libraries |
 | Spring | Framework, Boot if used, Security, Data, unmanaged extensions |
-| Web container | Servlet, EL, WebSocket APIs; WAR versus embedded deployment |
-| Faces UI | Faces implementation, CDI integration, PrimeFaces artifact/namespace, themes |
-| Persistence | Jakarta Persistence level, Hibernate, dialect, JDBC driver, pool |
+| Web container | Servlet, EL[^el], WebSocket APIs; WAR[^war] versus embedded deployment |
+| Faces UI | Faces implementation, CDI[^cdi] integration, PrimeFaces artifact/namespace, themes |
+| Persistence | Jakarta Persistence level, Hibernate, dialect, JDBC[^jdbc] driver, pool |
 | Serialization | Jackson major version, modules, framework mapper customizations |
 
-Boot 4.0 requires Java 17+, Framework 7, and Servlet 6.1; it moves to a Jakarta EE 11 baseline. Tomcat 11 implements Servlet 6.1 and requires Java 17+. Tomcat 9 is not a compatible Boot 4 servlet target. Sources: [Boot migration guide](https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-4.0-Migration-Guide), [Tomcat 11 migration guide](https://tomcat.apache.org/migration-11.0.html).
+Boot 4.0 requires Java 17+, Framework 7, and Servlet 6.1; it moves to a Jakarta EE[^ee] 11 baseline. Tomcat 11 implements Servlet 6.1 and requires Java 17+. Tomcat 9 is not a compatible Boot 4 servlet target. Sources: [Boot migration guide](https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-4.0-Migration-Guide), [Tomcat 11 migration guide](https://tomcat.apache.org/migration-11.0.html).
 
-Faces is a separate integration concern: do not assume a servlet container supplies a Faces/CDI implementation or that a Boot BOM manages every UI dependency.
+Faces is a separate integration concern: do not assume a servlet container supplies a Faces/CDI implementation or that a Boot BOM[^bom] manages every UI dependency.
 
 ## Namespace migration is selective
 
@@ -30,7 +30,7 @@ Faces is a separate integration concern: do not assume a servlet container suppl
 | `javax.validation.*` | `jakarta.validation.*` |
 | `javax.faces.*` | `jakarta.faces.*` |
 
-Do not replace every `javax` string: Java SE packages such as `javax.sql`, `javax.crypto`, and `javax.net` retain their names. Inspect deployment descriptors, service-provider files, generated code, reflection strings, and transitive dependencies too. A transformed JAR still needs behavioral testing. See [Tomcat's Jakarta migration guidance](https://tomcat.apache.org/migration-10.html).
+Do not replace every `javax` string: Java SE[^se] packages such as `javax.sql`, `javax.crypto`, and `javax.net` retain their names. Inspect deployment descriptors, service-provider files, generated code, reflection strings, and transitive dependencies too. A transformed JAR[^jar] still needs behavioral testing. See [Tomcat's Jakarta migration guidance](https://tomcat.apache.org/migration-10.html).
 
 ## Suggested sequence
 
@@ -49,12 +49,12 @@ mvn help:effective-pom -Doutput=effective-pom.xml
 mvn verify
 ```
 
-Review the effective POM for inherited plugin versions and dependency overrides; keep generated diagnostic output out of committed source unless intentionally maintained.
+Review the effective POM[^pom] for inherited plugin versions and dependency overrides; keep generated diagnostic output out of committed source unless intentionally maintained.
 
 ## UI and compatibility traps
 
-- PrimeFaces 15 removes legacy Chart.js components and changes paginator actions from links to buttons. Custom CSS/JS and theme dependencies need inspection, not only Java compilation. See the [14-to-15 migration guide](https://github.com/primefaces/primefaces/blob/master/docs/migrationguide/15_0_0.md).
-- For a Faces/PrimeFaces upgrade, test AJAX partial updates, validation messages, converters, file uploads, lazy tables, navigation, and view/session state.
+- PrimeFaces 15 removes legacy Chart.js components and changes paginator actions from links to buttons. Custom CSS[^css]/JS[^js] and theme dependencies need inspection, not only Java compilation. See the [14-to-15 migration guide](https://github.com/primefaces/primefaces/blob/master/docs/migrationguide/15_0_0.md).
+- For a Faces/PrimeFaces upgrade, test AJAX[^ajax] partial updates, validation messages, converters, file uploads, lazy tables, navigation, and view/session state.
 - Boot 4 defaults to Jackson 3; the Jackson 2 compatibility path is temporary migration assistance, not evidence that old customizations apply unchanged.
 - Do not share serialized sessions between incompatible application versions without proving compatibility.
 
@@ -68,3 +68,20 @@ Record exact resolved versions, passing contract/UI fixtures, query and serializ
 - [Tomcat 10 namespace migration](https://tomcat.apache.org/migration-10.html)
 - [Tomcat 11 migration](https://tomcat.apache.org/migration-11.0.html)
 - [PrimeFaces 15 migration](https://github.com/primefaces/primefaces/blob/master/docs/migrationguide/15_0_0.md)
+
+[^jsf]: JavaServer Faces — the predecessor name of Jakarta Faces.
+[^api]: Application Programming Interface — the contract through which software components interact.
+[^ui]: User Interface.
+[^jdk]: Java Development Kit.
+[^el]: Expression Language.
+[^war]: Web Application Archive.
+[^cdi]: Contexts and Dependency Injection.
+[^jdbc]: Java Database Connectivity.
+[^ee]: Enterprise Edition, as in Java Enterprise Edition.
+[^bom]: Bill of Materials — a dependency-version catalog in Maven.
+[^se]: Standard Edition, as in Java Standard Edition.
+[^jar]: Java Archive.
+[^pom]: Project Object Model — Maven's project configuration.
+[^css]: Cascading Style Sheets.
+[^js]: JavaScript.
+[^ajax]: Asynchronous JavaScript and Extensible Markup Language — browser requests that update part of a page without a full reload; payloads need not use that markup format.

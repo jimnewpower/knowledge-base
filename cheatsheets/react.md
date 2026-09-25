@@ -2,9 +2,9 @@
 
 > Baseline: React 19 function components and Hooks with TypeScript; client-rendered examples. Reviewed: 2026-09-25.
 
-Use this when choosing component state, handling actions, or diagnosing unnecessary Effects. JSX retains the need for correct browser semantics.
+Use this when choosing component state, handling actions, or diagnosing unnecessary Effects. JSX[^jsx] retains the need for correct browser semantics.
 
-Related: [HTML and CSS](html-css-browser.md), [TypeScript](typescript.md), [accessibility](accessibility.md), [React Native offline data](react-native-offline.md).
+Related: [HTML and CSS](html-css-browser.md)[^html][^css], [TypeScript](typescript.md), [accessibility](accessibility.md), [React Native offline data](react-native-offline.md).
 
 ## State ownership
 
@@ -20,7 +20,7 @@ Avoid independently editable copies of derived state. Stable keys preserve list 
 
 ## Controlled component
 
-Complete TSX module for a React/TypeScript application. Topic names must be unique; editable or duplicate labels need stable record IDs instead.
+Complete TSX[^tsx] module for a React/TypeScript application. Topic names must be unique; editable or duplicate labels need stable record IDs[^id] instead.
 
 ```tsx
 import { useState } from "react";
@@ -53,3 +53,9 @@ Cancel or ignore obsolete asynchronous reads so an older response cannot replace
 Exercise empty data, rapid input changes, failed requests, unmount/remount, and keyboard use. Avoid in-place state mutation. Use updater functions when the next value depends on the previous value; measure before adding memoization.
 
 Content-example tests type-check this module and exercise filtering and empty results. They do not establish full application correctness.
+
+[^jsx]: JavaScript XML — a JavaScript syntax extension for markup-like expressions; XML means Extensible Markup Language.
+[^html]: Hypertext Markup Language.
+[^css]: Cascading Style Sheets.
+[^tsx]: TypeScript with JSX syntax; JSX is JavaScript XML, and XML means Extensible Markup Language.
+[^id]: Identifier (or identity in a product name such as Microsoft Entra ID).

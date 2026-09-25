@@ -1,6 +1,6 @@
 # Batch processing and reliable imports cheat sheet
 
-> Baseline: restartable import design; Spring Batch 5.2 terminology. Framework 6 APIs and migration requirements are outside this sheet. Reviewed: 2026-09-24.
+> Baseline: restartable import design; Spring Batch 5.2 terminology. Framework 6 APIs[^api] and migration requirements are outside this sheet. Reviewed: 2026-09-24.
 
 A reliable import can explain **what was accepted, what failed, and where to resume** after interruption. Throughput matters only after those answers are trustworthy.
 
@@ -29,7 +29,7 @@ immutable input -> read -> transform/validate -> write bounded chunk
 
 Spring Batch's chunk model groups writes under a transaction. A larger chunk reduces commit overhead but increases rollback work, lock duration, and memory. Choose size from representative data, not a universal constant. See [chunk processing](https://docs.spring.io/spring-batch/reference/5.2/step/chunk-oriented-processing.html).
 
-If business writes and job metadata use different transaction resources, do not assume they commit atomically. Design for replay with stable item keys and idempotent effects. HTTP calls and emitted files need their own recovery protocol; a database rollback cannot undo them.
+If business writes and job metadata use different transaction resources, do not assume they commit atomically. Design for replay with stable item keys and idempotent effects. HTTP[^http] calls and emitted files need their own recovery protocol; a database rollback cannot undo them.
 
 ## File intake contract
 
@@ -37,7 +37,7 @@ Recommended handoff:
 
 1. Producer finishes a temporary upload and publishes it using an agreed completion marker or supported atomic rename. Rename guarantees depend on the filesystem/protocol.
 2. Consumer records immutable object identity/version, size, and checksum, then validates format and mapping version.
-3. Assign a logical import ID and reject or deliberately version repeated submissions.
+3. Assign a logical import ID[^id] and reject or deliberately version repeated submissions.
 4. Checkpoint a stable record position/key. Preserve the source bytes through the recovery window.
 5. Reconcile accepted, intentionally filtered, quarantined, and failed input records before marking completion.
 
@@ -74,3 +74,7 @@ Partition by stable, nonoverlapping ranges or input objects. Verify reader/write
 - [Spring Batch 5.2 — chunk processing](https://docs.spring.io/spring-batch/reference/5.2/step/chunk-oriented-processing.html)
 - [Spring Batch 5.2 — restarting steps](https://docs.spring.io/spring-batch/reference/5.2/step/chunk-oriented-processing/restart.html)
 - [Spring Batch 5.2 — reader/writer implementations](https://docs.spring.io/spring-batch/reference/5.2/readers-and-writers/item-reader-writer-implementations.html)
+
+[^api]: Application Programming Interface — the contract through which software components interact.
+[^http]: Hypertext Transfer Protocol.
+[^id]: Identifier (or identity in a product name such as Microsoft Entra ID).

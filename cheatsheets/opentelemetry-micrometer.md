@@ -4,7 +4,7 @@
 
 Assign one owner to each telemetry signal and instrumentation point. Agent instrumentation, framework instrumentation, and application instrumentation can otherwise emit duplicates.
 
-Related: [observability](observability.md), [Spring Boot](spring-boot.md), [HTTP clients](http-clients-webhooks.md), [JVM performance](jvm-performance.md).
+Related: [observability](observability.md), [Spring Boot](spring-boot.md), [HTTP clients](http-clients-webhooks.md)[^http], [JVM performance](jvm-performance.md)[^jvm].
 
 ## Choose the arrangement
 
@@ -20,7 +20,7 @@ A reasonable starting arrangement is agent-owned HTTP/database traces and Microm
 
 ## Local trace path
 
-Bash example. Requires a downloaded, pinned agent JAR, `app.jar`, and the Collector below running on the same host. This arrangement deliberately disables agent metrics/log export; configure the application's Micrometer registry separately.
+Bash example. Requires a downloaded, pinned agent JAR[^jar], `app.jar`, and the Collector below running on the same host. This arrangement deliberately disables agent metrics/log export; configure the application's Micrometer registry separately.
 
 ```bash
 export OTEL_SERVICE_NAME=customer-service
@@ -53,11 +53,11 @@ service:
       exporters: [debug]
 ```
 
-Production needs an authenticated/TLS export path as appropriate, bounded memory/queues, and monitored drops/retries. This diagnostic configuration has no durable storage. Defining a component does not enable it until a service pipeline references it. See [Collector configuration](https://opentelemetry.io/docs/collector/configuration/).
+Production needs an authenticated/TLS[^tls] export path as appropriate, bounded memory/queues, and monitored drops/retries. This diagnostic configuration has no durable storage. Defining a component does not enable it until a service pipeline references it. See [Collector configuration](https://opentelemetry.io/docs/collector/configuration/).
 
 ## Metrics and context
 
-- Use stable low-cardinality tags such as route templates and outcome categories. User IDs, request IDs, raw URLs, and exception messages can create unbounded time series.
+- Use stable low-cardinality tags such as route templates and outcome categories. User IDs[^id], request IDs, raw URLs[^url], and exception messages can create unbounded time series.
 - Client-computed percentiles cannot be aggregated into a correct fleet percentile. Histograms support aggregation when the backend and bucket configuration support it; budget bucket count and tag combinations together.
 - Propagate context across supported HTTP/messaging boundaries and explicitly address custom executor handoffs. Do not put credentials or sensitive identifiers in baggage.
 - Record business outcomes separately from transport success. A 200 response can still contain a rejected business operation.
@@ -72,3 +72,10 @@ Send a known request through two services; check shared trace identity, parent/c
 - [Java agent configuration](https://opentelemetry.io/docs/zero-code/java/agent/configuration/)
 - [Micrometer histograms and percentiles](https://docs.micrometer.io/micrometer/reference/concepts/histogram-quantiles.html)
 - [Micrometer Observation](https://docs.micrometer.io/micrometer/reference/observation.html)
+
+[^http]: Hypertext Transfer Protocol.
+[^jvm]: Java Virtual Machine.
+[^jar]: Java Archive.
+[^tls]: Transport Layer Security — encrypts traffic and authenticates the connection's peer.
+[^id]: Identifier (or identity in a product name such as Microsoft Entra ID).
+[^url]: Uniform Resource Locator.

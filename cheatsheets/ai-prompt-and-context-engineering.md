@@ -1,4 +1,4 @@
-# AI prompt and context engineering cheat sheet
+# AI[^ai] prompt and context engineering cheat sheet
 
 > Baseline: Provider-neutral agent workflows; capabilities and instruction precedence depend on the runtime. Reviewed: 2026-09-24.
 
@@ -24,12 +24,14 @@ Write prompts like runbooks, not poems.
 
 1. **Role and mission** — what kind of work, what “done” means
 2. **Constraints** — stack, style, what not to touch
-3. **Inputs** — files, APIs, error text; attach them, do not summarize from memory if the file exists
+3. **Inputs** — files, APIs[^api], error text; attach them, do not summarize from memory if the file exists
 4. **Procedure** — steps, order, when to ask vs when to act
 5. **Output contract** — format, filename, tests expected
 6. **Uncertainty rule** — say so; do not invent APIs or internals
 
 Example skeleton:
+
+Example abbreviations: JSON[^json].
 
 ```markdown
 You are helping on the order-service (Java 21, Spring Boot, Maven).
@@ -54,7 +56,7 @@ The scarce resource is the window, not clever wording.
 | The file being edited and its close neighbors | The entire monorepo |
 | Interface + one implementation | Generated code, lockfiles, `target/` |
 | Failing test and stack trace | Ten similar passing tests |
-| ADR that constrains the change | Marketing PDF about the domain |
+| ADR[^adr] that constrains the change | Marketing PDF[^pdf] about the domain |
 | Command output you just ran | Recited man pages the model already knows |
 
 Tactics:
@@ -119,5 +121,12 @@ If the model contradicts a supplied file, check whether the excerpt is current, 
 
 ## References
 
-- [OWASP — prompt injection prevention](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html)
+- [OWASP — prompt injection prevention](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html)[^owasp]
 - [Anthropic — building effective agents](https://www.anthropic.com/engineering/building-effective-agents)
+
+[^ai]: Artificial Intelligence.
+[^api]: Application Programming Interface — the contract through which software components interact.
+[^adr]: Architecture Decision Record.
+[^pdf]: Portable Document Format.
+[^owasp]: Open Worldwide Application Security Project.
+[^json]: JavaScript Object Notation.

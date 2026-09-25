@@ -15,7 +15,7 @@ df -i                 # inode exhaustion looks like "disk full" with space left
 nproc
 ```
 
-Load average is runnable+uninterruptible threads, not “CPU %.” Compare to core count.
+Load average is runnable+uninterruptible threads, not “CPU[^cpu] %.” Compare to core count.
 
 ## Process
 
@@ -30,14 +30,14 @@ tr '\0' '\n' < /proc/<pid>/environ | sort
 cat /proc/<pid>/limits
 ```
 
-Signals: `TERM` (15) polite stop, `KILL` (9) cannot be caught, `HUP` often reload. JVM: `kill -3 <pid>` dumps threads to stdout.
+Signals: `TERM` (15) polite stop, `KILL` (9) cannot be caught, `HUP` often reload. JVM[^jvm]: `kill -3 <pid>` dumps threads to stdout.
 
 ```bash
 kill -TERM <pid>
 kill -3 <pid>
 ```
 
-## CPU, memory, disk I/O
+## CPU, memory, disk I/O[^i-o]
 
 ```bash
 vmstat 1
@@ -47,9 +47,9 @@ pidstat -u -r -d 1
 
 - `wa` in `vmstat` high → waiting on disk.
 - `si`/`so` paging → memory pressure.
-- RSS vs VSS: RSS is resident; Java VSS includes reserved heap.
+- RSS[^rss] vs VSS[^vss]: RSS is resident; Java VSS includes reserved heap.
 
-OOM: `dmesg -T | grep -i oom` or `journalctl -k | grep -i oom`.
+OOM[^oom]: `dmesg -T | grep -i oom` or `journalctl -k | grep -i oom`.
 
 ## Network
 
@@ -101,7 +101,7 @@ date -u
 openssl s_client -connect host:443 -servername host </dev/null
 ```
 
-TLS failures from clock skew look like “certificate not yet valid.” See [http-and-tls.md](http-and-tls.md).
+TLS[^tls] failures from clock skew look like “certificate not yet valid.” See [http-and-tls.md](http-and-tls.md).
 
 ## Containers on a node
 
@@ -124,3 +124,11 @@ Inside a pod you often have a thin image (no `ss`, no `curl`). Install debug sid
 
 - [Linux kernel — procfs fields and behavior](https://www.kernel.org/doc/html/latest/filesystems/proc.html)
 - [systemd — journalctl manual](https://www.freedesktop.org/software/systemd/man/latest/journalctl.html)
+
+[^cpu]: Central Processing Unit.
+[^jvm]: Java Virtual Machine.
+[^i-o]: Input/Output.
+[^rss]: Resident Set Size — process memory currently resident in physical memory.
+[^vss]: Virtual Set Size — a process's virtual address-space size.
+[^oom]: Out Of Memory.
+[^tls]: Transport Layer Security — encrypts traffic and authenticates the connection's peer.
