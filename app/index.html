@@ -8,6 +8,16 @@
       rel="icon"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='2' fill='%23221f1b'/%3E%3Cpath d='M3.5 4.2h9v1.3h-9zm0 3.2h9v1.3h-9zm0 3.2h5.5v1.3H3.5z' fill='%23f6f3ed'/%3E%3C/svg%3E"
     />
+    <script>
+      (() => {
+        let theme = null;
+        try { theme = localStorage.getItem("kb-theme"); } catch {}
+        if (theme !== "light" && theme !== "dark") {
+          theme = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        }
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
